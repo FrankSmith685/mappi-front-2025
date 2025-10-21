@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { imageList } from "../../utils/imageUtils";
-// import { imageList } from "@/utils/imageUtils";
+import { imageBaseUrl } from "../../api/apiConfig";
 
 interface ImagePreloaderState {
   images: Record<string, string>;
@@ -22,19 +22,32 @@ export const useImagePreloader = (): ImagePreloaderState => {
             return;
           }
 
-          const img = new Image();
-          const relativeSrc = `/images/${key}`; // ✅ RUTA RELATIVA
-          img.src = relativeSrc;
+          const src = `${imageBaseUrl}${key}`;
+          const img: HTMLImageElement = new Image();
+          img.src = src;
 
-          img.onload = () => {
-            images.current[name] = relativeSrc; // ✅ GUARDAR RUTA RELATIVA
-            resolve();
-          };
+          if ("decode" in img) {
+            img
+              .decode()
+              .then(() => {
+                images.current[name] = src;
+                resolve();
+              })
+              .catch(() => {
+                console.error(`Error al decodificar la imagen: ${src}`);
+                resolve();
+              });
+          } else {
+            (img as HTMLImageElement).onload = () => {
+              images.current[name] = src;
+              resolve();
+            };
+            (img as HTMLImageElement).onerror = () => {
+              console.error(`Error al cargar la imagen: ${src}`);
+              resolve();
+            };
+          }
 
-          img.onerror = () => {
-            console.error(`Error al cargar la imagen: ${img.src}`);
-            resolve();
-          };
         });
       });
 
@@ -42,6 +55,7 @@ export const useImagePreloader = (): ImagePreloaderState => {
       if (isMounted) setIsLoaded(true);
     };
 
+    // 🚀 Inicia precarga inmediatamente
     loadImages();
 
     return () => {

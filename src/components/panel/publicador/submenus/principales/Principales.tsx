@@ -1,41 +1,46 @@
 import { useParams, Navigate } from "react-router-dom";
-import OperacionYPropiedad from "./submenus/propiedadesyoperaciones/OperacionYPropiedad";
-import Ubicacion from "./submenus/ubicacion/Ubicacion";
-import Caracteristicas from "./submenus/caracteristicas/Caracterisiticas";
-import { menuPrincipalesData } from "./data/menuPrincipalesData";
-import { CustomSidebarMenu } from "../../../../ui/CustomSidebarMenuUser";
+import Huarique from "./submenus/huarique/Huarique";
+import PerfilNegocio from "./submenus/perfilNegocio/PerfilNegocio";
+import { useAppState } from "../../../../../hooks/useAppState";
 
-const Cuenta = () => {
+const Principales = () => {
+  const { progressPrincipalService } = useAppState();
   const { subsuboption } = useParams<{ subsuboption?: string }>();
 
-  const validOptions = ["operacionypropiedad", "ubicacion", "caracteristicas"];
+  const currentStep = progressPrincipalService.step;
 
-  if (!subsuboption || !validOptions.includes(subsuboption)) {
-    return <Navigate to="/panel/publicador/principales/operacionypropiedad" replace />;
+  const allowedOptionsByStep: { [key: number]: string[] } = {
+    1: ["perfilnegocio"],
+    2: ["perfilnegocio", "huarique"],
+  };
+
+  const validOptions = allowedOptionsByStep[currentStep] || [];
+
+  // 🔹 Validación rutas inválidas dentro de principales
+  if (
+    window.location.pathname.startsWith("/panel/publicador/principales") &&
+    (!subsuboption || !validOptions.includes(subsuboption))
+  ) {
+    return <Navigate to={progressPrincipalService.currentPath} replace />;
   }
 
+  // 🔹 Render según step
   const renderSubComponent = () => {
     switch (subsuboption) {
-      case "operacionypropiedad":
-        return <OperacionYPropiedad />;
-      case "ubicacion":
-        return <Ubicacion />;
-      case "caracteristicas":
-        return <Caracteristicas />;
+      case "perfilnegocio":
+        return <PerfilNegocio />;
+      case "huarique":
+        return <Huarique />;
+      default:
+        return null;
     }
   };
 
   return (
     <div className="flex gap-6 flex-wrap md:flex-nowrap px-0">
-        <CustomSidebarMenu
-            title="Principales"
-            menuData={menuPrincipalesData}
-        />
-        <main className="flex-1 bg-white px-6">
-            {renderSubComponent()}
-        </main>
+      <main className="flex-1 bg-white">{renderSubComponent()}</main>
     </div>
   );
 };
 
-export default Cuenta;
+export default Principales;

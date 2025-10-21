@@ -14,6 +14,8 @@ type CustomImageProps = {
 const CustomImage = ({ name, alt, width, height, className }: CustomImageProps) => {
     const { images, isLoaded } = useImagePreloader();
     const imageSrc = images[name];
+    // const isBanner = name === 'banner_01';
+    // const computedHeight = isBanner ? '100vh' : height ?? 'auto';
 
   return (
     <div

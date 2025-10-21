@@ -4,7 +4,6 @@ import { z } from "zod";
 import { useState } from "react";
 import { CustomInput } from "../../../../ui/CustomInput";
 import { CustomButton } from "../../../../ui/CustomButton";
-import CustomLoadingOverlay from "../../../../ui/CustomLoadingOverlay";
 import { useUser } from "../../../../../hooks/useUser";
 import { useNotification } from "../../../../../hooks/useNotificacionHooks/useNotification";
 
@@ -68,11 +67,6 @@ const Password = () => {
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="space-y-6 relative">
-      {isLoading && <CustomLoadingOverlay />}
-
-      <div>
-        <h3 className="text-xl font-bold mb-2">Cambiar Contraseña</h3>
-      </div>
 
       <div className="grid grid-cols-1 gap-4 w-full md:max-w-[400px]">
         <div className="flex flex-col gap-1">
@@ -131,13 +125,14 @@ const Password = () => {
         />
     </div>
 
-      <div className={`${isLoading ? "hidden" : ""} pt-4 w-full md:max-w-[400px]`}>
+      <div className={`pt-4 w-full md:max-w-[400px]`}>
         <CustomButton
           text="Actualizar Contraseña"
           type="submit"
           fullWidth
           fontSize="14px"
           variant="primary"
+          loading={isLoading}
         />
       </div>
     </form>

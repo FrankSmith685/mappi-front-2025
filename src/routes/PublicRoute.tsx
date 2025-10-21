@@ -3,7 +3,7 @@
 import { Navigate, Outlet } from "react-router-dom";
 
 const PublicRoute = () => {
-  const token = localStorage.getItem("token");
+  const token = localStorage.getItem("accessToken");
   const rol = localStorage.getItem("rol");
 
   if (token) {

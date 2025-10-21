@@ -12,7 +12,7 @@ export default function Logo({ isActive }: { isActive: boolean }) {
     <div className="max-w-[150px] w-full cursor-pointer" onClick={handleClick}>
       <div className="flex items-center flex-col w-full">
         <CustomImage
-          name={isActive ? "logo_black" : "logo_white"}
+          name={isActive ? "logo_02" : "logo_01"}
           alt="starmobiliario"
           className="object-contain transition-all duration-300 !w-auto !h-full"
         />

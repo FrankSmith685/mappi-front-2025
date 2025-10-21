@@ -6,7 +6,7 @@ export const CustomButton: FC<CustomButtonProps> = ({
   text,
   onClick,
   size,
-  variant= "primary" as VariantButton,
+  variant = "primary" as VariantButton,
   icon,
   uppercase = false,
   fullWidth = false,
@@ -22,14 +22,65 @@ export const CustomButton: FC<CustomButtonProps> = ({
   const effectiveSize = isSmallScreen ? "md" : size || "lg";
 
   const baseColors: Record<string, VariantStyle> = {
-    primary: { bg: "#0A4C3D", color: "#fff", hoverBg: "#116b56", border: "none" },
-    secondary: { bg: "#C75C2D", color: "#fff", hoverBg: "#D16938", border: "none" },
-    terciary: { bg: "#2A3D66", color: "#fff", hoverBg: "#344F7F", border: "none" },
-    warning: { bg: "#C62828", color: "#fff", hoverBg: "#D32F2F", border: "none" },
-    "primary-outline": { bg: "#fff", color: "#0A4C3D", hoverBg: "#f0fdfa", border: "1px solid #0A4C3D", hoverColor: "#0A4C3D" },
-    "secondary-outline": { bg: "#fff", color: "#C75C2D", hoverBg: "#fff7f2", border: "1px solid #C75C2D", hoverColor: "#C75C2D" },
-    "terciary-outline": { bg: "#fff", color: "#2A3D66", hoverBg: "#f4f6fb", border: "1px solid #2A3D66", hoverColor: "#2A3D66" },
-    "warning-outline": { bg: "#fff", color: "#C62828", hoverBg: "#fdf2f2", border: "1px solid #C62828", hoverColor: "#C62828" }
+    primary: {
+      bg: "#FF6C4F",
+      color: "#fff",
+      hoverBg: "#e65b43",
+      border: "none",
+    },
+    secondary: {
+      bg: "#15282D",
+      color: "#fff",
+      hoverBg: "#0f1f25",
+      border: "none",
+    },
+    terciary: {
+      bg: "#253238",
+      color: "#fff",
+      hoverBg: "#1f2b33",
+      border: "none",
+    },
+    warning: {
+      bg: "#B71C1C",
+      color: "#fff",
+      hoverBg: "#9f1a1a",
+      border: "none",
+    },
+    "primary-outline": {
+      bg: "transparent",
+      color: "#FF6C4F",
+      hoverBg: "#ffe8e3",
+      border: "1px solid #FF6C4F",
+      hoverColor: "#FF6C4F",
+    },
+    "primary-outline-white": {
+      bg: "transparent",
+      color: "white",
+      hoverBg: "#ffe8e3",
+      border: "1px solid white",
+      hoverColor: "#FF6C4F",
+    },
+    "secondary-outline": {
+      bg: "#fff",
+      color: "#15282D",
+      hoverBg: "#f0f4f7",
+      border: "1px solid #15282D",
+      hoverColor: "#15282D",
+    },
+    "terciary-outline": {
+      bg: "#fff",
+      color: "#253238",
+      hoverBg: "#f2f5f9",
+      border: "1px solid #253238",
+      hoverColor: "#253238",
+    },
+    "warning-outline": {
+      bg: "#fff",
+      color: "#B71C1C",
+      hoverBg: "#f9e8e8",
+      border: "1px solid #B71C1C",
+      hoverColor: "#B71C1C",
+    },
   };
 
   const current = baseColors[variant];

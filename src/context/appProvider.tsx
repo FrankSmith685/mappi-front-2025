@@ -6,6 +6,7 @@ import { ImagePreloaderProvider } from "../hooks/useImageHooks/imagePreloaderPro
 import { NotificationProvider } from "../hooks/useNotificacionHooks/notificacionProvider";
 import { SET_LOGOUT } from "../types/actionTypes";
 import { setLogoutFunction } from "../helpers/logoutHelper";
+import { LocationProvider } from "../hooks/useLocationHooks/locationProvider";
 // import { VideoPreloaderProvider } from "../hooks/useVideoHooks/videoPreloaderProvider";
 
 interface Props {
@@ -44,9 +45,82 @@ const initialState: AppState = {
     totalSteps: 4,
     currentPath: "/panel/publicador/principales",
   },
-};
-
-
+  newInmueble:{
+    cod_inmueble:"",
+    cod_usuario:"",
+    titulo:null,
+    descripcion:null,
+    cod_tipo_inmueble:0,
+    cod_subtipo_inmueble:0,
+    cod_ubigeo:null,
+    cod_estado_inmueble:0,
+    operaciones:[],
+    caracteristicas:null,
+    generales:null,
+    amoblamientos:null,
+    multimedias:null,
+    precios:null
+  },
+  progressPrincipalProperty:{
+    step: 1,
+    totalSteps: 2,
+    currentPath: "/panel/publicador/principales/perfilnegocio",
+  },
+  changePasswordToken:localStorage.getItem("changePassowordToken") || null,
+  menuOpenUser:false,
+  profileType:null,
+  selectedPerfil:'independiente',
+  departamentos:[],
+  provincias:[],
+  distritos:[],
+  ubigeo_usuario:{
+    cod_ubigeo:null,
+    latitud:0,
+    longitud:0,
+    departamento:null,
+    provincia:null,
+    distrito:null,
+    direccion:null
+  },
+  progressPrincipalService:{
+    step: 1,
+    totalSteps: 2,
+    currentPath: "/panel/publicador/principales/perfilnegocio",
+  },
+  company:null,
+  modifiedUser: null,
+  modifiedCompany: null,
+  categoria:[],
+  subCategoria:[],
+  service: null,
+  modifiedService: null,
+  progressService:{
+    step: 1,
+    totalSteps: 4,
+    currentPath: "/panel/publicador/principales",
+  },
+  multimediaService:null,
+  direccionService:null,
+  filtroAvisos: [],
+  isArchivado: false,
+  seleccionadosAvisos: [],
+  listaAvisos:{
+    avisos:[],
+    consultas_pendientes:0,
+    avisos_incompletos:0,
+    avisos_duplicados:0,
+    reportes_pendientes:0,
+    planes_disponibles:0,
+  },
+  isServiceEdit: false,
+  idAviso: 0,
+  idsDeleteMultimedia:null,
+  serviciosActivos: [],
+  serviciosFilterActivos: [],
+  isShowFilterService: false,
+  servicioSeleccionado: null,
+  isExpanded:false,
+}
 
 
 export const AppProvider = ({ children }: Props) => {
@@ -60,13 +134,15 @@ export const AppProvider = ({ children }: Props) => {
 
   return (
     <AppContext.Provider value={{ appState, dispatch, logout }}>
-      <NotificationProvider>
-      <ImagePreloaderProvider>
-        {/* <VideoPreloaderProvider> */}
-          {children}
-        {/* </VideoPreloaderProvider> */}
-        </ImagePreloaderProvider>
-         </NotificationProvider>
+      <LocationProvider>
+        <NotificationProvider>
+        <ImagePreloaderProvider>
+          {/* <VideoPreloaderProvider> */}
+            {children}
+          {/* </VideoPreloaderProvider> */}
+          </ImagePreloaderProvider>
+          </NotificationProvider>
+         </LocationProvider>
     </AppContext.Provider>
   );
 };

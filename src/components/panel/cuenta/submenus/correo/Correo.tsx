@@ -4,7 +4,6 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useState, useEffect } from "react";
 import { CustomInput } from "../../../../ui/CustomInput";
 import { CustomButton } from "../../../../ui/CustomButton";
-import CustomLoadingOverlay from "../../../../ui/CustomLoadingOverlay";
 import { useUser } from "../../../../../hooks/useUser";
 import { useNotification } from "../../../../../hooks/useNotificacionHooks/useNotification";
 import { useAppState } from "../../../../../hooks/useAppState";
@@ -88,11 +87,6 @@ const Correo = () => {
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="space-y-6 relative">
-      {isLoading && <CustomLoadingOverlay />}
-
-      <div>
-        <h3 className="text-xl font-bold mb-2">Cambiar Correo</h3>
-      </div>
 
       <div className="grid grid-cols-1 gap-4 w-full md:max-w-[400px]">
         <div className="flex flex-col gap-1">
@@ -154,13 +148,14 @@ const Correo = () => {
         />
       </div>
 
-      <div className={`${isLoading ? "hidden" : ""} pt-4 w-full md:max-w-[400px]`}>
+      <div className={`pt-4 w-full md:max-w-[400px]`}>
         <CustomButton
           text="Actualizar Correo"
           type="submit"
           fullWidth
           fontSize="14px"
           variant="primary"
+          loading={isLoading}
         />
       </div>
     </form>

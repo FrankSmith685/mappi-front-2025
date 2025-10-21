@@ -1,11 +1,47 @@
 @import "tailwindcss";
 
+@font-face {
+  font-family: 'Raphtalia';
+  src: url('/fonts/Raphtalia.woff2') format('woff2'),
+       url('/fonts/Raphtalia.woff') format('woff'),
+       url('/fonts/Raphtalia.ttf') format('truetype'),
+       url('/fonts/Raphtalia.otf') format('opentype');
+  font-weight: normal;
+  font-style: normal;
+}
+
 
 @layer utilities {
+   
+  .bg-primary-gradient {
+   background-image: linear-gradient(to top, #ffa261 0%, #ffa55e 20%, #ff594a 50%, #c51009 100%);
+  }
+  .bg-primary-gradient-v2 {
+    background-image: linear-gradient(rgb(255, 137, 73) 5%, rgb(255, 99, 51) 33%, rgb(255, 71, 34) 66%, rgb(255, 32, 12) 100%);
+  }
+
   .responsive-padding {
     @apply px-4 py-4 sm:px-6 xl:px-12;
   }
-  .text-primary {
+
+  .text-primary{
+    color:#FF6C4F;
+  }
+  .text-primary-gradient {
+    background: linear-gradient(
+      to top,
+      #ffa261 0%,
+      #ffa55e 20%,
+      #ff594a 50%,
+      #c51009 100%
+    );
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    color: transparent;
+  }
+
+  .text-secondary {
     color: #0A4C3D;
   }
 
@@ -13,7 +49,12 @@
     color: #f0fdfa;
   }
 
+
   .bg-primary {
+    background-color: #FF6C4F;
+  }
+
+  .bg-secondary {
     background-color: #0A4C3D;
   }
 
@@ -26,10 +67,46 @@
   }
 
   .border-primary {
-    border-color: #0A4C3D;
+    border-color: #FF6C4F;
   }
 
   .hover\:border-primary:hover {
     border-color: #f0fdfa;
   }
+
+  .size-custom{
+    width: calc(100% + 40px);
+    height: calc(100% + 40px);
+  }
+
+  .font-raphtalia {
+    font-family: 'Raphtalia', sans-serif;
+  }
+
+  .height-custom-sidebar-menu{
+    height:calc(100vh - 80px);
+  }
+  .height-cutom-mapa-service-filter {
+    height: calc(100vh - 80px); /* valor por defecto para móviles */
+  }
+
+  .height-cutom-mapa-service-not-filter{
+    height: calc(100vh - 142px);
+  }
+
+ 
+
+    .leaflet-popup-content-wrapper {
+    border-radius: 12px;
+    padding: 6px;
+  }
+  .leaflet-popup-content {
+    margin: 0;
+  }
+  .leaflet-popup-tip {
+    background: white;
+  }
+
+
+
 }

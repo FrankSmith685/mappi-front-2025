@@ -1,72 +1,59 @@
-import { useState } from "react";
-import {
-  FaChevronDown,
-  FaChevronUp,
-} from "react-icons/fa";
 import { CustomButton } from "../ui/CustomButton";
 import { quickAccess } from "./data/menuData";
-import { mobileMenuData as menuData } from "./data/menuData.mobile";
 import { useAppState } from "../../hooks/useAppState";
 import { useAuth } from "../../hooks/useAuth";
 import { useLocation, useNavigate } from "react-router-dom";
+import { useUser } from "../../hooks/useUser";
 
 const MainMenuMobile = () => {
-  const [openMainSection, setOpenMainSection] = useState<string | null>(null);
-  const [openSubSections, setOpenSubSections] = useState<{ [key: string]: boolean }>({});
-  const [openColumnByTab, setOpenColumnByTab] = useState<{ [tabKey: string]: string | null }>({});
-  const [openColumnBySection, setOpenColumnBySection] = useState<{ [sectionLabel: string]: string | null }>({});
-  const [showMenuUser, setShowMenuUser] = useState<boolean>(true);
-  const {setMode, setModal, user,setMenuOpen, setModeLogin} = useAppState();
+  const { 
+    user,
+    setMenuOpen, 
+    setProgressService, 
+    progressService,
+    setService,
+    setModifiedService,
+    setProgressPrincipalService,
+    progressPrincipalService,
+    setMultimediaService,  
+    setDireccionService,
+    setIsServiceEdit
+  } = useAppState();
   const {logout} = useAuth();
   const navigate = useNavigate();
+  const {getUserInfo} = useUser();
    const location = useLocation();
   const isPanelPublicadorRoute = location.pathname.startsWith("/panel/publicador");
 
-  const toggleColumnInTab = (tabKey: string, colTitle: string) => {
-      setOpenColumnByTab((prev) => ({
-          ...prev,
-          [tabKey]: prev[tabKey] === colTitle ? null : colTitle,
-      }));
-  };
-
-  const toggleColumnInSection = (sectionLabel: string, colTitle: string) => {
-    setOpenColumnBySection((prev) => ({
-        ...prev,
-        [sectionLabel]: prev[sectionLabel] === colTitle ? null : colTitle,
-    }));
-  };
-
-  const toggleMainSection = (label: string) => {
-    setOpenMainSection((prev) => (prev === label ? null : label));
-  };
-
-  const toggleSubSection = (label: string) => {
-    setOpenSubSections((prev) => ({
-      ...prev,
-      [label]: !prev[label],
-    }));
-  };
 
   const handleClickIngresar = (): void => {
-    setModal(true);
-    setMode("login");
-    setModeLogin('login_one');
+    navigate("/iniciar")
   };
 
-  const handleClickPublicar = (): void => {
+  const handleClickPublicar = async() => {
     navigate("/panel/publicador");
     setMenuOpen(false);
+    setProgressService({
+      ...progressService,
+      currentPath:"/panel/publicador/principales",
+      step:1,
+    });
+    setService(null);
+    setModifiedService(null);
+    setProgressPrincipalService({
+        ...progressPrincipalService,
+        step: 1,
+        currentPath: "/panel/publicador/principales/perfilnegocio",
+    });
+    setMultimediaService(null);
+    setDireccionService(null);
+    await getUserInfo();
+    setIsServiceEdit(false);
   };
 
-  const getInitials = (name: string) => {
-    const parts = name.trim().split(" ");
-    if (parts.length === 1) return parts[0][0].toUpperCase();
-    return parts[0][0].toUpperCase() + parts[1][0].toUpperCase();
-  };
-
-  const handleClickShowMenu=()=>{
-    setShowMenuUser(!showMenuUser);
-  }
+   const initials = `${(user?.nombre || user?.correo || "").charAt(0)}${(user?.apellido || "").charAt(0)}`
+    .toUpperCase()
+    .trim();
 
   const quickAccessToShow = user
   ? quickAccess.filter(item => item.isActive !== false)
@@ -80,20 +67,43 @@ const MainMenuMobile = () => {
 
   const onLogout=()=>{
     logout();
-    setModal(false);
-    setMode('login');
     setMenuOpen(false);
   }
 
   const handleClickNavigateUserActions = (path: string) => {
-    navigate(path);
-    setMenuOpen(false);
+    if(user){
+      navigate(path);
+      setMenuOpen(false);
+    }else{
+      navigate("/iniciar")
+    }
+    
   };
 
   return (
-    <div className={`${showMenuUser ? 'space-y-2' : user ? 'space-y-2' :'space-y-4'} w-full px-4 py-4 h-full`}>
+    <div className={`space-y-4 w-full px-4 py-4 h-full`}>
+      {/* Botón publicar */}
+      {
+        !isPanelPublicadorRoute && (
+          <div className={`pt-0 pb-4 space-y-2 border-b-[1px] border-b-gray-200`}>
+            <p className="text-sm text-gray-700">
+              ¿Tienes un huarique que quieras compartir? Publícalo y deja que más personas lo descubran.
+            </p>
+            <CustomButton
+              type="button"
+              variant="primary-outline"
+              size="md"
+              fontSize="14px"
+              fontWeight={400}
+              fullWidth={true}
+              text="Publicar"
+              onClick={handleClickPublicar}
+            />
+          </div>
+        )
+      }
       {/* Header login */}
-      <div className={`${showMenuUser?'pb-4 space-y-4':'pb-2 space-y-2'} border-b-[1px]  border-b-gray-200  `}>
+      <div className={`pb-2 space-y-2 border-b-[1px]  border-b-gray-200  `}>
         <p className="text-sm text-gray-700">
           Ingresa y accede a los avisos que contactaste, tus favoritos y las búsquedas guardadas
         </p>
@@ -101,17 +111,24 @@ const MainMenuMobile = () => {
           <div className="w-full flex items-center justify-between hover:cursor-pointer">
             <div className="flex items-center justify-start gap-4 w-full">
               <div className="flex items-center gap-1 cursor-pointer h-full">
-                <div className="bg-emerald-900 text-white text-sm w-9 h-9 rounded-full flex items-center justify-center">
-                  {getInitials(user?.nombre || user?.correo || "U")}
+                <div className="w-9 h-9 rounded-full overflow-hidden bg-orange-700 flex items-center justify-center text-white text-sm">
+                  {user?.fotoPerfil ? (
+                    <img
+                      src={user.fotoPerfil}
+                      alt="avatar"
+                      className="w-full h-full object-cover"
+                    />
+                  ) : (
+                    initials
+                  )}
                 </div>
                 
               </div>
-              <div className="w-full gap-0 flex flex-col" onClick={handleClickShowMenu}>
+              <div className="w-full gap-0 flex flex-col">
                 <p className="text-gray-800 font-semibold">{user?.nombre}</p>
                 <p className={`${user?.nombre != null ? 'text-gray-800 text-base' : 'font-semibold text-gray-700 text-base'}`}>{user?.correo}</p>
               </div>
             </div>
-            {showMenuUser ? <FaChevronUp className="text-gray-800 hover:cursor-pointer" onClick={handleClickShowMenu}/> : <FaChevronDown className="text-gray-800 hover:cursor-pointer" onClick={handleClickShowMenu}/>}
           </div>
         ): (
           <CustomButton
@@ -128,12 +145,11 @@ const MainMenuMobile = () => {
       </div>
       <div
           className={`
-            bg-white rounded-md border-b-[1px] border-b-gray-200
-            overflow-hidden transition-all duration-300
-            ${showMenuUser ? 'max-h-[500px] opacity-100 py-0' : user ? 'max-h-0 opacity-0 py-0': 'max-h-[500px] opacity-100 py-0'}
+            bg-white rounded-md
+            overflow-hidden transition-all duration-300 h-auto opacity-100 py-0
           `}
         >
-          <ul className="divide-y divide-gray-200 text-sm text-gray-800">
+          <ul className="divide-y divide-gray-200 text-sm text-gray-800 pb-4">
             {quickAccessToShow.map((item, index) => (
               <li     
                 key={index}
@@ -148,186 +164,6 @@ const MainMenuMobile = () => {
             ))}
           </ul>
         </div>
-
-      {/* Botón publicar */}
-      {
-        !isPanelPublicadorRoute && (
-          <div className={`${showMenuUser ? 'pt-2' : 'pt-0'} pb-4 border-b-[1px] border-b-gray-200`}>
-            <CustomButton
-              type="button"
-              variant="primary-outline"
-              size="md"
-              fontSize="14px"
-              fontWeight={400}
-              fullWidth={true}
-              text="Publicar"
-              onClick={handleClickPublicar}
-            />
-          </div>
-        )
-      }
-
-      {/* Menú dinámico principal */}
-      <div>
-        {menuData.map((section) => (
-          <div key={section.label} className="border-b border-gray-200 ">
-            {/* Botón principal */}
-            {(section.columns || section.tabs) ? (
-                <button
-                    className="w-full flex justify-between items-center py-3 text-left font-medium text-gray-800 hover:cursor-pointer"
-                    onClick={() => toggleMainSection(section.label)}
-                >
-                    <span>{section.label}</span>
-                    {openMainSection === section.label ? <FaChevronUp /> : <FaChevronDown />}
-                </button>
-                ) : (
-                <div className="py-3 text-left font-medium text-gray-800">
-                    {section.label}
-                </div>
-            )}
-
-            {/* Contenido desplegado */}
-            <div
-            className={`transition-all duration-300 ease-in-out overflow-hidden ${
-                openMainSection === section.label
-                ? "max-h-[999px] opacity-100 py-2 pl-2"
-                : "max-h-0 opacity-0 py-0 pl-2"
-            } text-sm text-gray-700 space-y-2`}
-            >
-            {/* Si tiene tabs (como "Alquilar") */}
-            {section.tabs
-                ? section.tabs.map((tab) => {
-                    const tabKey = `${section.label}-${tab.title}`;
-                    const isTabOpen = openSubSections[tabKey];
-
-                    return (
-                    <div
-                        key={tab.title}
-                        className="border-b border-gray-200 rounded-md overflow-hidden"
-                    >
-                        <button
-                        className="w-full flex justify-between items-center py-2 px-2 cursor-pointer"
-                        onClick={() => toggleSubSection(tabKey)}
-                        >
-                        <span
-                            className={`${
-                            isTabOpen ? "text-primary font-semibold" : "text-gray-800"
-                            }`}
-                        >
-                            {tab.title}
-                        </span>
-                        {isTabOpen ? (
-                            <FaChevronUp className="text-primary" />
-                        ) : (
-                            <FaChevronDown className="text-gray-500" />
-                        )}
-                        </button>
-
-                        <div
-                        className={`transition-all duration-300 ease-in-out overflow-hidden ${
-                            isTabOpen ? "max-h-[1000px] py-2 px-4" : "max-h-0 py-0 px-4"
-                        } space-y-2`}
-                        >
-                        {tab.columns.map((col, idx) => {
-                            const isOpen = openColumnByTab[tabKey] === col.title;
-
-                            return (
-                            <div
-                                key={idx}
-                                className={`rounded-md overflow-hidden ${
-                                isOpen ? "bg-primary-hover" : "bg-white"
-                                }`}
-                            >
-                                <button
-                                className="w-full flex justify-between items-center py-2 px-2 border-b border-gray-200 cursor-pointer"
-                                onClick={() => toggleColumnInTab(tabKey, col.title)}
-                                >
-                                <span
-                                    className={`${
-                                    isOpen
-                                        ? "text-primary font-semibold"
-                                        : "text-gray-800"
-                                    }`}
-                                >
-                                    {col.title}
-                                </span>
-                                {isOpen ? (
-                                    <FaChevronUp className="text-primary" />
-                                ) : (
-                                    <FaChevronDown className="text-gray-500" />
-                                )}
-                                </button>
-
-                                <ul
-                                className={`pl-4 transition-all duration-300 ease-in-out overflow-hidden cursor-pointer ${
-                                    isOpen ? "max-h-[500px] py-2" : "max-h-0 py-0"
-                                }`}
-                                >
-                                {col.items.map((item, i) => (
-                                    <li
-                                    key={i}
-                                    className="text-gray-600 py-2 cursor-pointer"
-                                    >
-                                    {item}
-                                    </li>
-                                ))}
-                                </ul>
-                            </div>
-                            );
-                        })}
-                        </div>
-                    </div>
-                    );
-                })
-                : section.columns?.map((col, colIdx) => {
-                    const isOpen = openColumnBySection[section.label] === col.title;
-
-                    return (
-                    <div
-                        key={colIdx}
-                        className={`rounded-md overflow-hidden ${
-                        isOpen ? "bg-primary-hover" : "bg-white"
-                        }`}
-                    >
-                        <button
-                        className="w-full flex justify-between items-center py-2 px-2 border-b border-gray-200 cursor-pointer"
-                        onClick={() => toggleColumnInSection(section.label, col.title)}
-                        >
-                        <span
-                            className={`${
-                            isOpen ? "text-primary font-semibold" : "text-gray-800"
-                            }`}
-                        >
-                            {col.title}
-                        </span>
-                        {isOpen ? (
-                            <FaChevronUp className="text-primary" />
-                        ) : (
-                            <FaChevronDown className="text-gray-500" />
-                        )}
-                        </button>
-
-                        <ul
-                        className={`pl-4 transition-all duration-300 ease-in-out overflow-hidden ${
-                            isOpen ? "max-h-[500px] py-2" : "max-h-0 py-0"
-                        }`}
-                        >
-                        {col.items.map((item, i) => (
-                            <li
-                            key={i}
-                            className="text-gray-600 py-2 cursor-pointer"
-                            >
-                            {item}
-                            </li>
-                        ))}
-                        </ul>
-                    </div>
-                    );
-                })}
-            </div>
-          </div>
-        ))}
-      </div>
     </div>
   );
 };

@@ -25,22 +25,52 @@ export const CustomInput: FC<CustomInputProps> = ({
   helperText = "",
   multiline = false,
   rows,
+  autoComplete = "off",
+  onFocus,
+  onBlur,
 }) => {
   const isSmallScreen = useMediaQuery("(max-width:600px)");
   const responsiveSize = isSmallScreen ? "md" : size || "lg";
 
+  // 🎨 Paleta de colores unificada
   const colors: Record<Variant, VariantStyle> = {
-    primary: { border: "#0A4C3D", focusBorder: "#116b56", background: "#fff", color: "#0A4C3D" },
-    secondary: { border: "#C75C2D", focusBorder: "#D16938", background: "#fff", color: "#C75C2D" },
-    terciary: { border: "#2A3D66", focusBorder: "#344F7F", background: "#fff", color: "#2A3D66" },
-    warning: { border: "#C62828", focusBorder: "#D32F2F", background: "#fff", color: "#C62828" }
-    
+    primary: {
+      border: "#FF6C4F",
+      focusBorder: "#e65b43",
+      background: "#fff",
+      color: "#FF6C4F",
+    },
+    secondary: {
+      border: "#15282D",
+      focusBorder: "#0f1f25",
+      background: "#fff",
+      color: "#15282D",
+    },
+    terciary: {
+      border: "#253238",
+      focusBorder: "#1f2b33",
+      background: "#fff",
+      color: "#253238",
+    },
+    warning: {
+      border: "#B71C1C",
+      focusBorder: "#9f1a1a",
+      background: "#fff",
+      color: "#B71C1C",
+    },
   };
 
-  const neutral: VariantStyle = { border: "#ccc", focusBorder: "#999", background: "#fff", color: "#000", label: "#666" };
-  const isPassword = type === 'password';
-  const isSearch = type === 'search';
-  const isNumber = type === 'number';
+  const neutral: VariantStyle = {
+    border: "#ccc",
+    focusBorder: "#999",
+    background: "#fff",
+    color: "#000",
+    label: "#666",
+  };
+
+  const isPassword = type === "password";
+  const isSearch = type === "search";
+  const isNumber = type === "number";
   const height = responsiveSize === "lg" ? 52 : 44;
   const hasStartAdornment = isSearch || icon;
 
@@ -49,7 +79,7 @@ export const CustomInput: FC<CustomInputProps> = ({
 
   const current = focused ? colors[variant] : neutral;
 
-  const handleTogglePassword = () => setShowPassword(prev => !prev);
+  const handleTogglePassword = () => setShowPassword((prev) => !prev);
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     if (!onChange) return;
@@ -63,8 +93,15 @@ export const CustomInput: FC<CustomInputProps> = ({
     }
   };
 
-  const handleFocus = () => setFocused(true);
-  const handleBlur = () => setFocused(false);
+  const handleFocus = (e: React.FocusEvent<HTMLInputElement>) => {
+    setFocused(true);
+    if (onFocus) onFocus(e); // ✅ Ejecuta si se pasa desde afuera
+  };
+
+  const handleBlur = (e: React.FocusEvent<HTMLInputElement>) => {
+    setFocused(false);
+    if (onBlur) onBlur(e); // ✅ Ejecuta si se pasa desde afuera
+  };
 
   return (
     <TextField
@@ -77,8 +114,12 @@ export const CustomInput: FC<CustomInputProps> = ({
       placeholder={placeholder}
       type={
         isPassword
-          ? (showPassword ? 'text' : 'password')
-          : (isNumber ? 'text' : type)
+          ? showPassword
+            ? "text"
+            : "password"
+          : isNumber
+          ? "text"
+          : type
       }
       disabled={disabled}
       fullWidth={fullWidth}
@@ -89,29 +130,29 @@ export const CustomInput: FC<CustomInputProps> = ({
       rows={rows}
       FormHelperTextProps={{
         sx: {
-          backgroundColor: '#fff',
+          backgroundColor: "#fff",
           paddingLeft: 2,
           paddingRight: 2,
           m: 0,
-        }
+        },
       }}
       InputLabelProps={{
         sx: {
-          top: responsiveSize === 'md' ? '-6px' : '0px',
+          top: responsiveSize === "md" ? "-6px" : "0px",
           color: current.label,
-          '&.Mui-focused': {
-            color: current.focusBorder
-          }
-        }
+          "&.Mui-focused": {
+            color: current.focusBorder,
+          },
+        },
       }}
       InputProps={{
         ...(hasStartAdornment && {
           startAdornment: (
             <InputAdornment position="start">
-              {isSearch && <Search sx={{ color: current.color }} />}
+              {isSearch && <Search sx={{ color: "#1F2937" }} />}
               {icon}
             </InputAdornment>
-          )
+          ),
         }),
         endAdornment: isPassword ? (
           <InputAdornment position="end">
@@ -121,39 +162,53 @@ export const CustomInput: FC<CustomInputProps> = ({
               ) : (
                 <Visibility className="text-gray-600 !text-2xl" />
               )}
-
             </IconButton>
           </InputAdornment>
         ) : null,
       }}
       sx={{
         backgroundColor: current.background,
-        width: fullWidth ? '100%' : 'auto',
-        '& .MuiOutlinedInput-root': {
+        width: fullWidth ? "100%" : "auto",
+        "& .MuiOutlinedInput-root": {
           minHeight: height,
-          '& fieldset': {
+          "& fieldset": {
             borderColor: current.border,
-            borderWidth: '1px',
+            borderWidth: "1px",
           },
-          '&:hover fieldset': {
+          "&:hover fieldset": {
             borderColor: current.focusBorder,
-            borderWidth: '1px',
+            borderWidth: "1px",
           },
-          '&.Mui-focused fieldset': {
+          "&.Mui-focused fieldset": {
             borderColor: current.focusBorder,
-            borderWidth: '1px',
+            borderWidth: "1px",
           },
         },
-        '& input': {
+        "& input": {
           fontSize: fontSize || (responsiveSize === "lg" ? "15px" : "15px"),
           fontFamily: fontFamily || "Arial",
-          padding: hasStartAdornment ? '0px' : (responsiveSize === "lg" ? "10px 14px" : "8px 12px"),
-          paddingLeft: hasStartAdornment ? '0px' : (responsiveSize === "lg" ? "14px" : "14px"),
-          paddingRight: isPassword ? (responsiveSize === "lg" ? "48px" : "40px") : (responsiveSize === "lg" ? "14px" : "12px"),
+          padding: hasStartAdornment
+            ? "0px"
+            : responsiveSize === "lg"
+            ? "10px 14px"
+            : "8px 12px",
+          paddingLeft: hasStartAdornment
+            ? "0px"
+            : responsiveSize === "lg"
+            ? "14px"
+            : "14px",
+          paddingRight: isPassword
+            ? responsiveSize === "lg"
+              ? "48px"
+              : "40px"
+            : responsiveSize === "lg"
+            ? "14px"
+            : "12px",
         },
       }}
       label={label ? `${label}` : undefined}
       required={required}
+      autoComplete={autoComplete}
     />
   );
 };

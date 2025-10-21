@@ -88,7 +88,7 @@ const CustomModal: React.FC<CustomModalProps> = ({
       ) : (
         <main
           className={clsx(
-            'flex justify-center items-start overflow-auto h-full py-8',
+            'flex justify-center items-start overflow-auto h-full',
             mainClassName
           )}
         >

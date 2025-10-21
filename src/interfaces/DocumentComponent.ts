@@ -30,6 +30,7 @@ export type VariantButton =
   | "terciary"
   | "warning"
   | "primary-outline"
+  | "primary-outline-white"
   | "secondary-outline"
   | "terciary-outline"
   | "warning-outline";
@@ -86,6 +87,9 @@ export interface CustomInputProps {
   helperText?: string;
   multiline?: boolean;
   rows?: number;
+  autoComplete?:string;
+  onFocus?: (e: ChangeEvent<HTMLInputElement>) => void;
+  onBlur?: (e: ChangeEvent<HTMLInputElement>) => void;
 }
 
 // CustomSelected
@@ -94,6 +98,7 @@ export interface CustomSelectProps {
   onChange: (e: SelectChangeEvent<string | number>) => void;
   options: Array<{ label: string; value: string | number }>;
   label?: string;
+  placeholder?: string;
   disabled?: boolean;
   fullWidth?: boolean;
   variant?: Variant;
@@ -106,7 +111,7 @@ export interface CustomSelectProps {
 
 // CustomCheckbox
 export interface CustomCheckboxProps {
-  label: string;
+  label?: string;
   checked: boolean;
   onChange: (event: ChangeEvent<HTMLInputElement>) => void;
   variant?: Variant;

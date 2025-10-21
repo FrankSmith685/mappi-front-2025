@@ -6,27 +6,10 @@ import { useAppState } from "./useAppState";
 
 export const useAuth = () => {
 
-    const {setRefreshtoken,setAccessToken, setUser, setModal, setModeLogin,setMode, setMenuOpen } = useAppState();
-
-    const verifyEmail = async (
-        email: string,
-        callback?: (exists: boolean) => void
-    ): Promise<void> => {
-        try {
-            const response = await api.get(`/auth/verify-email`, {
-                params: { email }
-            });
-
-            const { success } = response.data;
-            callback?.(success);
-        } catch (error) {
-            handleApiError(error);
-            callback?.(false);
-        }
-    };
+    const {setRefreshtoken,setAccessToken, setUser, setMenuOpen,setCompany } = useAppState();
 
     const loginUser = async (
-        credentials: { correo: string; contraseña: string },
+        credentials: { correo: string; proveedor: "correo" | "google" | "facebook" ; contraseña: string },
         callback?: (response: { success: boolean; message?: string }) => void
     ): Promise<void> => {
         try {
@@ -46,16 +29,13 @@ export const useAuth = () => {
 
     const registerUser = async (
         data: {
-            tipoUsuario: number;
+            nombre?: string;
+            apellido?: string;
             correo: string;
-            contraseña: string;
-            nombre?: string | null;
-            apellido?: string | null;
-            razon_social?: string | null;
-            tipoDocumento?: number | null;
-            nroDocumento?: string | null;
-            telefono?: string | null;
-            telefono_movil?: string | null;
+            telefono?: number;
+            contrasena: string;
+            dni?: number;
+            proveedor?:string;
         },
         callback?: (response: { success: boolean; message?: string }) => void
         ): Promise<void> => {
@@ -77,11 +57,9 @@ export const useAuth = () => {
         setAccessToken(null);
         setRefreshtoken(null);
         setUser(null);
+        setCompany(null)
         localStorage.removeItem("accessToken");
         localStorage.removeItem("refreshToken");
-        setModal(false)
-        setMode('auth');
-        setModeLogin('login_one');
         setMenuOpen(false);
     };
 
@@ -140,7 +118,6 @@ export const useAuth = () => {
     };
 
     return {
-        verifyEmail,
         registerUser,
         logout,
         loginUser,

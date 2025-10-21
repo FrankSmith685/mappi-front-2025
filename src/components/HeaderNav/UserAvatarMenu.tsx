@@ -8,14 +8,13 @@ import { useNavigate } from "react-router-dom";
 export const UserAvatarMenu = () => {
   const { user } = useAppState();
   const [showMenu, setShowMenu] = useState<boolean>(false);
+
   const {logout} = useAuth();
   const navigate = useNavigate();
 
-  const getInitials = (name: string) => {
-    const parts = name.trim().split(" ");
-    if (parts.length === 1) return parts[0][0].toUpperCase();
-    return parts[0][0].toUpperCase() + parts[1][0].toUpperCase();
-  };
+  const initials = `${(user?.nombre || user?.correo || "").charAt(0)}${(user?.apellido || "").charAt(0)}`
+    .toUpperCase()
+    .trim();
 
   const onLogout=()=>{
     logout();
@@ -66,19 +65,28 @@ export const UserAvatarMenu = () => {
 
   return (
     <div
-      className="relative ml-2 h-[80px] flex items-center gap-1"
+      className="relative ml-2 h-[80px] flex items-center gap-1 z-[30000]"
       onMouseEnter={() => setShowMenu(true)}
       onMouseLeave={() => setShowMenu(false)}
     >
       <div className="flex items-center gap-1 cursor-pointer h-full">
-        <div className="bg-emerald-900 text-white text-sm w-9 h-9 rounded-full flex items-center justify-center">
-          {getInitials(user?.nombre || user?.correo || "U")}
+        <div className="w-9 h-9 rounded-full overflow-hidden bg-orange-700 flex items-center justify-center text-white text-sm">
+          {user?.fotoPerfil ? (
+            <img
+              src={user.fotoPerfil}
+              alt="avatar"
+              className="w-full h-full object-cover"
+            />
+          ) : (
+            initials
+          )}
         </div>
-        {showMenu ? <FaChevronUp size={12} /> : <FaChevronDown size={12} />}
+        {showMenu ? <FaChevronUp size={12} className="text-white"/> : <FaChevronDown size={12} className="text-white"/>}
       </div>
 
-      {showMenu && (
-        <div className="absolute top-full right-0 mt-0 w-[290px] p-4 bg-white shadow-lg border border-gray-200 rounded-lg z-50">
+      {
+        showMenu && (
+          <div className="absolute top-full right-0 mt-0 w-[290px] p-4 bg-white shadow-lg border border-gray-200 rounded-lg">
           <div className="w-full gap-0 flex flex-col border-b border-gray-300 pb-2 mb-2">
             <p className="text-gray-800 font-semibold">{user?.nombre}</p>
             <p className="text-gray-700 text-sm">{user?.correo}</p>
@@ -86,7 +94,8 @@ export const UserAvatarMenu = () => {
 
           <ul className="text-sm text-gray-800 space-y-2">{renderMenuItems()}</ul>
         </div>
-      )}
+        )
+      }
     </div>
   );
 };

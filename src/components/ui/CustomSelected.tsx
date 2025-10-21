@@ -20,6 +20,7 @@ export const CustomSelected: FC<CustomSelectProps> = ({
   onChange,
   options,
   label = "Seleccione una opción",
+  placeholder = "Seleccione una opción",
   disabled = false,
   fullWidth = false,
   variant = "primary",
@@ -32,30 +33,31 @@ export const CustomSelected: FC<CustomSelectProps> = ({
   const isSmallScreen = useMediaQuery("(max-width:600px)");
   const resolvedSize = size ? size : isSmallScreen ? "md" : "lg";
 
+  // 🎨 Paleta de colores unificada
   const colors: Record<Variant, VariantStyle> = {
     primary: {
-      border: "#0A4C3D",
-      focusBorder: "#116b56",
+      border: "#FF6C4F",
+      focusBorder: "#e65b43",
       background: "#fff",
-      color: "#0A4C3D",
+      color: "#FF6C4F",
     },
     secondary: {
-      border: "#C75C2D",
-      focusBorder: "#D16938",
+      border: "#15282D",
+      focusBorder: "#0f1f25",
       background: "#fff",
-      color: "#C75C2D",
+      color: "#15282D",
     },
     terciary: {
-      border: "#2A3D66",
-      focusBorder: "#344F7F",
+      border: "#253238",
+      focusBorder: "#1f2b33",
       background: "#fff",
-      color: "#2A3D66",
+      color: "#253238",
     },
     warning: {
-      border: "#C62828",
-      focusBorder: "#D32F2F",
+      border: "#B71C1C",
+      focusBorder: "#9f1a1a",
       background: "#fff",
-      color: "#C62828",
+      color: "#B71C1C",
     },
   };
 
@@ -68,11 +70,11 @@ export const CustomSelected: FC<CustomSelectProps> = ({
   };
 
   const [focused, setFocused] = useState(false);
-  const hasValue = value !== "" && value !== undefined;
+  const hasValue = value !== "" && value !== undefined && value !== null;
   const current = focused || hasValue ? colors[variant] : neutral;
 
   const height = resolvedSize === "lg" ? 52 : 44;
-  const internalFontSize = fontSize || resolvedSize === "lg" ? "16px" : "15px";
+  const internalFontSize = fontSize || (resolvedSize === "lg" ? "16px" : "15px");
 
   return (
     <FormControl
@@ -113,14 +115,14 @@ export const CustomSelected: FC<CustomSelectProps> = ({
             }}
           />
         }
-        renderValue={(selected) =>
-          !hasValue ? (
-            <span style={{ color: "#666" }}>Seleccione una opción</span>
-          ) : (
-            options.find((opt) => opt.value === selected)?.label
-          )
-        }
+        renderValue={(selected) => {
+          if (!selected) {
+            return <span style={{ color: "#666" }}>{placeholder}</span>;
+          }
+          return options.find((opt) => opt.value === selected)?.label;
+        }}
         MenuProps={{
+          disableScrollLock: true,
           PaperProps: {
             sx: {
               mt: 1,
@@ -134,19 +136,21 @@ export const CustomSelected: FC<CustomSelectProps> = ({
                   backgroundColor: "#f5f5f5",
                 },
                 "&.Mui-selected": {
-                  backgroundColor: "#e0f2f1",
+                  backgroundColor: "#ffe8e3", // para primary, puedes hacerlo dinámico
                   "&:hover": {
-                    backgroundColor: "#d0ecea",
+                    backgroundColor: "#ffd6cc",
                   },
                 },
               },
             },
+            
           },
+         
         }}
         sx={{
           height: `${height}px`,
           fontSize: internalFontSize,
-          '& .MuiSelect-select': {
+          "& .MuiSelect-select": {
             minHeight: `${height}px`,
             lineHeight: `${height}px`,
             fontSize: internalFontSize,
@@ -168,6 +172,11 @@ export const CustomSelected: FC<CustomSelectProps> = ({
           },
         }}
       >
+        {/* Placeholder como opción deshabilitada */}
+        <MenuItem disabled value="">
+          {placeholder}
+        </MenuItem>
+
         {options.map((option) => (
           <MenuItem key={option.value} value={option.value}>
             {option.label}

@@ -1,6 +1,14 @@
 import type { AuthLoginForm, AuthRegisterForm } from "./auth";
-import type { ProgressProperty } from "./inmueble";
-import type { UsuarioData } from "./user";
+import type { AvisoData, AvisosDTO } from "./IAviso";
+import type { CategoriaAttributes } from "./ICategoria";
+import type { DireccionService } from "./IDireccion";
+import type { EmpresaData } from "./IEmpresa";
+import type { MultimediaService, MultimediaServiceDelete } from "./IMultimedia";
+import type { NewInmueble, ProgressPrincipalProperty, ProgressProperty } from "./inmueble";
+import type { ProgressPrincipalService, ProgressService, ServicioActivoData, ServicioData } from "./IServicio";
+import type { SubcategoriaAttributes } from "./ISubcategoria";
+import type { ubigeo_usuario } from "./IUbigeos";
+import type { ProfileType, SelectedPerfil, UsuarioData } from "./IUser";
 
 export type ModeLoginType = "login_one" | "login_two" | "login_three" | "recover_one" | "recover_two" | "recover_three";
 
@@ -17,4 +25,37 @@ export interface AppState {
   loadingUser: boolean;
   menuOpen: boolean;
   progressProperty: ProgressProperty;
+  newInmueble: NewInmueble;
+  progressPrincipalProperty : ProgressPrincipalProperty;
+  changePasswordToken: string | null;  
+  menuOpenUser: boolean;
+  profileType: ProfileType;
+  selectedPerfil: SelectedPerfil;
+  departamentos: string[];
+  provincias: string[];
+  distritos: string[];
+  ubigeo_usuario: ubigeo_usuario;
+  progressPrincipalService : ProgressPrincipalService;
+  company : EmpresaData | null;
+  modifiedUser: UsuarioData | null;
+  modifiedCompany: EmpresaData | null;
+  categoria: CategoriaAttributes[];
+  subCategoria: SubcategoriaAttributes[];
+  service: ServicioData | null;
+  modifiedService: ServicioData | null;
+  progressService: ProgressService;
+  multimediaService: MultimediaService | null;
+  direccionService: DireccionService | null;
+  filtroAvisos: AvisoData[];
+  isArchivado: boolean;
+  seleccionadosAvisos: AvisoData[];
+  listaAvisos: AvisosDTO;
+  isServiceEdit: boolean;
+  idAviso: number;
+  idsDeleteMultimedia: MultimediaServiceDelete | null;
+  serviciosActivos: ServicioActivoData[];
+  serviciosFilterActivos: ServicioActivoData[];
+  isShowFilterService: boolean;
+  servicioSeleccionado: ServicioActivoData | null;
+  isExpanded: boolean;
 }

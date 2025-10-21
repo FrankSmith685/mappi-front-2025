@@ -2,7 +2,6 @@ import { FormControlLabel, Switch, useMediaQuery } from "@mui/material";
 import type { FC } from "react";
 import type { CustomSwitchProps, Variant, VariantStyle } from "../../interfaces/DocumentComponent";
 
-
 export const CustomSwitch: FC<CustomSwitchProps> = ({
   label,
   checked,
@@ -16,17 +15,37 @@ export const CustomSwitch: FC<CustomSwitchProps> = ({
   const isSmallScreen = useMediaQuery("(max-width:600px)");
   const resolvedSize = size ? size : isSmallScreen ? "md" : "lg";
 
+  // 🎨 Paleta de colores unificada
   const colors: Record<Variant, VariantStyle> = {
-    primary: { border: "#0A4C3D", focusBorder: "#116b56", background: "#fff", color: "#0A4C3D" },
-    secondary: { border: "#C75C2D", focusBorder: "#D16938", background: "#fff", color: "#C75C2D" },
-    terciary: { border: "#2A3D66", focusBorder: "#344F7F", background: "#fff", color: "#2A3D66" },
-    warning: { border: "#C62828", focusBorder: "#D32F2F", background: "#fff", color: "#C62828" }
+    primary: {
+      border: "#FF6C4F",
+      focusBorder: "#e65b43",
+      background: "#fff",
+      color: "#FF6C4F",
+    },
+    secondary: {
+      border: "#15282D",
+      focusBorder: "#0f1f25",
+      background: "#fff",
+      color: "#15282D",
+    },
+    terciary: {
+      border: "#253238",
+      focusBorder: "#1f2b33",
+      background: "#fff",
+      color: "#253238",
+    },
+    warning: {
+      border: "#B71C1C",
+      focusBorder: "#9f1a1a",
+      background: "#fff",
+      color: "#B71C1C",
+    },
   };
 
   const current = colors[variant];
 
   const resolvedFontSize = fontSize || (resolvedSize === "lg" ? "16px" : "15px");
-
   const switchScale = resolvedSize === "lg" ? 1 : 0.9;
 
   return (
@@ -39,10 +58,16 @@ export const CustomSwitch: FC<CustomSwitchProps> = ({
           sx={{
             transform: `scale(${switchScale})`,
             "& .MuiSwitch-switchBase.Mui-checked": {
-              color: current.focusBorder,
+              color: current.focusBorder, // Color del "thumb"
             },
             "& .MuiSwitch-switchBase.Mui-checked + .MuiSwitch-track": {
-              backgroundColor: current.focusBorder,
+              backgroundColor: current.focusBorder, // Color del track
+            },
+            "& .MuiSwitch-switchBase.Mui-checked.Mui-disabled": {
+              color: `${current.focusBorder}80`, // 50% transparencia
+            },
+            "& .MuiSwitch-switchBase.Mui-checked.Mui-disabled + .MuiSwitch-track": {
+              backgroundColor: `${current.focusBorder}40`, // track más claro
             },
           }}
         />
@@ -54,6 +79,7 @@ export const CustomSwitch: FC<CustomSwitchProps> = ({
         "& .MuiFormControlLabel-label": {
           fontSize: resolvedFontSize,
           fontFamily,
+          color: disabled ? "#999" : current.color,
         },
       }}
     />

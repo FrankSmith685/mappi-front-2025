@@ -20,22 +20,22 @@ export const menuActividadData: MenuActividadItem[] = [
     icon: AiOutlineUser,
   },
   {
-    label: "Favoritos",
+    label: "Mis Favoritos",
     path: "/panel/actividad/favoritos",
     icon: AiOutlineHeart,
   },
   {
-    label: "Historial",
+    label: "Mi Historial",
     path: "/panel/actividad/historial",
     icon: AiOutlineHistory,
   },
   {
-    label: "Descartados",
+    label: "Mis Descartados",
     path: "/panel/actividad/descartados",
     icon: AiOutlineCloseCircle,
   },
   {
-    label: "Búsquedas y alertas",
+    label: "Mis Búsquedas y alertas",
     path: "/panel/actividad/busquedas-alertas",
     icon: AiOutlineSearch,
   },

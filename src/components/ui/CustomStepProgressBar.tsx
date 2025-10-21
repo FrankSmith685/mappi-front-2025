@@ -8,9 +8,10 @@ interface Step {
 interface Props {
   steps: Step[];
   currentPath: string;
+  maxStep:number
 }
 
-export const CustomStepProgressBar = ({ steps, currentPath }: Props) => {
+export const CustomStepProgressBar = ({ steps, currentPath, maxStep }: Props) => {
   const currentIndex = steps.findIndex((step) => step.path === currentPath);
 
   return (
@@ -21,7 +22,7 @@ export const CustomStepProgressBar = ({ steps, currentPath }: Props) => {
           const isActive = index === currentIndex;
 
           return (
-            <div key={index} className="flex-1 flex flex-col items-center relative z-10">
+            <div key={index} className="flex-1 flex flex-col items-center relative z-10" >
               {/* Línea de conexión hacia el siguiente paso */}
               {index !== steps.length - 1 && (
                 <div className="absolute top-[18px] left-1/2 w-full h-[2px] z-0">
@@ -34,8 +35,9 @@ export const CustomStepProgressBar = ({ steps, currentPath }: Props) => {
 
               {/* Círculo del paso */}
               <div
-                className={`z-10 w-7 h-7 flex items-center justify-center rounded-full border-2 text-sm font-semibold
+                className={`z-10 w-7 h-7 flex items-center cursor-default justify-center rounded-full border-2 text-sm font-semibold
                   transition-all duration-300
+                  ${index + 1 <= maxStep && 'cursor-default'}
                   ${isCompleted
                     ? "bg-primary text-white border-primary"
                     : isActive
@@ -47,7 +49,7 @@ export const CustomStepProgressBar = ({ steps, currentPath }: Props) => {
 
               {/* Texto del paso */}
               <span
-                className={`mt-1 text-xs text-center transition-colors duration-200
+                className={`mt-1 text-xs text-center transition-colors duration-200 ${index + 1 <= maxStep && 'cursor-default'}
                   ${isActive ? "text-primary font-semibold" : "text-gray-500"}`}
               >
                 {step.label}

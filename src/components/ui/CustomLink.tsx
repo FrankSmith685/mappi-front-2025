@@ -33,11 +33,12 @@ export const CustomLink: FC<CustomLinkProps> = ({
   const isSmallScreen = useMediaQuery("(max-width:600px)");
   const effectiveSize = isSmallScreen ? "md" : "lg";
 
+  // 🎨 Paleta unificada
   const linkColors: Record<string, VariantStyle> = {
-    primary: { color: "#0A4C3D", hoverColor: "#116b56" },
-    secondary: { color: "#C75C2D", hoverColor: "#D16938" },
-    terciary: { color: "#2A3D66", hoverColor: "#344F7F" },
-    warning: { color: "#C62828", hoverColor: "#D32F2F" },
+    primary: { color: "#FF6C4F", hoverColor: "#e65b43" },
+    secondary: { color: "#15282D", hoverColor: "#0f1f25" },
+    terciary: { color: "#253238", hoverColor: "#1f2b33" },
+    warning: { color: "#B71C1C", hoverColor: "#9f1a1a" },
   };
 
   const current = linkColors[variant] ?? linkColors.primary;
@@ -60,9 +61,9 @@ export const CustomLink: FC<CustomLinkProps> = ({
         gap: "0.3rem",
         fontSize: fontSize || (effectiveSize === "lg" ? "1rem" : "0.9rem"),
         fontWeight: fontWeight ?? 500,
-        fontFamily: fontFamily || "arial",
+        fontFamily: fontFamily || "Arial",
         color: current.color,
-        transition: "color 0.2s",
+        transition: "color 0.2s ease",
         "&:hover": {
           color: current.hoverColor ?? current.color,
         },

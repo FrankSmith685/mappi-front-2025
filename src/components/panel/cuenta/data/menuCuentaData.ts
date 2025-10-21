@@ -6,6 +6,7 @@ import {
   AiOutlineMail,
   AiOutlineBell,
   AiOutlineDelete,
+  AiOutlineLink,
 } from "react-icons/ai";
 
 export interface MenuCuentaItem {
@@ -29,6 +30,11 @@ export const menuCuentaData: MenuCuentaItem[] = [
     label: "Cambiar correo",
     path: "/panel/cuenta/email",
     icon: AiOutlineMail,
+  },
+  {
+    label: "Vincular cuenta",
+    path: "/panel/cuenta/vincular",
+    icon: AiOutlineLink,
   },
   {
     label: "Ajustes de notificaciones",

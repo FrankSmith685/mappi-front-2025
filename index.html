@@ -9,5 +9,171 @@
   <body>
     <div id="root"></div>
     <script type="module" src="/src/main.tsx"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-A3rJD856KowSb7dwlZdYEkO39Gagi7vIsF0jrRAoQmDKKtQBHUuLZ9AsSv4jD4Xa"
+            crossorigin="anonymous"></script>
+
+    <script src="https://checkout.culqi.com/js/v4"></script>
+
+    <script>
+      Culqi.publicKey = window.location.host === "mappi.pe" ? "pk_live_d405c715a154e0a3" : "pk_test_d1517278f9898761";
+    </script>
+    <script>
+      var url = [];
+      let sk = [];
+      function askOrder(amount, user, callback, apiURL, skLive) {
+          url.push(apiURL);
+          sk.push(skLive);
+          const data = JSON.stringify({
+              amount: amount,
+              currency_code: "PEN",
+              description: "Destaca tu huarique",
+              order_number: user.cod_usuario + "_" + Date.now(),
+              expiration_date: (Date.now() + 24 * 60 * 60 * 1000)
+                  .toString()
+                  .substring(0, 10),
+              client_details: {
+                  first_name: user.nombre,
+                  last_name: user.apellido,
+                  phone_number: user.telefono,
+                  email: user.correo,
+              },
+              confirm: false,
+          });
+
+          const xhr = new XMLHttpRequest();
+
+          xhr.addEventListener("readystatechange", function () {
+              if (xhr.readyState === xhr.DONE) {
+                  const objectResponse = JSON.parse(xhr.responseText);
+                  if (objectResponse.object === "order") {
+                      callback(objectResponse);
+                  }
+              }
+          });
+          
+          xhr.open("POST", "https://api.culqi.com/v2/orders");
+          xhr.setRequestHeader(
+              "Authorization",
+              `Bearer ${skLive}`
+          );
+          xhr.setRequestHeader("content-type", "application/json");
+
+          xhr.send(data);
+      }
+
+      var plans = [];
+      function setCulqiSettings(amount, orderId, plan) {
+          plans.push(plan)
+          Culqi.options({
+              lang: "auto",
+              installments: false, // Habilitar o deshabilitar el campo de cuotas
+              paymentMethods: {
+                  tarjeta: true,
+                  yape: true,
+                  bancaMovil: false,
+                  agente: false,
+                  billetera: true,
+                  cuotealo: false,
+              },
+          });
+
+          Culqi.settings({
+              title: "Tienda Mappi",
+              currency: "PEN", // Este parámetro es requerido para realizar pagos yape
+              amount: amount, // Este parámetro es requerido para realizar pagos yape
+              order: orderId, // Este parámetro es requerido para realizar pagos con pagoEfectivo, billeteras y Cuotéalo
+          });
+      }
+
+      function openCulqi() {
+          Culqi.open();
+      }
+
+      function culqi() {
+        if (Culqi.token) {
+            // ¡Objeto Token creado exitosamente!
+            const token = Culqi.token.id;
+            const amount = Culqi.getSettings.amount;
+            const ultimoPlan = plans[plans.length - 1];
+
+            // 🔹 Cierra el modal inmediatamente (sin esperar)
+            setTimeout(() => {
+            Culqi.close();
+            }, 300);
+
+            // 🔹 Prepara los datos del nuevo plan
+            const elemento = {
+            PLAN_Id: ultimoPlan.PLAN_Id,
+            TIPL_Id: ultimoPlan.TIPL_Id,
+            PLAN_Tipo_Usuario: ultimoPlan.PLAN_TipoUsuario,
+            PLUS_TokenPago: token,
+            PLUS_Moneda: 'PEN',
+            PLUS_EsPremium: true,
+            PLUS_EstadoPago: "pagado",
+            };
+
+            // 🔹 Envía el plan al backend
+            fetch(`${url[0]}/planes-usuario/create`, {
+            method: 'POST',
+            body: JSON.stringify(elemento),
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${localStorage.getItem('accessToken')}`,
+            },
+            })
+            .then(res => res.json())
+            .then(data => {
+                // Procesar el cargo sin bloquear el cierre del modal
+                createCharge(data);
+
+                if (window.handleUpdate) {
+                window.handleUpdate();
+                } else {
+                console.error('La función handleUpdate no está definida');
+                }
+            })
+            .catch(error => console.error('Error:', error));
+        } else if (Culqi.order) {
+            const order = Culqi.order;
+        } else {
+            console.log("Error : ", Culqi.error);
+        }
+        }
+
+
+      function createCharge(RespData) {
+          const data = JSON.stringify({
+              amount: RespData.data.PLUS_MontoPagado * 100,
+              currency_code: "PEN",
+              email: RespData.data.USUA_Correo,
+              source_id: RespData.data.PLUS_TokenPago,
+              capture: true,
+              description: "Mappi - Destaca tu huarique",
+              installments: 0,
+              metadata: {
+                  dni: RespData.data.USUA_Dni,
+              },
+          });
+
+          const xhr = new XMLHttpRequest();
+
+          xhr.addEventListener("readystatechange", function () {
+              if (this.readyState === this.DONE) {
+                  Culqi.close();
+                  window.parent.postMessage("success", "*");
+              }
+          });
+
+          xhr.open("POST", "https://api.culqi.com/v2/charges");
+          xhr.setRequestHeader(
+              "Authorization",
+              `Bearer ${sk[0]}`
+          );
+          xhr.setRequestHeader("content-type", "application/json");
+
+          xhr.send(data);
+      }
+    </script>
   </body>
 </html>

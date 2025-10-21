@@ -17,10 +17,30 @@ export const CustomCheckbox: FC<CustomCheckboxProps> = ({
   const resolvedFontSize = fontSize || (resolvedSize === "lg" ? "16px" : "15px");
 
   const colors: Record<Variant, VariantStyle> = {
-    primary: { border: "#0A4C3D", focusBorder: "#116b56", background: "#fff", color: "#0A4C3D" },
-    secondary: { border: "#C75C2D", focusBorder: "#D16938", background: "#fff", color: "#C75C2D" },
-    terciary: { border: "#2A3D66", focusBorder: "#344F7F", background: "#fff", color: "#2A3D66" },
-    warning: { border: "#C62828", focusBorder: "#D32F2F", background: "#fff", color: "#C62828" }
+    primary: {
+      border: "#FF6C4F",
+      focusBorder: "#FF6C4F",
+      background: "#fff",
+      color: "#FF6C4F",
+    },
+    secondary: {
+      border: "#15282D",
+      focusBorder: "#15282D",
+      background: "#fff",
+      color: "#15282D",
+    },
+    terciary: {
+      border: "#253238",
+      focusBorder: "#253238",
+      background: "#fff",
+      color: "#253238",
+    },
+    warning: {
+      border: "#B71C1C",
+      focusBorder: "#B71C1C",
+      background: "#fff",
+      color: "#B71C1C",
+    },
   };
 
   const current = colors[variant];

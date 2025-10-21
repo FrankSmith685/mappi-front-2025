@@ -1,79 +1,119 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { useEffect, useState } from "react";
-import { useNotification } from "../../../../../hooks/useNotification";
-import type { TipoNotificacion } from "../../../../../interfaces/notificacion";
 import { CustomSwitch } from "../../../../ui/CustomSwitch";
+import { useNotificaciones } from "../../../../../hooks/useNotificaciones";
+
+type TipoNotificacion = {
+  TINO_Codigo: number;
+  TINO_Nombre: string;
+   TINO_Descripcion?: string;
+};
+
+type UsuarioTipoNotificacion = {
+  TINO_Id: number;
+  UTNO_Activo: boolean;
+};
 
 const Notificaciones = () => {
-  const { getAllTipoNotificaciones, getNotificacionesPorCorreo, actualizarEstadoNotificacion } = useNotification();
+  const {
+    getTiposNotificaciones,
+    getNotificacionesUsuario,
+    updateEstadoNotificacion,
+  } = useNotificaciones();
+
   const [tiposNotificacion, setTiposNotificacion] = useState<TipoNotificacion[]>([]);
   const [estadoSwitch, setEstadoSwitch] = useState<Record<number, boolean>>({});
 
   useEffect(() => {
-  getAllTipoNotificaciones((tipos) => {
-    setTiposNotificacion(tipos);
+    // 1. Traer todos los tipos de notificaciones
+    getTiposNotificaciones((tipos) => {
+      setTiposNotificacion(tipos);
 
-    getNotificacionesPorCorreo((notifs) => {
-      const estadoInicial: Record<number, boolean> = {};
-      tipos.forEach((tipo) => {
-        const notifUsuario = notifs.find(n => n.cod_tipo_notificaciones === tipo.cod_tipo_notificaciones);
-        estadoInicial[tipo.cod_tipo_notificaciones] = notifUsuario?.activo ?? false;
+      // 2. Luego traer configuraciones del usuario
+      getNotificacionesUsuario((userNotifs) => {
+        const estadoInicial: Record<number, boolean> = {};
+
+        tipos.forEach((tipo) => {
+          const userNotif = userNotifs.find(
+            (n: UsuarioTipoNotificacion) => n.TINO_Id === tipo.TINO_Codigo
+          );
+          estadoInicial[tipo.TINO_Codigo] = userNotif ? userNotif.UTNO_Activo : false;
+        });
+
+        setEstadoSwitch(estadoInicial);
       });
-      setEstadoSwitch(estadoInicial);
     });
-  });
-}, []);
-
+  }, []);
 
   const toggleSwitch = (codTipoNotificacion: number) => {
     const nuevoEstado = !estadoSwitch[codTipoNotificacion];
 
+    // 3. Optimistic UI: actualizamos primero en el frontend
     setEstadoSwitch((prev) => ({
       ...prev,
       [codTipoNotificacion]: nuevoEstado,
     }));
 
-    actualizarEstadoNotificacion(codTipoNotificacion, nuevoEstado);
-
+    // 4. Mandar al backend
+    updateEstadoNotificacion(
+      codTipoNotificacion,
+      nuevoEstado,
+      (success, message) => {
+        if (!success) {
+          // rollback si falló
+          setEstadoSwitch((prev) => ({
+            ...prev,
+            [codTipoNotificacion]: !nuevoEstado,
+          }));
+        }
+        console.log(message);
+      }
+    );
   };
 
   return (
     <div className="w-full">
-  <h3 className="text-xl font-bold mb-2">Ajustes de notificaciones</h3>
-  <p className="text-gray-600 text-sm mb-6">
-    Activa las suscripciones para recibir novedades en tu correo electrónico.
-  </p>
+      <p className="text-gray-600 text-sm mb-6">
+        Activa las suscripciones para recibir novedades en tu correo electrónico.
+        <br />
+        <span className="text-gray-500 text-xs">
+          (Por ahora solo se enviarán a tu correo registrado)
+        </span>
+      </p>
 
-  <div className="space-y-5">
-    {tiposNotificacion.map((tipo) => {
-      const activo = estadoSwitch[tipo.cod_tipo_notificaciones];
-      return (
-        <div
-          key={tipo.cod_tipo_notificaciones}
-          className={`flex flex-col sm:flex-row sm:justify-between sm:items-center rounded-xl p-4 sm:p-5 transition-all duration-300 border 
-            ${activo ? "bg-green-50 border-green-300" : "bg-white border-gray-200"} 
-            hover:shadow-md`}
-        >
-          <div className="w-full sm:max-w-[75%] mb-4 sm:mb-0">
-            <h4 className="font-semibold text-base sm:text-lg text-gray-900">{tipo.nombre}</h4>
-            <p className="text-gray-600 text-sm mt-1">{tipo.description}</p>
-          </div>
+      <div className="space-y-5">
+        {tiposNotificacion.map((tipo) => {
+          const activo = estadoSwitch[tipo.TINO_Codigo];
+          return (
+            <div
+              key={tipo.TINO_Codigo}
+              className={`flex flex-col sm:flex-row sm:justify-between sm:items-center rounded-xl p-4 sm:p-5 transition-all duration-300 border 
+                ${activo ? "bg-orange-50 border-orange-300" : "bg-white border-gray-200"} 
+                hover:shadow-md`}
+            >
+              <div className="w-full sm:max-w-[75%] mb-4 sm:mb-0">
+                <h4 className="font-semibold text-base sm:text-lg text-gray-900">
+                  {tipo.TINO_Nombre}
+                </h4>
+                <p className="text-gray-600 text-sm mt-1">
+                  {tipo.TINO_Descripcion}
+                </p>
+              </div>
 
-          <div className="self-end sm:self-auto">
-            <CustomSwitch
-              checked={!!activo}
-              onChange={() => toggleSwitch(tipo.cod_tipo_notificaciones)}
-              variant={activo ? "primary" : "secondary"}
-              size="lg"
-              label=""
-            />
-          </div>
-        </div>
-      );
-    })}
-  </div>
-</div>
-
+              <div className="self-end sm:self-auto">
+                <CustomSwitch
+                  checked={!!activo}
+                  onChange={() => toggleSwitch(tipo.TINO_Codigo)}
+                  variant={activo ? "primary" : "secondary"}
+                  size="lg"
+                  label=""
+                />
+              </div>
+            </div>
+          );
+        })}
+      </div>
+    </div>
   );
 };
 
