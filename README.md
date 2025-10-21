@@ -68,3 +68,4 @@ export default tseslint.config([
 ])
 ```
 # starmobiliario-front-demo
+"# mappi-front-2025" 
