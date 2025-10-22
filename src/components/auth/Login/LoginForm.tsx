@@ -28,12 +28,17 @@ export const LoginForm: React.FC = () => {
   const {
     control,
     handleSubmit,
+    reset,
     formState: { errors, isSubmitting },
   } = useForm<LoginFormData>({
     resolver: zodResolver(loginSchema),
     defaultValues: { email: "", password: "" },
-    mode: "onTouched",
+    mode: "onSubmit",
   });
+
+  React.useEffect(() => {
+  return () => reset(); // limpia inputs al desmontar
+}, [reset]);
 
   const {loginUser} = useAuth();
   const navigate = useNavigate();
@@ -110,7 +115,8 @@ export const LoginForm: React.FC = () => {
           type="submit"
           fullWidth
           variant="primary"
-          fontSize="16px"
+          fontSize="14px"
+          fontWeight={400}
           loading={isSubmitting}
         />
       </div>

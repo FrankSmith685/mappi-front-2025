@@ -168,7 +168,7 @@ useEffect(() => {
       showMessage("Error al actualizar el plan.", "error");
     }
   };
-}, []); // ✅ Se registra solo una vez
+}, []); //  Se registra solo una vez
 
 
   const handleClickPlanSelected = (plan: any) => {

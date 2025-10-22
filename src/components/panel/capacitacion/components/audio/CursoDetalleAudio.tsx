@@ -100,7 +100,7 @@ export const CursoDetalleAudio: React.FC<CursoDetalleProps> = ({ curso, onProgre
     return m;
   });
 
-  // 🧠 Actualizamos el estado local del curso
+  //  Actualizamos el estado local del curso
   setCursoLocal((prev) => ({ ...prev, modulos: nuevosModulos }));
 
   // 🟢 Actualizamos el módulo activo

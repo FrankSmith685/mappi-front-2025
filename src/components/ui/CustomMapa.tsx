@@ -24,7 +24,7 @@ import { useNavigate, useSearchParams } from "react-router-dom";
 dayjs.extend(relativeTime);
 dayjs.locale("es");
 
-// 📍 Ícono por defecto
+//  Ícono por defecto
 const defaultIcon = new L.Icon({
   iconUrl: "https://cdn-icons-png.flaticon.com/512/684/684908.png",
   iconSize: [40, 41],
@@ -140,12 +140,12 @@ const CustomMapa = forwardRef(
       const map = useMap();
 
       useImperativeHandle(ref, () => ({
-        // ✅ Centrar en coordenadas
+        //  Centrar en coordenadas
         recenterTo(lat: number, lng: number) {
           map.flyTo([lat, lng], 18, { animate: true, duration: 1.2 });
         },
 
-        // ✅ Volar hacia un servicio y abrir popup
+        //  Volar hacia un servicio y abrir popup
         flyToService(servicio: ServicioActivoData) {
           const sLat = parseFloat(servicio.direccion?.latitud || "0");
           const sLng = parseFloat(servicio.direccion?.longitud || "0");
@@ -157,7 +157,7 @@ const CustomMapa = forwardRef(
           }, 700);
         },
 
-        // ✅ Abrir popup directamente
+        //  Abrir popup directamente
         openPopupForService(cod: string) {
           const marker = markersRef.current?.[cod];
           if (marker) marker.openPopup();
@@ -186,7 +186,7 @@ const CustomMapa = forwardRef(
         <ChangeView center={[lat, lng]} zoom={zoom} />
         <AddZoomControl position={zoomControlPosition} />
 
-        {/* 📍 Marcador principal */}
+        {/*  Marcador principal */}
         <Marker
           position={[lat, lng]}
           icon={markerIcon}
@@ -310,7 +310,7 @@ const CustomMapa = forwardRef(
                     </div>
 
                     <p className="text-xs text-gray-600 flex items-center gap-1">
-                      📍 {servicio.direccion?.direccion || "Sin dirección"}
+                       {servicio.direccion?.direccion || "Sin dirección"}
                     </p>
 
                     <div className="flex justify-between text-[11px] text-gray-500 mt-1">

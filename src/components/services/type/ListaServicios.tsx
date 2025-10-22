@@ -104,7 +104,7 @@ import OpinionesModalWrapper from "../components/modal/modalComentario";
                         {servicio.subcategoria?.nombre || "Sin subcategoría"}
                     </p>
                     <p className="text-sm text-gray-600 break-words">
-                        📍 {servicio.direccion?.direccion || "Sin dirección"}
+                         {servicio.direccion?.direccion || "Sin dirección"}
                     </p>
                     <p className="text-xs text-gray-400">
                         ⏱ {dayjs(servicio.fechaRegistro).fromNow()}

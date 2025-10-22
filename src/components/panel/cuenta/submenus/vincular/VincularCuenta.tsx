@@ -73,7 +73,7 @@ const VincularCuenta = () => {
           }
           showMessage(message, "success");
 
-          // ✅ actualizar estados
+          //  actualizar estados
           setMetodosVinculados((prev) => [...prev, "google"]);
           setUser({
             ...user!,
@@ -101,7 +101,7 @@ const VincularCuenta = () => {
         }
         showMessage(message, "success");
 
-        // ✅ actualizar estados
+        //  actualizar estados
         setMetodosVinculados((prev) => prev.filter((m) => m !== provider));
         setUser({
           ...user!,
@@ -129,7 +129,7 @@ const VincularCuenta = () => {
     }
     showMessage(message, "success");
 
-    // ✅ actualizar estados
+    //  actualizar estados
     setMetodosVinculados((prev) => [...prev, "correo"]);
     setUser({
         ...user!,

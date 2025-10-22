@@ -889,7 +889,7 @@ const Multimedia = () => {
 
                       {/* Caja clickeable para subir archivo */}
                       <div
-                        onClick={!previewVideo ? triggerFileSelect : undefined} // ✅ solo si no hay video
+                        onClick={!previewVideo ? triggerFileSelect : undefined} //  solo si no hay video
                         className={`relative w-full h-72 rounded-xl border-2 border-dashed border-slate-300 
                           bg-gradient-to-br from-orange-50 to-blue-50 shadow-inner flex items-center justify-center 
                           overflow-hidden transition ${!previewVideo ? "cursor-pointer hover:border-orange-400" : ""}`}

@@ -186,12 +186,12 @@ useEffect(() => {
   let filtered = [...serviciosActivos];
   let nearby: any[] = [];
 
-  // ✅ 1️⃣ Filtrar por distancia solo si hay coordenadas
+  //  1️⃣ Filtrar por distancia solo si hay coordenadas
   if (lat && lng) {
     nearby = filterByDistance(serviciosActivos, lat, lng, 5);
   }
 
-  // ✅ 2️⃣ Decidir qué mostrar
+  //  2️⃣ Decidir qué mostrar
   if (nearby.length > 0) {
     // Si hay cercanos → mostrar solo esos
     filtered = nearby.filter((srv) => {
@@ -207,7 +207,7 @@ useEffect(() => {
     );
   }
 
-  // ✅ 3️⃣ Aplicar filtros adicionales
+  //  3️⃣ Aplicar filtros adicionales
   if (categoria) {
     const categoriaLower = categoria.toLowerCase();
     filtered = filtered.filter((srv) => {
@@ -235,8 +235,8 @@ useEffect(() => {
     );
   }
 
-  // ✅ 4️⃣ Mostrar modal si no hay resultados
-  // ✅ 4️⃣ Mostrar modal si no hay resultados
+  //  4️⃣ Mostrar modal si no hay resultados
+  //  4️⃣ Mostrar modal si no hay resultados
 if (filtered.length === 0) {
   let fallback: any[] = [];
   let newModalType: "nearby" | "department" | "all" = "all";

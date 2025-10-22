@@ -14,7 +14,7 @@ const PanelPage = () => {
   const navigate = useNavigate();
   const { user } = useAppState();
 
-  // ✅ Validar acceso a "capacitaciones"
+  //  Validar acceso a "capacitaciones"
   useEffect(() => {
     if (option === "capacitaciones" && user?.tienePlan === null) {
       navigate("/panel/avisos"); // redirige a avisos o donde desees

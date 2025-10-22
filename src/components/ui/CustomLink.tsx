@@ -48,7 +48,10 @@ export const CustomLink: FC<CustomLinkProps> = ({
     to,
     href,
     target,
-    onClick,
+    onClick: (e: MouseEvent<HTMLAnchorElement>) => {
+      e.stopPropagation(); // evita que se propague al formulario
+      onClick?.(e);
+    },
   };
 
   return (

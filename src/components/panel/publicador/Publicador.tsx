@@ -68,7 +68,7 @@ useEffect(() => {
     setShowModalTypeSelected(true);
   }
 
-  setModalEvaluated(true); // ✅ Solo se evalúa la primera vez
+  setModalEvaluated(true); //  Solo se evalúa la primera vez
 }, [user,isServiceEdit]);
 
 

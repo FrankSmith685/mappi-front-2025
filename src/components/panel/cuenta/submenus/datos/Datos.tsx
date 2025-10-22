@@ -179,7 +179,7 @@ const Datos = () => {
             setAvatarPreview(archivo.ARCH_Ruta);
             setAvatarFile(null);
 
-            // ✅ Aquí actualizas con datos + foto
+            //  Aquí actualizas con datos + foto
             setUser({
               ...updatedUser,
               fotoPerfil: archivo.ARCH_Ruta,
@@ -191,7 +191,7 @@ const Datos = () => {
       } else {
         showMessage(message ?? "Datos actualizados correctamente", "success");
 
-        // ✅ Aquí actualizas solo con los datos
+        //  Aquí actualizas solo con los datos
         setUser({
           ...updatedUser,
           fotoPerfil: user.fotoPerfil, // mantenemos la foto actual si no cambió

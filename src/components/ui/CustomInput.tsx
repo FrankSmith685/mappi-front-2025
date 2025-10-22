@@ -95,12 +95,12 @@ export const CustomInput: FC<CustomInputProps> = ({
 
   const handleFocus = (e: React.FocusEvent<HTMLInputElement>) => {
     setFocused(true);
-    if (onFocus) onFocus(e); // ✅ Ejecuta si se pasa desde afuera
+    if (onFocus) onFocus(e); //  Ejecuta si se pasa desde afuera
   };
 
   const handleBlur = (e: React.FocusEvent<HTMLInputElement>) => {
     setFocused(false);
-    if (onBlur) onBlur(e); // ✅ Ejecuta si se pasa desde afuera
+    if (onBlur) onBlur(e); //  Ejecuta si se pasa desde afuera
   };
 
   return (

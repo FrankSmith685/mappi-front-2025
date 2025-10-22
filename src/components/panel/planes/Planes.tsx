@@ -196,7 +196,7 @@ export const MisPlanes: React.FC = () => {
 //     fetchPlanes(nuevoTipo);
 //   };
 useEffect(() => {
-  // ✅ Creamos la función global que Culqi invocará después del pago
+  //  Creamos la función global que Culqi invocará después del pago
   window.handleUpdate = async () => {
     try {
       //  1. Obtener el plan activo actualizado

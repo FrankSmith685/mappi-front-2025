@@ -108,7 +108,8 @@ export const ChangePasswordForm: React.FC = () => {
           type="submit"
           fullWidth
           variant="primary"
-          fontSize="16px"
+          fontSize="14px"
+          fontWeight={400}
           loading={isSubmitting}
         />
       </div>

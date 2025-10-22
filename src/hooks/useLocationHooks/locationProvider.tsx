@@ -26,7 +26,7 @@ export const LocationProvider = ({ children }: Props) => {
     direccion: "Plaza Mayor de Lima",
   };
 
-  // 📍 Obtener coordenadas del usuario
+  //  Obtener coordenadas del usuario
   useEffect(() => {
     if (!navigator.geolocation) {
       console.warn("El navegador no soporta geolocalización. Usando ubicación por defecto.");
@@ -63,8 +63,6 @@ export const LocationProvider = ({ children }: Props) => {
 
   // 🌎 Traducir coordenadas a datos de ubicación
   useEffect(() => {
-    // if (lat && lng) {
-    console.log("📍 Ejecutando getUbigeoByCoords con:", { lat, lng });
     if (lat && lng) {
       getUbigeoByCoords(
         lat,
@@ -97,7 +95,7 @@ export const LocationProvider = ({ children }: Props) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [lat, lng]);
 
-  // 📦 Función global para actualizar ubicación manualmente
+  //  Función global para actualizar ubicación manualmente
   const setLocation = (data: Partial<{
     lat: number | null;
     lng: number | null;

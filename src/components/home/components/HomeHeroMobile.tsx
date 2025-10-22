@@ -30,7 +30,7 @@ export const HomeHeroMobile = () => {
       </p>
 
       {/* Botón con ícono */}
-      <div className="w-[300px] sm:w-[350px]">
+      <div className=" w-full max-w-[300px] sm:w-[350px]">
         <CustomButton
           type="button"
           variant="primary"

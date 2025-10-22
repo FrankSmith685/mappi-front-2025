@@ -125,7 +125,7 @@ export interface ServicioActivoData {
   archivado: boolean;
 }
 
-// 📦 Respuesta general del endpoint
+//  Respuesta general del endpoint
 export interface ObtenerServicioActivoResponse {
   success: boolean;
   message: string;

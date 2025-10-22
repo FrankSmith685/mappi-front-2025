@@ -74,7 +74,7 @@ export const RegistroForm: React.FC = () => {
       email: "",
       password: "",
     },
-    mode: "onTouched",
+    mode: "onSubmit",
   });
   const {registerUser} = useAuth();
   const navigate= useNavigate();
@@ -149,7 +149,7 @@ export const RegistroForm: React.FC = () => {
             </div>
 
             <div className="flex flex-col gap-4">
-                <div className="w-full flex flex-row gap-4">
+                <div className="w-full flex flex-col sm:flex-row gap-4">
                     <Controller
                         name="nombres"
                         control={control}
@@ -182,7 +182,7 @@ export const RegistroForm: React.FC = () => {
                         )}
                     />
                 </div>
-                <div className="w-full flex flex-row gap-4">
+                <div className="w-full flex flex-col sm:flex-row gap-4">
                     <Controller
                         name="documento"
                         control={control}
@@ -265,7 +265,8 @@ export const RegistroForm: React.FC = () => {
                 type="submit"
                 fullWidth
                 variant="primary"
-                fontSize="16px"
+                fontSize="14px"
+                fontWeight={400}
                 loading={isSubmitting}
                 />
             </div>
@@ -280,7 +281,8 @@ export const RegistroForm: React.FC = () => {
             text="Registrate con Google"
             type="button"
             fullWidth
-            fontSize="16px"
+            fontSize="14px"
+            fontWeight={400}
             variant="warning"
             icon={<FaGoogle />}
             onClick={handleGoogleRegister}

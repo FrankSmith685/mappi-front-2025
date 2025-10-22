@@ -19,8 +19,8 @@ export const imageList: ImageEntry[] = [
   { name: "service_current_location", key: "mapp_631" },
 
 
-  { name: "portada_service_base", key: "0" },
-  { name: "perfil_service_base", key: "-1" },
+  // { name: "portada_service_base", key: "0" },
+  // { name: "perfil_service_base", key: "-1" },
 
   // capcaitacitaciones
   // imagenes de curso de video

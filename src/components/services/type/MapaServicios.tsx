@@ -45,7 +45,7 @@ const MapaServicios = () => {
     setSearchParams(newParams);
   };
 
-  // ✅ Seleccionar servicio manualmente
+  //  Seleccionar servicio manualmente
   const handleSelectService = (servicio: any) => {
     if (!servicio) return;
     const encodedService = btoa(servicio.cod_servicio);
@@ -60,13 +60,13 @@ const MapaServicios = () => {
     setIsExpanded(false);
     setiIsShowFilterService(false);
 
-    // ✅ Centrar mapa
+    //  Centrar mapa
     if (mapRef.current?.flyToService && servicio.direccion?.latitud && servicio.direccion?.longitud) {
   mapRef.current.flyToService(servicio);
 }
 
 
-    // ✅ Abrir popup desde el mapa
+    //  Abrir popup desde el mapa
     setTimeout(() => {
       if (mapRef.current?.openPopupForService) {
         mapRef.current.openPopupForService(servicio.cod_servicio);
@@ -77,9 +77,9 @@ const MapaServicios = () => {
   const location = useRouterLocation();
 const isListadoServicios = location.pathname === "/servicios";
 
-  // ✅ Si la URL ya tiene un servicio, seleccionarlo y abrir su popup
+  //  Si la URL ya tiene un servicio, seleccionarlo y abrir su popup
   useEffect(() => {
-    if (!isListadoServicios) return; // ✅ Solo ejecutar en listado
+    if (!isListadoServicios) return; //  Solo ejecutar en listado
     const encodedService = searchParams.get("s");
     if (!encodedService || !serviciosFilterActivos?.length) return;
 
@@ -123,7 +123,7 @@ const isListadoServicios = location.pathname === "/servicios";
         onSelectServicio={handleSelectService}
       />
 
-      {/* 📍 Botón para centrar */}
+      {/*  Botón para centrar */}
       <button
         onClick={handleRecenter}
         className="absolute bottom-6 left-6 z-[999] bg-white/90 backdrop-blur-md shadow-md border border-gray-200 rounded-full p-3 hover:bg-gray-100 transition-all duration-300"

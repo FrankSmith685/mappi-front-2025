@@ -24,7 +24,7 @@ const RegisterPage: React.FC = () => {
       {/* Contenido centrado */}
       <div className="relative z-20 w-full flex-1 flex items-start justify-center responsive-padding py-12 ">
         <div className="w-full h-full flex gap-12 flex-col-reverse lg:flex-row items-center justify-center">
-            <div className="w-[450px] bg-white p-4 rounded-xl">
+            <div className="w-full max-w-[450px] bg-white p-4 rounded-xl">
                 <RegistroForm/>
             </div>
             <div className="w-full flex-1 h-full max-w-[600px] lg:max-w-[900px]">

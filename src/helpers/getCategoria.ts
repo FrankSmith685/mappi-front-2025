@@ -2,7 +2,7 @@ export function getSubcategoriaImage(
   subcategoria?: { cod_subcategoria?: number; descripcion?: string | null } | null
 ): string {
   const baseUrl = "https://mappidevbucket.s3.us-east-1.amazonaws.com/";
-  const defaultPinUrl = "https://cdn-icons-png.flaticon.com/512/684/684908.png"; // ✅ pin externo por defecto para "Otros"
+  const defaultPinUrl = "https://cdn-icons-png.flaticon.com/512/684/684908.png"; //  pin externo por defecto para "Otros"
 
   if (!subcategoria || !subcategoria.cod_subcategoria || !subcategoria.descripcion) {
     return defaultPinUrl; // si no viene nada, ponemos el pin genérico

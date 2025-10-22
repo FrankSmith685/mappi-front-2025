@@ -82,7 +82,7 @@ export const useCurso = () => {
           MODU_Id,
           porcentajeModulo,
           completadoModulo,
-          tiempoActual, // ✅ enviamos el tiempo actual
+          tiempoActual, //  enviamos el tiempo actual
         }
       );
 

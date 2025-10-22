@@ -294,7 +294,7 @@ const handleClickGuardarYSalir = async () => {
       setUser({ ...user, ...updatedUser });
       setModifiedUser({ ...modifiedUser, ...updatedUser });
 
-      // ✅ Esperar empresa creada/actualizada si corresponde
+      //  Esperar empresa creada/actualizada si corresponde
       let empresaActual = null;
 
       if (profileType === "empresa") {
@@ -339,7 +339,7 @@ const handleClickGuardarYSalir = async () => {
         });
       }
 
-      // ✅ Crear servicio
+      //  Crear servicio
       const finalData = {
         SERV_Nombre: data.nombre,
         SERV_Descripcion: data.descripcion,
@@ -357,7 +357,7 @@ const handleClickGuardarYSalir = async () => {
           return;
         }
 
-        // ✅ Subir multimedia
+        //  Subir multimedia
         if (multimediaService) {
           subirArchivosMultiples(
             "servicio",
@@ -383,7 +383,7 @@ const handleClickGuardarYSalir = async () => {
           );
         }
 
-        // ✅ Crear dirección si hay datos
+        //  Crear dirección si hay datos
         if (direccionService) {
           getCodUbigeo(
             direccionService?.departamento ?? "",
@@ -408,7 +408,7 @@ const handleClickGuardarYSalir = async () => {
           );
         }
 
-        // ✅ Crear aviso con empresa ya creada o actualizada
+        //  Crear aviso con empresa ya creada o actualizada
         createAviso(
           {
             AVIS_Estado: "borrador",

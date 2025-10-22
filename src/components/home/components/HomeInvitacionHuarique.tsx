@@ -1,11 +1,12 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
+import { CustomButton } from "../../ui/CustomButton";
 
 export const HomeInvitacionHuarique: React.FC = () => {
   const navigate = useNavigate();
 
   const handlePublicar = () => {
-    navigate("/panel/publicador"); // 🔹 Cambia la ruta si tu flujo es distinto
+    navigate("/panel/publicador");
   };
 
   return (
@@ -18,12 +19,14 @@ export const HomeInvitacionHuarique: React.FC = () => {
         Únete a nuestra comunidad y haz que todos descubran tu sazón única.
       </p>
 
-      <button
+      <CustomButton
+        text="Publica tu Huarique"
+        type="button"
+        variant="primary-outline-white"
+        fontSize="14px"
+        fontWeight={400}
         onClick={handlePublicar}
-        className="bg-white cursor-pointer text-primary px-8 py-3 rounded-lg font-semibold text-lg hover:bg-gray-100 transition-all shadow-md hover:shadow-lg"
-      >
-        Publica tu Huarique
-      </button>
+      />
     </section>
   );
 };

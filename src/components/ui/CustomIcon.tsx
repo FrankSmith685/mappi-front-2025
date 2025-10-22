@@ -22,7 +22,7 @@ export const useCustomIcon = ({
 
   return useMemo(() => {
     if (isLoaded && imageSrc) {
-      // ✅ usa L.icon con imagen real
+      //  usa L.icon con imagen real
       return L.icon({
         iconUrl: imageSrc,
         iconSize: size,

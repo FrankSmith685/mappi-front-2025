@@ -74,7 +74,7 @@ const ServicioSeleccionadoCard = ({ servicio }: Props) => {
     }
   }, [servicio.fechaRegistro]);
 
-  // 📍 Calcular distancia al usuario
+  //  Calcular distancia al usuario
   useEffect(() => {
     if (
       currentLat &&

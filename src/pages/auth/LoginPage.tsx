@@ -5,7 +5,7 @@ import { FaGoogle } from "react-icons/fa";
 import CustomImage from "../../components/ui/CustomImage";
 import { CustomButton } from "../../components/ui/CustomButton";
 import { CustomLink } from "../../components/ui/CustomLink";
-import { LoginForm } from "../../components/auth/Login/LoginFormData";
+import { LoginForm } from "../../components/auth/Login/LoginForm";
 import {  signInWithPopup } from "firebase/auth";
 import { auth, googleProvider } from "../../config/firebase";
 import { useAuth } from "../../hooks/useAuth";
@@ -72,7 +72,8 @@ const LoginPage: React.FC = () => {
             text="Iniciar Sesión con Google"
             type="button"
             fullWidth
-            fontSize="16px"
+            fontSize="14px"
+            fontWeight={400}
             variant="warning"
             icon={<FaGoogle />}
             onClick={handleGoogleLogin}
