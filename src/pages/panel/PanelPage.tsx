@@ -32,7 +32,7 @@ const PanelPage = () => {
       case "publicador":
         return <Publicador />;
       case "capacitaciones":
-        // 👇 Renderizar solo si tiene plan
+        //  Renderizar solo si tiene plan
         if (user?.tienePlan === null) {
           return (
             <div className="p-6 text-center">

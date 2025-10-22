@@ -5,7 +5,7 @@ import type { CategoriasActivasResponse } from "../interfaces/ICategoriasActivos
 import type { SubcategoriaAttributes } from "../interfaces/ISubcategoria";
 import type { SubcategoriasActivasResponse } from "../interfaces/ISubCateoriasActivos";
 import { useAppState } from "./useAppState";
-// import { useAppState } from "../store/appState"; // 👈 tu store global
+// import { useAppState } from "../store/appState"; //  tu store global
 
 // Respuesta tipada del backend
 interface CategoriaResponse {

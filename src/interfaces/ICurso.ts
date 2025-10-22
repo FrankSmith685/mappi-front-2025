@@ -5,7 +5,7 @@ export interface ModuloCurso {
   MODU_Orden: number;
   MODU_UrlContenido: string;
 
-  // 🔹 Nuevos campos agregados por la API
+  //  Nuevos campos agregados por la API
   desbloqueado: boolean;
   completado: boolean;
   porcentaje: number;
@@ -20,16 +20,16 @@ export interface Curso {
   CURS_Avatar?: string;
   CURS_Estado: boolean;
 
-  // 🔹 Nuevos campos de estado del curso
+  //  Nuevos campos de estado del curso
   desbloqueado: boolean;
   completado: boolean;
   porcentaje: number;
   imagen?: string;
 
-  // 🔹 Relación original de Sequelize (sin estados)
+  //  Relación original de Sequelize (sin estados)
   ModulosCursos?: ModuloCurso[];
 
-  // 🔹 Nueva lista de módulos con estados calculados
+  //  Nueva lista de módulos con estados calculados
   modulos?: ModuloCurso[];
 }
 

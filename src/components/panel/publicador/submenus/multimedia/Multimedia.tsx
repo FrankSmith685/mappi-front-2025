@@ -663,7 +663,7 @@ const Multimedia = () => {
                 }}
               />
 
-              {/* 👇 Visor tipo WhatsApp */}
+              {/*  Visor tipo WhatsApp */}
               <CustomImageViewer
                 images={previewPortada ? [{ src: previewPortada, alt: "Portada del negocio" }] : []}
                 startIndex={0}
@@ -793,7 +793,7 @@ const Multimedia = () => {
                 id="imagenesPromocionalesInput"
                 type="file"
                 accept="image/png, image/jpeg, image/webp"
-                multiple={!!user?.tienePlan && typeof user?.limitePromocional == 'number' && user?.limitePromocional > 1} // 👈 Solo permite múltiples si tiene plan
+                multiple={!!user?.tienePlan && typeof user?.limitePromocional == 'number' && user?.limitePromocional > 1} //  Solo permite múltiples si tiene plan
                 className="hidden"
                 onChange={(e) => {
                   handleFilesChange(e.target.files || undefined);

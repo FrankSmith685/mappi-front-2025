@@ -66,7 +66,7 @@ export interface ProgressService {
 export interface ObtenerServicioResponse {
   success: boolean;
   message?: string;
-  data?: ServicioData[]; // 👈 AQUÍ debe ser un arreglo
+  data?: ServicioData[]; //  AQUÍ debe ser un arreglo
 }
 
 

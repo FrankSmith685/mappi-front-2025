@@ -45,7 +45,7 @@ type MapaUbicacionProps = {
 
 
 
-// 🔹 Centrar mapa dinámicamente
+//  Centrar mapa dinámicamente
 const ChangeView = ({
   center,
   zoom,
@@ -67,7 +67,7 @@ const ChangeView = ({
   return null;
 };
 
-// 🔹 Control de zoom personalizado
+//  Control de zoom personalizado
 const AddZoomControl = ({ position }: { position: L.ControlPosition }) => {
   const map = useMap();
   useEffect(() => {
@@ -215,7 +215,7 @@ const CustomMapa = forwardRef(
         }
         
 
-        {/* 🔹 Marcadores de servicios */}
+        {/*  Marcadores de servicios */}
         {servicios.map((servicio) => {
           const sLat = parseFloat(servicio.direccion?.latitud || "0");
           const sLng = parseFloat(servicio.direccion?.longitud || "0");

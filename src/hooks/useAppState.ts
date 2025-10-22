@@ -45,8 +45,8 @@ import {
   setServiciosFilterActivos,
   setiIsShowFilterService,
   setServicioSeleccionado, 
-  setIsExpanded
-  
+  setIsExpanded,
+  setCategoriaSeleccionada
 } from "../context/actions/actions";
 import type { ModeLoginType } from "../interfaces/appStateInterface";
 import type { AuthLoginForm, AuthRegisterForm } from "../interfaces/auth";
@@ -117,5 +117,8 @@ export const useAppState = () => {
     setiIsShowFilterService: (isShowFilterService: boolean) => dispatch(setiIsShowFilterService(isShowFilterService)),
     setServicioSeleccionado: (servicioSeleccionado: ServicioActivoData | null) => dispatch(setServicioSeleccionado(servicioSeleccionado)),
     setIsExpanded: (isExpanded: boolean) => dispatch(setIsExpanded(isExpanded)),
+    setCategoriaSeleccionada: (categoriaSeleccionada: string | null) => dispatch(setCategoriaSeleccionada(categoriaSeleccionada)),
   };
+
+  
 };

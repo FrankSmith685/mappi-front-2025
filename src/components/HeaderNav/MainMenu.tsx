@@ -63,7 +63,7 @@ const MainMenu = () => {
       ];
     }
 
-    // 👇 Inyectar "Mi Publicación" si estamos en /panel/publicador/...
+    //  Inyectar "Mi Publicación" si estamos en /panel/publicador/...
       if (location.pathname.startsWith("/panel/publicador")) {
       if (!groups["/panel/publicador"]) groups["/panel/publicador"] = [];
       groups["/panel/publicador"].push({

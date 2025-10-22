@@ -122,7 +122,7 @@ export const useArchivo = () => {
       if (archivos.logo) formData.append("logo", archivos.logo);
       if (archivos.portada) formData.append("portada", archivos.portada);
 
-      // 👇 Diferenciar si el video es archivo o URL
+      //  Diferenciar si el video es archivo o URL
       if (archivos.video) {
         if (archivos.video instanceof File) {
           formData.append("video", archivos.video); // archivo
@@ -235,7 +235,7 @@ export const useArchivo = () => {
     const response = await apiWithAuth.delete<ArchivoResponse<null>>(
       "/archivos/delete-multiple",
       {
-        data: { ids: archivoIds }, // 👈 el body va dentro de "data"
+        data: { ids: archivoIds }, //  el body va dentro de "data"
       }
     );
 

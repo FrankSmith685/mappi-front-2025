@@ -97,12 +97,12 @@
             const amount = Culqi.getSettings.amount;
             const ultimoPlan = plans[plans.length - 1];
 
-            // 🔹 Cierra el modal inmediatamente (sin esperar)
+            //  Cierra el modal inmediatamente (sin esperar)
             setTimeout(() => {
             Culqi.close();
             }, 300);
 
-            // 🔹 Prepara los datos del nuevo plan
+            //  Prepara los datos del nuevo plan
             const elemento = {
             PLAN_Id: ultimoPlan.PLAN_Id,
             TIPL_Id: ultimoPlan.TIPL_Id,
@@ -113,7 +113,7 @@
             PLUS_EstadoPago: "pagado",
             };
 
-            // 🔹 Envía el plan al backend
+            //  Envía el plan al backend
             fetch(`${url[0]}/planes-usuario/create`, {
             method: 'POST',
             body: JSON.stringify(elemento),

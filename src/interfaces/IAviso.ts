@@ -1,4 +1,4 @@
-// 🔹 Cuando envías un aviso al backend
+//  Cuando envías un aviso al backend
 export interface AvisoRequest {
   AVIS_Estado: "borrador" | "publicado";
   EMPR_Interno: string | null;
@@ -18,7 +18,7 @@ export interface ArchivoData {
 }
 
 
-// 🔹 Estructura del servicio relacionado que viene dentro de cada aviso
+//  Estructura del servicio relacionado que viene dentro de cada aviso
 export interface ServicioData {
   SERV_Interno: string;
   SERV_Nombre: string;
@@ -36,9 +36,9 @@ export interface ServicioData {
   Archivos?: ArchivoData[];
 }
 
-// 🔹 Datos de un aviso con la relación incluida
+//  Datos de un aviso con la relación incluida
 export interface AvisoData {
-  AVIS_Id: number; // 👈 en tu JSON llega como número
+  AVIS_Id: number; //  en tu JSON llega como número
   AVIS_Estado: "borrador" | "publicado" | "pausado" | "eliminado";
   AVIS_Progreso: number;
   AVIS_FechaRegistro: string;
@@ -46,17 +46,17 @@ export interface AvisoData {
   SERV_Interno: string;
   USUA_Interno: string;
   EMPR_Interno: string | null;
-  Servicio?: ServicioData; // 👈 relación con Servicio
+  Servicio?: ServicioData; //  relación con Servicio
 }
 
-// 🔹 Cuando obtienes un solo aviso
+//  Cuando obtienes un solo aviso
 export interface AvisoResponse {
   success: boolean;
   message: string;
   data?: AvisoData;
 }
 
-// 🔹 Cuando obtienes todos los avisos
+//  Cuando obtienes todos los avisos
 export interface GetAvisosResponse {
   success: boolean;
   message: string;

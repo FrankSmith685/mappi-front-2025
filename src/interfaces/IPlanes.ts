@@ -2,7 +2,7 @@ import { type TipoPlanAttributes } from "./ITiposPlanes";
 import { type PlanBeneficioAttributes } from "./IPlanesBeneficios";
 
 /**
- * 🔹 Atributos principales del modelo Planes
+ *  Atributos principales del modelo Planes
  */
 export interface PlanAttributes {
   PLAN_Id: number;
@@ -19,7 +19,7 @@ export interface PlanAttributes {
 }
 
 /**
- * 🔹 Atributos necesarios para crear un plan (sin el ID autoincremental)
+ *  Atributos necesarios para crear un plan (sin el ID autoincremental)
  */
 export type PlanCreationAttributes = Omit<
   PlanAttributes,
@@ -27,7 +27,7 @@ export type PlanCreationAttributes = Omit<
 >;
 
 /**
- * 🔹 Estructura de la respuesta que devuelve la API
+ *  Estructura de la respuesta que devuelve la API
  */
 export interface PlanResponse {
   success: boolean;

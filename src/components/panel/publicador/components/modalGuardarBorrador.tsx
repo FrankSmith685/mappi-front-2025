@@ -8,7 +8,7 @@ type Props = {
   isOpen: boolean;
   onClose: () => void;
   onConfirm: () => void;
-  mode?: "borrador" | "salir"; // 👈 nuevo
+  mode?: "borrador" | "salir"; //  nuevo
 };
 
 const ModalGuardarBorrador: React.FC<Props> = ({
@@ -17,7 +17,7 @@ const ModalGuardarBorrador: React.FC<Props> = ({
   onConfirm,
   mode = "borrador",
 }) => {
-  // 👇 definimos el contenido según el modo
+  //  definimos el contenido según el modo
   const config = {
     borrador: {
       icon: <FaRegSave className="text-blue-500 text-4xl" />,

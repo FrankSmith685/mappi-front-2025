@@ -13,6 +13,9 @@ import type {
   ObtenerServicioActivoResponseDetail,
   ServicioActivoDataDetail
 } from "../interfaces/IServicioIDDetal";
+import type { ObtenerServicioActivoChevereResponse, ServicioActivoDataChevere } from "../interfaces/IServicioPlanChevere";
+import type { ObtenerServicioActivoPremiumResponse, ServicioActivoDataPremium } from "../interfaces/IServicioPremium";
+
 
 export const useServicio = () => {
 
@@ -148,6 +151,58 @@ export const useServicio = () => {
       }
     };
 
+    const getServiciosActivosChevere = async (
+      callback?: (
+        success: boolean,
+        message: string,
+        data?: ServicioActivoDataChevere[]
+      ) => void
+    ): Promise<void> => {
+      try {
+        const response = await api.get<ObtenerServicioActivoChevereResponse>(
+          "/servicio/activos/chevere"
+        );
+
+        const { success, message, data } = response.data;
+
+        if (success && data) {
+          callback?.(true, message || "Servicios activos con plan Chévere obtenidos correctamente", data);
+        } else {
+          callback?.(false, message || "No se encontraron servicios con plan Chévere");
+        }
+      } catch (error) {
+        handleApiError(error);
+        callback?.(false, "Error al obtener los servicios con plan Chévere");
+      }
+    };
+
+    const getServiciosActivosPremium = async (
+      callback?: (
+        success: boolean,
+        message: string,
+        data?: ServicioActivoDataPremium[]
+      ) => void
+    ): Promise<void> => {
+      try {
+        const response = await api.get<ObtenerServicioActivoPremiumResponse>(
+          "/servicio/activos/premium"
+        );
+
+        const { success, message, data } = response.data;
+
+        if (success && data) {
+          callback?.(true, message || "Servicios activos con plan Premium obtenidos correctamente", data);
+        } else {
+          callback?.(false, message || "No se encontraron servicios con plan Premium");
+        }
+      } catch (error) {
+        handleApiError(error);
+        callback?.(false, "Error al obtener los servicios con plan Premium");
+      }
+    };
+
+
+
 
 
   return {
@@ -157,6 +212,8 @@ export const useServicio = () => {
     getServicioById,
     updateServicio,
     getServiciosActivos,
-    getServicioActivoById
+    getServicioActivoById,
+    getServiciosActivosChevere,
+    getServiciosActivosPremium
   };
 };

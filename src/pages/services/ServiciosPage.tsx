@@ -27,7 +27,7 @@ const Servicios = () => {
   }, []);
 
   useEffect(() => {
-    // 🔹 Si no hay "m", agregamos "map" por defecto
+    //  Si no hay "m", agregamos "map" por defecto
     if (!mode) {
       setSearchParams((prev) => {
         const newParams = new URLSearchParams(prev);

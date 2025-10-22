@@ -18,6 +18,7 @@ import ChangePasswordPage from "../pages/auth/ChangePasswordPage";
 import { useEmpresa } from "../hooks/useEmpresa";
 import ServiciosPage from "../pages/services/ServiciosPage";
 import ServicioDetallePage from "../pages/services/Detail/ServicioDetallePage";
+import { useCategoria } from "../hooks/useCategoria.";
 
 const AppRouter = () => {
   const {getUserInfo} = useUser();
@@ -27,6 +28,7 @@ const AppRouter = () => {
   const {showMessage} = useNotification();
   const navigate= useNavigate();
   const {getEmpresa} = useEmpresa();
+  const {getAllCategorias} = useCategoria();
 
   // Obtener el perfil del usuari
     useEffect(() => {
@@ -34,6 +36,10 @@ const AppRouter = () => {
       getUserInfo();
       getEmpresa();
     }, [accessToken]);
+
+    useEffect(()=>{
+      getAllCategorias();
+    },[])
 
     useEffect(() => {
       const token = searchParams.get("resetToken");

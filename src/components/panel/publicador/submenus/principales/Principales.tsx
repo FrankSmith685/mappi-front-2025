@@ -16,7 +16,7 @@ const Principales = () => {
 
   const validOptions = allowedOptionsByStep[currentStep] || [];
 
-  // 🔹 Validación rutas inválidas dentro de principales
+  //  Validación rutas inválidas dentro de principales
   if (
     window.location.pathname.startsWith("/panel/publicador/principales") &&
     (!subsuboption || !validOptions.includes(subsuboption))
@@ -24,7 +24,7 @@ const Principales = () => {
     return <Navigate to={progressPrincipalService.currentPath} replace />;
   }
 
-  // 🔹 Render según step
+  //  Render según step
   const renderSubComponent = () => {
     switch (subsuboption) {
       case "perfilnegocio":

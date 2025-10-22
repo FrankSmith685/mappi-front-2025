@@ -28,6 +28,7 @@
     "react-leaflet": "^5.0.0",
     "react-router-dom": "^7.6.3",
     "react-scroll": "^1.9.3",
+    "swiper": "^12.0.3",
     "tailwindcss": "^4.1.11",
     "zod": "^4.0.15"
   },
@@ -39,6 +40,7 @@
     "@types/react-lazy-load-image-component": "^1.6.4",
     "@types/react-router-dom": "^5.3.3",
     "@types/react-scroll": "^1.8.10",
+    "@types/swiper": "^5.4.3",
     "@vitejs/plugin-react": "^4.5.2",
     "autoprefixer": "^10.4.21",
     "eslint": "^9.29.0",

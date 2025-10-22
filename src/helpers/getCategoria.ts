@@ -8,7 +8,7 @@ export function getSubcategoriaImage(
     return defaultPinUrl; // si no viene nada, ponemos el pin genérico
   }
 
-  // 🔹 Subcategorías específicas con icono propio
+  //  Subcategorías específicas con icono propio
   const subcategoriaMap: Record<number, string> = {
     1: "mapp_300", // Licorería
     2: "mapp_301", // Restobar
@@ -34,13 +34,13 @@ export function getSubcategoriaImage(
   // Comida al paso => mapp_632
 
 
-  // 🔹 Fallback por categoría general
+  //  Fallback por categoría general
   const categoriaGeneralMap: Record<string, string> = {
     "Subcategoría de Comida al paso": "mapp_293",
     "Subcategoría de Restaurantes": "mapp_299",
     "Subcategoría de Postres y café": "mapp_295",
     "Subcategoría de Bar": "mapp_300", 
-    "Subcategoría de Otros": "pin_default", // 👈 marcador especial
+    "Subcategoría de Otros": "pin_default", //  marcador especial
     "Subcategoría de Reseñas": "mapp_293",
   };
 

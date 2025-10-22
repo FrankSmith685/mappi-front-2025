@@ -153,7 +153,7 @@ export const useUser = () => {
     ): Promise<void> => {
         try {
             const response = await apiWithAuth.delete("/user/delete-account", {
-            data: { idToken }, // 👈 se envía al backend
+            data: { idToken }, //  se envía al backend
             });
             const { success, message } = response.data;
             if (callback) callback(success, message);

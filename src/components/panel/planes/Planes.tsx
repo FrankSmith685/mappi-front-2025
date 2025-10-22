@@ -45,7 +45,7 @@ export const MisPlanes: React.FC = () => {
   const sk: string = import.meta.env.VITE_APP_SK;
 
 
-  /** 🔹 Inicializar tipo de plan según el usuario */
+  /**  Inicializar tipo de plan según el usuario */
   useEffect(() => {
     if (user?.tienePlan === "empresa") {
       setTipoSeleccionado("empresa");
@@ -56,7 +56,7 @@ export const MisPlanes: React.FC = () => {
     }
   }, [user?.tienePlan]);
 
-  /** 🔹 Cargar planes según tipo */
+  /**  Cargar planes según tipo */
   const fetchPlanes = async (tipo: "independiente" | "empresa") => {
     setLoading(true);
     try {
@@ -110,7 +110,7 @@ export const MisPlanes: React.FC = () => {
   };
 
 
-  /** 🔹 Actualizar plan activo */
+  /**  Actualizar plan activo */
   useEffect(() => {
     const fetchPlanActivo = async () => {
       await getPlanUser((data: any) => {
@@ -124,7 +124,7 @@ export const MisPlanes: React.FC = () => {
     fetchPlanActivo();
   }, []);
 
-  /** 🔹 Handler de compra */
+  /**  Handler de compra */
   const highlightService = (plan: any) => {
     const selectPlan = planes.find(
       (p) => p.TIPL_Id === plan.TIPL_Id && p.PLAN_TipoUsuario === plan.PLAN_TipoUsuario
@@ -136,7 +136,7 @@ export const MisPlanes: React.FC = () => {
     }, apiURL, sk);
   };
 
-  /** 🔹 Handler al seleccionar plan */
+  /**  Handler al seleccionar plan */
   const handleClickPlanSelected = (plan: any) => {
     if (planActivo) {
       const precioActual = parseFloat(planActivo.PLAN?.PLAN_Precio || planActivo.PLUS_MontoPagado || "0");
@@ -166,7 +166,7 @@ export const MisPlanes: React.FC = () => {
             showMessage(message, success ? "success" : "error");
 
             if (success) {
-            // 🔹 1. Actualiza el plan activo directamente
+            //  1. Actualiza el plan activo directamente
             setPlanActivo({
                 ...plan,
                 PLUS_EstadoPlan: "activo",
@@ -175,7 +175,7 @@ export const MisPlanes: React.FC = () => {
 
             await getUserInfo();
 
-            // 🔹 3. Vuelve a traer la data del backend (para mantener consistencia)
+            //  3. Vuelve a traer la data del backend (para mantener consistencia)
             await fetchPlanes(tipoSeleccionado);
             await getPlanUser((data: any) => {
                 if (Array.isArray(data) && data.length > 0) {
@@ -199,22 +199,22 @@ useEffect(() => {
   // ✅ Creamos la función global que Culqi invocará después del pago
   window.handleUpdate = async () => {
     try {
-      // 🔹 1. Obtener el plan activo actualizado
+      //  1. Obtener el plan activo actualizado
       await getPlanUser((data: any) => {
         if (Array.isArray(data) && data.length > 0) {
           setPlanActivo(data[0]);
         }
       });
 
-      // 🔹 2. Refrescar los planes visibles según el tipo seleccionado actual
+      //  2. Refrescar los planes visibles según el tipo seleccionado actual
       await fetchPlanes(tipoSeleccionado);
 
-      // 🔹 3. Actualizar el contexto global del usuario
+      //  3. Actualizar el contexto global del usuario
       await getUserInfo();
       if(tipoSeleccionado == "empresa"){
         setProfileType("empresa");
       }
-      // 🔹 4. Mostrar mensaje de éxito
+      //  4. Mostrar mensaje de éxito
       showMessage("¡Pago exitoso! Tu plan ha sido activado.", "success");
     } catch (err: any) {
       console.error("❌ Error al actualizar el plan:", err);

@@ -1,10 +1,12 @@
 import { FaUtensils } from "react-icons/fa"
 import { CustomButton } from "../ui/CustomButton"
 import CustomImage from "../ui/CustomImage"
+import { useNavigate } from "react-router-dom"
 
 export const HomeLeft=()=>{
+    const navigate= useNavigate();
     const handleClickBuscarComida=()=>{
-        console.log("BUSCAR COMIDA")
+        navigate("/servicios?m=map");
     }
     return(
         <div className="w-[350px] bg-white h-screen rounded-tr-[40%] fixed top-0 left-0 z-50 shadow-2xl hidden lg:flex">

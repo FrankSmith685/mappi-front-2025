@@ -43,7 +43,7 @@ export const CustomSidebarMenu = () => {
       groups[basePath].push(item);
     });
 
-    // 👇 Inyectar "Mis Avisos" si no existe
+    //  Inyectar "Mis Avisos" si no existe
     if (!groups["/panel/avisos"]) {
       groups["/panel/avisos"] = [
         {
@@ -77,7 +77,7 @@ export const CustomSidebarMenu = () => {
       ];
     }
 
-    // 👇 Inyectar "Mi Publicación" si estamos en /panel/publicador/...
+    //  Inyectar "Mi Publicación" si estamos en /panel/publicador/...
     if (location.pathname.startsWith("/panel/publicador")) {
       if (!groups["/panel/publicador"]) groups["/panel/publicador"] = [];
       groups["/panel/publicador"].push({
@@ -115,7 +115,7 @@ export const CustomSidebarMenu = () => {
         menuOpenUser ? "ml-[0px] sm:ml-[120px]" : ""
       } w-full max-w-full md:w-[320px] md:sticky top-[96px] h-fit bg-white rounded-xl border border-gray-200 shadow-md p-4`}
     >
-      {/* 🔹 Título del menú */}
+      {/*  Título del menú */}
       <h2 className="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-3">
         Menú de navegación del usuario
       </h2>

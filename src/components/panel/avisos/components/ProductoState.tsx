@@ -22,7 +22,7 @@ const ProductoState = () => {
     });
   }, []);
 
-  // 🔹 Encabezados ampliados
+  //  Encabezados ampliados
   const headers = [
     "Tipo de Plan",
     "Usuario",
@@ -34,7 +34,7 @@ const ProductoState = () => {
     "Expiración",
   ];
 
-  // 🔹 Mapeo de datos reales
+  //  Mapeo de datos reales
   const rows =
     planes.length > 0
       ? planes.map((plan) => [
@@ -62,7 +62,7 @@ const ProductoState = () => {
       className="rounded-2xl shadow-md border border-gray-200 transition-all duration-300"
       style={{ backgroundColor }}
     >
-      {/* 🔹 Header */}
+      {/*  Header */}
       <div
         className="flex items-center justify-between px-4 py-3 cursor-pointer"
         onClick={() => setOpen(!open)}
@@ -83,7 +83,7 @@ const ProductoState = () => {
         </div>
       </div>
 
-      {/* 🔹 Tabla */}
+      {/*  Tabla */}
       {open && (
         <div className="px-4 pb-4">
           <div className="overflow-x-auto">

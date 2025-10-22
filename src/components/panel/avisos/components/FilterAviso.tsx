@@ -126,7 +126,7 @@ const FilterAviso = () => {
         </div>
       )}
 
-      {/* 🔹 Estado */}
+      {/*  Estado */}
       {!isArchivado && estados.length > 0 && (
         <div className="mb-6 border-t border-gray-200 pt-4">
           <div className="flex items-center justify-between mb-3">

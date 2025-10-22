@@ -31,13 +31,13 @@ export interface PlanUserData {
 export interface PlanUserResponse {
   success: boolean;
   message: string;
-  data?: PlanUserData[]; // 👈 ahora es un array
+  data?: PlanUserData[]; //  ahora es un array
 }
 
 export interface PlanUserResponseCreate {
   success: boolean;
   message: string;
-  data?: PlanUserData; // 👈 ahora es un array
+  data?: PlanUserData; //  ahora es un array
 }
 
 export interface CreatePlanUserRequest {

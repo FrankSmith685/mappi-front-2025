@@ -171,7 +171,7 @@ const HuariqueForm = () => {
         if (categoriaEncontrada) {
           categoriaId = String(categoriaEncontrada.CATE_Id);
 
-          // 👇 Inicializar subcategorías disponibles en el state
+          //  Inicializar subcategorías disponibles en el state
           setSubcategorias(categoriaEncontrada.Subcategorias || []);
         }
       }
@@ -220,7 +220,7 @@ const HuariqueForm = () => {
 
     setIsLoading(true);
 
-    // 🔹 Transformar HuariqueFormData a ServicioData
+    //  Transformar HuariqueFormData a ServicioData
     const finalData: ServicioData = {
       nombre: data.nombre,
       descripcion: data.descripcion,

@@ -6,14 +6,14 @@ interface SidebarMenuProps {
   title?: string;
   titleIcon?: IconType;
   menuData: MenuCuentaItem[];
-  onItemClick?: () => void; // 👈 opcional
+  onItemClick?: () => void; //  opcional
 }
 
 export const CustomSidebarSubMenu = ({
   title = "Mi Cuenta",
   titleIcon: TitleIcon,
   menuData,
-  onItemClick, // 👈 recibido
+  onItemClick, //  recibido
 }: SidebarMenuProps) => {
   return (
     <aside className="w-[100px] sm:w-[120px] bg-[#263238] height-custom-sidebar-menu flex fixed flex-col items-center py-4 overflow-y-auto overflow-x-hidden">

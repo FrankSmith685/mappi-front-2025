@@ -3,7 +3,7 @@ import { handleApiError } from "../api/apiError";
 import type { Curso, CursoResponse, GuardarProgresoResponse, ModuloCurso } from "../interfaces/ICurso";
 
 export const useCurso = () => {
-  // 🔹 Obtener todos los cursos (no requiere autenticación)
+  //  Obtener todos los cursos (no requiere autenticación)
   const getAllCursos = async (
     callback?: (cursos: Curso[]) => void
   ): Promise<void> => {
@@ -21,7 +21,7 @@ export const useCurso = () => {
     }
   };
 
-  // 🔹 Obtener cursos por tipo (audio o video) y usuario autenticado
+  //  Obtener cursos por tipo (audio o video) y usuario autenticado
   const getCursosByTipo = async (
     tipo: "audio" | "video",
     callback?: (cursos: Curso[]) => void
@@ -41,7 +41,7 @@ export const useCurso = () => {
     }
   };
 
-  // 🔹 Obtener módulos de un curso (si lo usas en otra parte)
+  //  Obtener módulos de un curso (si lo usas en otra parte)
   const getModulosByCurso = async (
     cursoId: number,
     callback?: (modulos: ModuloCurso[]) => void

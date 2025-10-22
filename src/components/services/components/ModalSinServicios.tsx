@@ -5,7 +5,7 @@ type ModalSinServiciosProps = {
   isOpen: boolean;
   onClose: () => void;
   onConfirm: () => void;
-  type?: "nearby" | "department" | "all"; // 👈 nuevo prop
+  type?: "nearby" | "department" | "all"; //  nuevo prop
 };
 
 const ModalSinServicios: React.FC<ModalSinServiciosProps> = ({

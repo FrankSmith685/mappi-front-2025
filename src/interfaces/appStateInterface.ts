@@ -58,4 +58,5 @@ export interface AppState {
   isShowFilterService: boolean;
   servicioSeleccionado: ServicioActivoData | null;
   isExpanded: boolean;
+  categoriaSeleccionada: string | null;
 }

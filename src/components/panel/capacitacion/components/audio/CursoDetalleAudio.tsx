@@ -3,7 +3,7 @@ import { FiPlay } from "react-icons/fi";
 import { AudioPlayerBar } from "./AudioPlayer";
 import { imageBaseUrl } from "../../../../../api/apiConfig";
 import { useCurso } from "../../../../../hooks/useCurso";
-// import { imageBaseUrl } from "../../../../api/apiConfig"; // 👈 mismo import que CourseCard
+// import { imageBaseUrl } from "../../../../api/apiConfig"; //  mismo import que CourseCard
 
 interface CursoDetalleProps {
   curso: {
@@ -49,14 +49,14 @@ export const CursoDetalleAudio: React.FC<CursoDetalleProps> = ({ curso, onProgre
   const [moduloActivo, setModuloActivo] = useState(() => {
         if (!cursoLocal.modulos || cursoLocal.modulos.length === 0) return null;
 
-        // 🔹 Buscar el último módulo desbloqueado pero no completado
+        //  Buscar el último módulo desbloqueado pero no completado
         const ultimoDesbloqueadoNoCompletado = [...cursoLocal.modulos]
             .reverse()
             .find((m) => m.desbloqueado && !m.completado);
 
         if (ultimoDesbloqueadoNoCompletado) return ultimoDesbloqueadoNoCompletado;
 
-        // 🔹 Si todos están completados, selecciona el último módulo del curso
+        //  Si todos están completados, selecciona el último módulo del curso
         const ultimoDesbloqueado = [...cursoLocal.modulos]
             .reverse()
             .find((m) => m.desbloqueado);
@@ -86,7 +86,7 @@ export const CursoDetalleAudio: React.FC<CursoDetalleProps> = ({ curso, onProgre
     tiempoActual: moduloActivo.porcentaje || 0,
   });
 
-  // 🔹 Buscar siguiente módulo
+  //  Buscar siguiente módulo
   const siguiente = cursoLocal.modulos.find(
     (m) => m.MODU_Orden === moduloActivo.MODU_Orden + 1
   );

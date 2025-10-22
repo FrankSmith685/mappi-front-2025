@@ -15,7 +15,7 @@ interface CustomTableProps {
   rows?: number;
   columns?: number;
   loading?: boolean;
-  columnWidths?: string[]; // 👈 nuevo
+  columnWidths?: string[]; //  nuevo
 }
 
 const CustomTable = ({
@@ -24,7 +24,7 @@ const CustomTable = ({
   rows = data.length || 0,
   columns = headers.length,
   loading = false,
-  columnWidths = [], // 👈 valores opcionales
+  columnWidths = [], //  valores opcionales
 }: CustomTableProps) => {
   return (
     <TableContainer
@@ -35,9 +35,9 @@ const CustomTable = ({
       <Table
         className="min-w-full"
         size="medium"
-        sx={{ tableLayout: "fixed" }} // 👈 fuerza a respetar los anchos
+        sx={{ tableLayout: "fixed" }} //  fuerza a respetar los anchos
       >
-        {/* 🔹 Encabezado */}
+        {/*  Encabezado */}
         <TableHead>
           <TableRow sx={{ backgroundColor: "#F0F7F4" }}>
             {headers.map((header, index) => (
@@ -53,7 +53,7 @@ const CustomTable = ({
                   paddingX: "16px",
                   borderBottom: "2px solid #E5E7EB",
                   whiteSpace: "nowrap",
-                  width: columnWidths[index] || "auto", // 👈 ancho personalizado
+                  width: columnWidths[index] || "auto", //  ancho personalizado
                 }}
               >
                 {header}
@@ -62,7 +62,7 @@ const CustomTable = ({
           </TableRow>
         </TableHead>
 
-        {/* 🔹 Cuerpo */}
+        {/*  Cuerpo */}
         <TableBody>
           {loading ? (
             Array.from({ length: rows }).map((_, rowIndex) => (
@@ -93,7 +93,7 @@ const CustomTable = ({
                       whiteSpace: "nowrap",
                       overflow: "hidden",
                       textOverflow: "ellipsis",
-                      width: columnWidths[colIndex] || "auto", // 👈 ancho personalizado
+                      width: columnWidths[colIndex] || "auto", //  ancho personalizado
                     }}
                   >
                     {cell}

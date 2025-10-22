@@ -29,7 +29,7 @@ const ServiciosHeader = () => {
 
   const { departamento, lat, lng } = useLocation();
   const [searchParams, setSearchParams] = useSearchParams();
-  const { serviciosActivos, setServiciosFilterActivos, setiIsShowFilterService, isShowFilterService, setServicioSeleccionado, setIsExpanded, isExpanded  } = useAppState();
+  const { serviciosActivos, setServiciosFilterActivos, setiIsShowFilterService, isShowFilterService, setServicioSeleccionado, setIsExpanded, isExpanded, categoriaSeleccionada   } = useAppState();
   const { getDepartamentosActivos } = useUbigeo();
   const {
     getCategoriasActivasPorDepartamento,
@@ -38,6 +38,12 @@ const ServiciosHeader = () => {
 
   const headerRef = useRef<HTMLDivElement | null>(null);
   const [isVisible, setIsVisible] = useState(true);
+
+  useEffect(() => {
+  if (categoriaSeleccionada) {
+    setCategoria(categoriaSeleccionada);
+  }
+}, [categoriaSeleccionada]);
 
   useEffect(() => {
   const observer = new IntersectionObserver(
@@ -57,7 +63,7 @@ const ServiciosHeader = () => {
 }, []);
 
 
-  // 🔹 Cargar departamentos
+  //  Cargar departamentos
   useEffect(() => {
     getDepartamentosActivos((data) => {
       setRawDepartamentos(data || []);
@@ -69,7 +75,7 @@ const ServiciosHeader = () => {
     });
   }, []);
 
-  // 🔹 Decodificar "d" de URL si existe
+  //  Decodificar "d" de URL si existe
   useEffect(() => {
     const encodedD = searchParams.get("d");
     if (encodedD && !ciudad) {
@@ -82,7 +88,7 @@ const ServiciosHeader = () => {
     }
   }, [searchParams, ciudad]);
 
-  // 🔹 Detectar ubicación automática
+  //  Detectar ubicación automática
   useEffect(() => {
     if (!departamento || rawDepartamentos.length === 0 || ciudad) return;
     const found = rawDepartamentos.find(
@@ -94,8 +100,8 @@ const ServiciosHeader = () => {
     if (match) setCiudad(match.codigo_ubigeo);
   }, [departamento, rawDepartamentos]);
 
-  // 🔹 Actualizar URL cuando cambia ciudad
-  // 🔹 Actualizar URL cuando cambia ciudad
+  //  Actualizar URL cuando cambia ciudad
+  //  Actualizar URL cuando cambia ciudad
   useEffect(() => {
   // Solo actualizar parámetros si estamos en la ruta /servicios exacta
   if (!location.pathname.startsWith("/servicios")) return;
@@ -112,30 +118,47 @@ const ServiciosHeader = () => {
 }, [ciudad, searchParams, location]);
 
 
-  // 🔹 Cargar categorías al cambiar ciudad
+  //  Cargar categorías al cambiar ciudad
   useEffect(() => {
-    if (ciudad) {
-      setCategoria("");
-      setSubcategoria("");
-      setSubcategorias([]);
-      getCategoriasActivasPorDepartamento(ciudad, (data) => {
-        setCategorias(data);
-      });
-      const mode = searchParams.get("m");
-      if (mode && ciudad) {
-        const encodedCiudad = btoa(ciudad);
-        const currentParams = Object.fromEntries(searchParams.entries());
-        setSearchParams({ ...currentParams, d: encodedCiudad });
-      }
-    } else {
+    if (!ciudad) {
       setCategorias([]);
       setCategoria("");
       setSubcategorias([]);
       setSubcategoria("");
+      return;
+    }
+
+    // Si ya tenemos una categoría seleccionada global, no la borres
+    const shouldReset = !categoriaSeleccionada;
+
+    if (shouldReset) {
+      setCategoria("");
+      setSubcategoria("");
+      setSubcategorias([]);
+    }
+
+    getCategoriasActivasPorDepartamento(ciudad, (data) => {
+      setCategorias(data);
+    });
+
+    const mode = searchParams.get("m");
+    if (mode && ciudad) {
+      const encodedCiudad = btoa(ciudad);
+      const currentParams = Object.fromEntries(searchParams.entries());
+      setSearchParams({ ...currentParams, d: encodedCiudad });
     }
   }, [ciudad]);
 
-  // 🔹 Subcategorías dependientes
+  useEffect(() => {
+  if (categoriaSeleccionada && categorias.length > 0) {
+    const existe = categorias.find(c => String(c.value) === categoriaSeleccionada);
+    if (existe) setCategoria(categoriaSeleccionada);
+  }
+}, [categorias, categoriaSeleccionada]);
+
+
+
+  //  Subcategorías dependientes
   useEffect(() => {
     if (!ciudad || !categoria) {
       setSubcategorias([]);
@@ -148,7 +171,7 @@ const ServiciosHeader = () => {
     });
   }, [categoria, ciudad]);
 
-  // 🔹 Buscador
+  //  Buscador
   const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearch(e.target.value);
   };
@@ -281,7 +304,7 @@ if (filtered.length === 0) {
 
   return (
     <>
-      {/* 🔹 Toggle global (funciona en móvil y escritorio) */}
+      {/*  Toggle global (funciona en móvil y escritorio) */}
       <div
         ref={headerRef}
         className={`w-full bg-primary p-3 flex flex-col items-center justify-center cursor-pointer transition-all duration-300 ${
@@ -315,7 +338,7 @@ if (filtered.length === 0) {
         ></div>
       </div>
 
-      {/* 🔹 Contenedor animado */}
+      {/*  Contenedor animado */}
       <div
         className={`transition-all duration-500 overflow-hidden ${
           isExpanded ? "max-h-[650px] opacity-100" : "max-h-0 opacity-0"

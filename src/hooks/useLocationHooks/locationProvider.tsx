@@ -16,7 +16,7 @@ export const LocationProvider = ({ children }: Props) => {
   const [distrito, setDistrito] = useState<string | null>(null);
   const [direccion, setDireccion] = useState<string | null>(null);
 
-  // 🔹 Coordenadas por defecto → Lima
+  //  Coordenadas por defecto → Lima
   const DEFAULT_LOCATION = {
     lat: -12.0464,
     lng: -77.0428,
@@ -47,7 +47,7 @@ export const LocationProvider = ({ children }: Props) => {
       },
       (err) => {
         console.warn("Error al obtener ubicación:", err);
-        // 👇 Fallback a Lima si falla la geolocalización
+        //  Fallback a Lima si falla la geolocalización
         setLat(DEFAULT_LOCATION.lat);
         setLng(DEFAULT_LOCATION.lng);
         setDepartamento(DEFAULT_LOCATION.departamento);
@@ -63,6 +63,8 @@ export const LocationProvider = ({ children }: Props) => {
 
   // 🌎 Traducir coordenadas a datos de ubicación
   useEffect(() => {
+    // if (lat && lng) {
+    console.log("📍 Ejecutando getUbigeoByCoords con:", { lat, lng });
     if (lat && lng) {
       getUbigeoByCoords(
         lat,
@@ -80,7 +82,7 @@ export const LocationProvider = ({ children }: Props) => {
           if (dir) setDireccion(dir);
           else setDireccion(DEFAULT_LOCATION.direccion);
         },
-        // 👇 Callback opcional en caso de error en la API
+        //  Callback opcional en caso de error en la API
         (error) => {
           console.warn("Error en getUbigeoByCoords:", error);
           setLat(DEFAULT_LOCATION.lat);

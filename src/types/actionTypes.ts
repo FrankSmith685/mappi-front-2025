@@ -58,8 +58,7 @@ export const SET_SERVICIOS_FILTER_ACTIVOS = "SET_SERVICIOS_FILTER_ACTIVOS" as co
 export const SET_IS_SHOW_FILTER_SERVICE = "SET_IS_SHOW_FILTER_SERVICE" as const;
 export const SET_SERVICIO_SELECCIONADO = "SET_SERVICIO_SELECCIONADO" as const;
 export const SET_IS_EXPANDED = "SET_IS_EXPANDED" as const;
-
-
+export const SET_CATEGORIA_SELECCIONADA = "SET_CATEGORIA_SELECCIONADA" as const;
 
 
 export type ActionTypes =
@@ -110,6 +109,9 @@ export type ActionTypes =
   | { type: typeof SET_IS_SHOW_FILTER_SERVICE; payload:  boolean}
   | { type: typeof SET_SERVICIO_SELECCIONADO; payload:  ServicioActivoData | null}
   | { type: typeof SET_IS_EXPANDED; payload:  boolean}
+  | { type: typeof SET_CATEGORIA_SELECCIONADA; payload:  string | null}
 
+
+  
 
   
