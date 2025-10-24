@@ -4,7 +4,7 @@ import type { AvisoData, AvisosDTO } from "../interfaces/IAviso";
 import type { CategoriaAttributes } from "../interfaces/ICategoria";
 import type { DireccionService } from "../interfaces/IDireccion";
 import type { EmpresaData } from "../interfaces/IEmpresa";
-import type { MultimediaService, MultimediaServiceDelete } from "../interfaces/IMultimedia";
+import type { MultimediaAvisoPreview, MultimediaService, MultimediaServiceDelete } from "../interfaces/IMultimedia";
 import type { NewInmueble, ProgressProperty, ProgressPrincipalProperty } from "../interfaces/inmueble";
 import type { ProgressPrincipalService, ProgressService, ServicioActivoData, ServicioData } from "../interfaces/IServicio";
 import type { SubcategoriaAttributes } from "../interfaces/ISubcategoria";
@@ -59,6 +59,7 @@ export const SET_IS_SHOW_FILTER_SERVICE = "SET_IS_SHOW_FILTER_SERVICE" as const;
 export const SET_SERVICIO_SELECCIONADO = "SET_SERVICIO_SELECCIONADO" as const;
 export const SET_IS_EXPANDED = "SET_IS_EXPANDED" as const;
 export const SET_CATEGORIA_SELECCIONADA = "SET_CATEGORIA_SELECCIONADA" as const;
+export const SET_MULTIMEDIA_AVISOS_PREVIEW = "SET_MULTIMEDIA_AVISOS_PREVIEW" as const;
 
 
 export type ActionTypes =
@@ -110,8 +111,4 @@ export type ActionTypes =
   | { type: typeof SET_SERVICIO_SELECCIONADO; payload:  ServicioActivoData | null}
   | { type: typeof SET_IS_EXPANDED; payload:  boolean}
   | { type: typeof SET_CATEGORIA_SELECCIONADA; payload:  string | null}
-
-
-  
-
-  
+  | { type: typeof SET_MULTIMEDIA_AVISOS_PREVIEW; payload:  MultimediaAvisoPreview | null }

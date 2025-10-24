@@ -186,12 +186,12 @@ useEffect(() => {
   let filtered = [...serviciosActivos];
   let nearby: any[] = [];
 
-  //  1️⃣ Filtrar por distancia solo si hay coordenadas
+  //   Filtrar por distancia solo si hay coordenadas
   if (lat && lng) {
     nearby = filterByDistance(serviciosActivos, lat, lng, 5);
   }
 
-  //  2️⃣ Decidir qué mostrar
+  //   Decidir qué mostrar
   if (nearby.length > 0) {
     // Si hay cercanos → mostrar solo esos
     filtered = nearby.filter((srv) => {
@@ -207,7 +207,7 @@ useEffect(() => {
     );
   }
 
-  //  3️⃣ Aplicar filtros adicionales
+  //   Aplicar filtros adicionales
   if (categoria) {
     const categoriaLower = categoria.toLowerCase();
     filtered = filtered.filter((srv) => {
@@ -241,7 +241,7 @@ if (filtered.length === 0) {
   let fallback: any[] = [];
   let newModalType: "nearby" | "department" | "all" = "all";
 
-  // 1️⃣ Si hay servicios cercanos (solo dentro del mismo departamento)
+  //  Si hay servicios cercanos (solo dentro del mismo departamento)
   if (nearby.length > 0) {
     const depCode = ciudad?.slice(0, 2) ?? "";
     const nearbySameDep = nearby.filter(
@@ -254,7 +254,7 @@ if (filtered.length === 0) {
     }
   }
 
-  // 2️⃣ Si no hay cercanos válidos, intentamos buscar en el departamento
+  //  Si no hay cercanos válidos, intentamos buscar en el departamento
   if (fallback.length === 0 && ciudad) {
     const depCode = ciudad.slice(0, 2);
     const sameDep = serviciosActivos.filter((srv) =>
@@ -267,7 +267,7 @@ if (filtered.length === 0) {
     }
   }
 
-  // 3️⃣ Si no hay ni cercanos ni del departamento → mostrar todos (all)
+  //  Si no hay ni cercanos ni del departamento → mostrar todos (all)
   if (fallback.length === 0) {
     fallback = serviciosActivos;
     newModalType = "all";

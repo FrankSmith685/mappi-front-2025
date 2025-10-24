@@ -43,8 +43,7 @@ const Publicador = () => {
 useEffect(() => {
   if(isServiceEdit) return;
   if (!user || modalEvaluated) return;
-  console.log(user);
-  // 🧩 Verificar límite
+  //  Verificar límite
   if (
     typeof user.limiteServicios === "number" &&
     user.limiteServicios > 0 &&
@@ -54,7 +53,7 @@ useEffect(() => {
     setShowModalLimite(true);
   }
 
-  // 🧩 Verificar tipo de usuario
+  //  Verificar tipo de usuario
   if (user.tienePlan) {
     setProfileType(user.tienePlan === "empresa" ? "empresa" : "independiente");
     setShowModalTypeSelected(false);

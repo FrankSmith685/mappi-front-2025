@@ -4,13 +4,13 @@ import type { AvisoData, AvisosDTO } from "../../interfaces/IAviso";
 import type { CategoriaAttributes } from "../../interfaces/ICategoria";
 import type { DireccionService } from "../../interfaces/IDireccion";
 import type { EmpresaData } from "../../interfaces/IEmpresa";
-import type { MultimediaService, MultimediaServiceDelete } from "../../interfaces/IMultimedia";
+import type { MultimediaAvisoPreview, MultimediaService, MultimediaServiceDelete } from "../../interfaces/IMultimedia";
 import type { NewInmueble, ProgressPrincipalProperty, ProgressProperty } from "../../interfaces/inmueble";
 import type { ProgressPrincipalService, ProgressService, ServicioActivoData, ServicioData } from "../../interfaces/IServicio";
 import type { SubcategoriaAttributes } from "../../interfaces/ISubcategoria";
 import type { ubigeo_usuario } from "../../interfaces/IUbigeos";
 import type { ProfileType, SelectedPerfil, UsuarioData } from "../../interfaces/IUser";
-import { SET_ACCESSTOKEN, SET_AUTHLOGINFORM, SET_AUTHREGISTERFORM, SET_CATEGORIA, SET_CATEGORIA_SELECCIONADA, SET_CHANGE_PASSWORD_TOKEN, SET_COMPANY, SET_DEPARTAMENTOS, SET_DIRECCIONSERVICE, SET_DISTRITOS, SET_FILTRO_AVISOS, SET_ID_AVISO, SET_IDS_DElETE_MULTIMEDIA, SET_IS_ARCHIVADO, SET_IS_EXPANDED, SET_IS_SERVICE_EDIT, SET_IS_SHOW_FILTER_SERVICE, SET_LISTA_AVISOS, SET_LOADING_USER, SET_MENU_OPEN, SET_MENU_OPEN_USER, SET_MODAL, SET_MODE, SET_MODELOGIN, SET_MODIFIEDCOMPANY, SET_MODIFIEDSERVICE, SET_MODIFIEDUSER, SET_MULTIMEDIASERVICE, SET_NEW_INMUEBLE, SET_PROFILE_TYPE, SET_PROGRESS_PRINCIPAL_PROPERTY, SET_PROGRESS_PRINCIPAL_SERVICE, SET_PROGRESS_PROPERTY, SET_PROGRESS_SERVICE, SET_PROVINCIAS, SET_REFRESHTOKEN, SET_REGISTERUSER, SET_SELECCIONADOS_AVISOS, SET_SELECTED_PERFIL, SET_SERVICE, SET_SERVICIO_SELECCIONADO, SET_SERVICIOS_ACTIVOS, SET_SERVICIOS_FILTER_ACTIVOS, SET_SUBCATEGORIA, SET_UBIGEO_USUARIO, SET_USER } from "../../types/actionTypes";
+import { SET_ACCESSTOKEN, SET_AUTHLOGINFORM, SET_AUTHREGISTERFORM, SET_CATEGORIA, SET_CATEGORIA_SELECCIONADA, SET_CHANGE_PASSWORD_TOKEN, SET_COMPANY, SET_DEPARTAMENTOS, SET_DIRECCIONSERVICE, SET_DISTRITOS, SET_FILTRO_AVISOS, SET_ID_AVISO, SET_IDS_DElETE_MULTIMEDIA, SET_IS_ARCHIVADO, SET_IS_EXPANDED, SET_IS_SERVICE_EDIT, SET_IS_SHOW_FILTER_SERVICE, SET_LISTA_AVISOS, SET_LOADING_USER, SET_MENU_OPEN, SET_MENU_OPEN_USER, SET_MODAL, SET_MODE, SET_MODELOGIN, SET_MODIFIEDCOMPANY, SET_MODIFIEDSERVICE, SET_MODIFIEDUSER, SET_MULTIMEDIA_AVISOS_PREVIEW, SET_MULTIMEDIASERVICE, SET_NEW_INMUEBLE, SET_PROFILE_TYPE, SET_PROGRESS_PRINCIPAL_PROPERTY, SET_PROGRESS_PRINCIPAL_SERVICE, SET_PROGRESS_PROPERTY, SET_PROGRESS_SERVICE, SET_PROVINCIAS, SET_REFRESHTOKEN, SET_REGISTERUSER, SET_SELECCIONADOS_AVISOS, SET_SELECTED_PERFIL, SET_SERVICE, SET_SERVICIO_SELECCIONADO, SET_SERVICIOS_ACTIVOS, SET_SERVICIOS_FILTER_ACTIVOS, SET_SUBCATEGORIA, SET_UBIGEO_USUARIO, SET_USER } from "../../types/actionTypes";
 
 export const setRegisterUser = (registerUser: string | null) => ({
   type: SET_REGISTERUSER,
@@ -247,6 +247,11 @@ export const setIsExpanded = (isExpanded: boolean) => ({
 export const setCategoriaSeleccionada = (categoriaSeleccionada: string | null) => ({
   type: SET_CATEGORIA_SELECCIONADA,
   payload: categoriaSeleccionada,
+});
+
+export const setMultimediaAvisoPreview = (multimediaAvisosPreview: MultimediaAvisoPreview | null) => ({
+  type: SET_MULTIMEDIA_AVISOS_PREVIEW,
+  payload: multimediaAvisosPreview,
 });
 
 

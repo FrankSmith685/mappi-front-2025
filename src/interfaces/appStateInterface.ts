@@ -3,7 +3,7 @@ import type { AvisoData, AvisosDTO } from "./IAviso";
 import type { CategoriaAttributes } from "./ICategoria";
 import type { DireccionService } from "./IDireccion";
 import type { EmpresaData } from "./IEmpresa";
-import type { MultimediaService, MultimediaServiceDelete } from "./IMultimedia";
+import type { MultimediaAvisoPreview, MultimediaService, MultimediaServiceDelete } from "./IMultimedia";
 import type { NewInmueble, ProgressPrincipalProperty, ProgressProperty } from "./inmueble";
 import type { ProgressPrincipalService, ProgressService, ServicioActivoData, ServicioData } from "./IServicio";
 import type { SubcategoriaAttributes } from "./ISubcategoria";
@@ -59,4 +59,5 @@ export interface AppState {
   servicioSeleccionado: ServicioActivoData | null;
   isExpanded: boolean;
   categoriaSeleccionada: string | null;
+  multimediaAvisosPreview: MultimediaAvisoPreview | null;
 }

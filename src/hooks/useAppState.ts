@@ -46,7 +46,8 @@ import {
   setiIsShowFilterService,
   setServicioSeleccionado, 
   setIsExpanded,
-  setCategoriaSeleccionada
+  setCategoriaSeleccionada,
+  setMultimediaAvisoPreview
 } from "../context/actions/actions";
 import type { ModeLoginType } from "../interfaces/appStateInterface";
 import type { AuthLoginForm, AuthRegisterForm } from "../interfaces/auth";
@@ -57,7 +58,7 @@ import type { ProgressPrincipalService, ProgressService, ServicioActivoData, Ser
 import type { EmpresaData } from "../interfaces/IEmpresa";
 import type { CategoriaAttributes } from "../interfaces/ICategoria";
 import type { SubcategoriaAttributes } from "../interfaces/ISubcategoria";
-import type { MultimediaService, MultimediaServiceDelete } from "../interfaces/IMultimedia";
+import type { MultimediaAvisoPreview, MultimediaService, MultimediaServiceDelete } from "../interfaces/IMultimedia";
 import type { DireccionService } from "../interfaces/IDireccion";
 import type { AvisoData, AvisosDTO } from "../interfaces/IAviso";
 
@@ -118,6 +119,7 @@ export const useAppState = () => {
     setServicioSeleccionado: (servicioSeleccionado: ServicioActivoData | null) => dispatch(setServicioSeleccionado(servicioSeleccionado)),
     setIsExpanded: (isExpanded: boolean) => dispatch(setIsExpanded(isExpanded)),
     setCategoriaSeleccionada: (categoriaSeleccionada: string | null) => dispatch(setCategoriaSeleccionada(categoriaSeleccionada)),
+    setMultimediaAvisoPreview: (multimediaAvisosPreview: MultimediaAvisoPreview | null) => dispatch(setMultimediaAvisoPreview(multimediaAvisosPreview)),
   };
 
   

@@ -44,12 +44,12 @@ export function getSubcategoriaImage(
     "Subcategoría de Reseñas": "mapp_293",
   };
 
-  // 1️⃣ Verificar si el ID tiene icono propio
+  //  Verificar si el ID tiene icono propio
   if (subcategoriaMap[subcategoria.cod_subcategoria]) {
     return baseUrl + subcategoriaMap[subcategoria.cod_subcategoria];
   }
 
-  // 2️⃣ Verificar por categoría general
+  //  Verificar por categoría general
   if (subcategoria.descripcion && categoriaGeneralMap[subcategoria.descripcion]) {
     // Caso especial para "Otros"
     if (categoriaGeneralMap[subcategoria.descripcion] === "pin_default") {
@@ -58,7 +58,7 @@ export function getSubcategoriaImage(
     return baseUrl + categoriaGeneralMap[subcategoria.descripcion];
   }
 
-  // 3️⃣ Fallback final
+  //  Fallback final
   return defaultPinUrl;
 }
 

@@ -19,3 +19,12 @@ export interface MultimediaServiceDelete {
   videoPromocional?: string;
   cartaRecomendacion?: string;
 }
+
+
+export interface MultimediaAvisoPreview {
+  AVIS_Id?: number;
+  logo?: string | null;
+  portada?: string | null;
+  promos?: string[];
+  video?: string | null;
+}

@@ -67,7 +67,7 @@ export const CursoDetalleAudio: React.FC<CursoDetalleProps> = ({ curso, onProgre
 
 
 
-  // 🧩 Definir la imagen principal (usa la misma lógica que CourseCard)
+  //  Definir la imagen principal (usa la misma lógica que CourseCard)
   const imagenPrincipal = curso.imagen
     ? `${imageBaseUrl}${curso.imagen}`
     : curso.CURS_Avatar && curso.CURS_Avatar.trim() !== ""

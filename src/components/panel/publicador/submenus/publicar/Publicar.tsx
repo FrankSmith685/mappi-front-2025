@@ -44,7 +44,9 @@ const Publicar = () => {
     idAviso,
     setIdAviso,
     idsDeleteMultimedia,
-    setIdsDeleteMultimedia
+    setIdsDeleteMultimedia,
+    setMultimediaAvisoPreview,
+    multimediaAvisosPreview
   } = useAppState();
   
 
@@ -216,6 +218,10 @@ const Publicar = () => {
                 },
                 async(success, message, avisoData) => {
                   if (success && avisoData) {
+                    setMultimediaAvisoPreview({
+                      ...multimediaAvisosPreview,
+                      AVIS_Id: avisoData.AVIS_Id,
+                    })
                     setService(null);
                     setModifiedService(null);
                     navigate("/panel/avisos")
@@ -298,6 +304,10 @@ const Publicar = () => {
                 },
                 async(success, message, avisoData) => {
                   if (success && avisoData) {
+                    setMultimediaAvisoPreview({
+                      ...multimediaAvisosPreview,
+                      AVIS_Id: avisoData.AVIS_Id,
+                    })
                     setService(null);
                     setModifiedService(null);
                     navigate("/panel/avisos");

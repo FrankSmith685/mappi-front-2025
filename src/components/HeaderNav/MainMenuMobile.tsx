@@ -17,7 +17,8 @@ const MainMenuMobile = () => {
     progressPrincipalService,
     setMultimediaService,  
     setDireccionService,
-    setIsServiceEdit
+    setIsServiceEdit,
+    setMultimediaAvisoPreview
   } = useAppState();
   const {logout} = useAuth();
   const navigate = useNavigate();
@@ -49,6 +50,7 @@ const MainMenuMobile = () => {
     setDireccionService(null);
     await getUserInfo();
     setIsServiceEdit(false);
+    setMultimediaAvisoPreview(null);
   };
 
    const initials = `${(user?.nombre || user?.correo || "").charAt(0)}${(user?.apellido || "").charAt(0)}`

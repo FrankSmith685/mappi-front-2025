@@ -22,7 +22,8 @@ const UserActions = ({ menuOpen }: UserActionsProps) => {
     progressPrincipalService,
     setMultimediaService,  
     setDireccionService,
-    setIsServiceEdit
+    setIsServiceEdit,
+    setMultimediaAvisoPreview
   } = useAppState();
   const location = useLocation();
   const navigate = useNavigate();
@@ -59,6 +60,7 @@ const UserActions = ({ menuOpen }: UserActionsProps) => {
     setDireccionService(null);
     await getUserInfo();
     setIsServiceEdit(false);
+    setMultimediaAvisoPreview(null);
   };
   
 

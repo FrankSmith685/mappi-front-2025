@@ -46,8 +46,11 @@ const ListaAvisos = () => {
     setUbigeo_Usuario,
     ubigeo_usuario,
     setIsServiceEdit,
-    setIdAviso
-  
+    setIdAviso,
+    setFiltroAvisos,
+    setListaAvisos,
+    listaAvisos,
+    multimediaAvisosPreview
   } = useAppState();
   const navigate = useNavigate();
   const {getUserInfo} = useUser();
@@ -193,7 +196,7 @@ const ListaAvisos = () => {
       // Si el aviso es borrador y el usuario alcanzó el límite
       if (
         aviso.AVIS_Estado === "borrador" &&
-        user &&
+        user && user.tienePlan &&
         (user.serviciosActivos ?? 0) >= (user.limiteServicios ?? 0)
       ) {
         setMotivoModal("Ya has alcanzado el límite de servicios activos que puedes tener con tu plan.");
@@ -207,21 +210,27 @@ const ListaAvisos = () => {
     };
 
     const handleConfirmDelete = () => {
-    if (!avisoToDelete) return;
+      if (!avisoToDelete) return;
 
-    deleteAviso(avisoToDelete.AVIS_Id, (success) => {
-      if (success) {
-        showMessage("Aviso eliminado correctamente","success");
-      } else {
-        showMessage("Error al eliminar","error");
-      }
-      setIsModalDeleteOpen(false);
-      setAvisoToDelete(null);
-    });
-  };
+      deleteAviso(avisoToDelete.AVIS_Id, async(success) => {
+        if (success) {
+          await getUserInfo();
+          showMessage("Aviso eliminado correctamente", "success");
 
+          // Filtrar estados correctamente
+          const nuevosFiltros = filtroAvisos.filter(a => a.AVIS_Id !== avisoToDelete.AVIS_Id);
+          setFiltroAvisos(nuevosFiltros);
 
+          const nuevosAvisos = listaAvisos.avisos.filter(a => a.AVIS_Id !== avisoToDelete.AVIS_Id);
+          setListaAvisos({ ...listaAvisos, avisos: nuevosAvisos });
+        } else {
+          showMessage("Error al eliminar", "error");
+        }
 
+        setIsModalDeleteOpen(false);
+        setAvisoToDelete(null);
+      });
+    };
 
   return (
     <>
@@ -243,25 +252,59 @@ const ListaAvisos = () => {
                             fontSize="14px"
                             size="md"
                           />
+                          <div
+                            className={`${
+                              aviso?.Servicio && aviso.Servicio.Archivos && aviso.Servicio.Archivos.length > 0
+                                ? "w-20 h-20 bg-gray-200 rounded-lg flex items-center justify-center overflow-hidden"
+                                : "w-20 h-20"
+                            }`}
+                          >
+                            {(() => {
+                              //  Si el aviso tiene archivos del servidor
+                              if (aviso?.Servicio && aviso.Servicio.Archivos && aviso.Servicio.Archivos.length > 0 ) {
+                                return (
+                                  <img
+                                    src={aviso.Servicio.Archivos[0].ARCH_Ruta}
+                                    alt="inmueble"
+                                    className="w-full h-full object-cover"
+                                  />
+                                );
+                              }
 
-                          <div className={`${aviso?.Servicio && aviso.Servicio.Archivos && aviso.Servicio.Archivos.length > 0 ? 'w-20 h-20  bg-gray-200 rounded-lg flex items-center justify-center overflow-hidden' : 'w-20 h-20 '}`}>
-                            {aviso?.Servicio && aviso.Servicio.Archivos && aviso.Servicio.Archivos.length > 0 ? (
-                              <img
-                                  src={aviso.Servicio.Archivos[0].ARCH_Ruta}
-                                  alt="inmueble"
-                                  className="w-full h-full object-cover"
-                                />
-                            ) : (
-                              <img
+                              //  Si no tiene archivos → mostrar el logo local del mismo AVIS_Id
+                              if (
+                                multimediaAvisosPreview &&
+                                multimediaAvisosPreview?.AVIS_Id === aviso.AVIS_Id
+                              ) {
+                                const { promos } = multimediaAvisosPreview;
+                                const imagenLocal = promos && promos.length > 0 ? promos[0] : null;
+
+                                if (imagenLocal) {
+                                  return (
+                                    <img
+                                      src={imagenLocal}
+                                      alt="imagen local"
+                                      className="w-full h-full object-cover"
+                                    />
+                                  );
+                                }
+                              }
+
+                              //  Si no hay imagen ni local ni servidor → imagen por defecto
+                              return (
+                                <img
                                   src={getSubcategoriaImage({
-                                cod_subcategoria: aviso.Servicio?.Subcategoria?.SUBC_Id,
-                                descripcion: aviso.Servicio?.Subcategoria?.SUBC_Descripcion,
-                              })}
+                                    cod_subcategoria: aviso.Servicio?.Subcategoria?.SUBC_Id,
+                                    descripcion: aviso.Servicio?.Subcategoria?.SUBC_Descripcion,
+                                  })}
                                   alt="inmueble"
                                   className="w-full h-full object-cover"
                                 />
-                            )}
+                              );
+                            })()}
                           </div>
+
+
                         </div>
                         <div>
                           <p className="text-sm text-gray-500">
@@ -388,23 +431,23 @@ const ListaAvisos = () => {
                     {aviso.AVIS_Estado === "borrador" && (
                       <FaPlayCircle
                         title="Continuar publicación"
-                        className="cursor-pointer hover:text-green-600"
+                        className="cursor-pointer hidden text-primary-hover"
                       />
                     )}
                     <FaEdit
                       title="Editar aviso"
-                      className="cursor-pointer hover:text-blue-600"
+                      className="cursor-pointer text-primary-hover"
                       onClick={()=>handleValidarYEditar(aviso)}
                     />
                     {aviso.AVIS_Estado === "publicado" && (
                       <FaExternalLinkAlt
                         title="Ver aviso publicado"
-                        className="cursor-pointer hover:text-gray-700"
+                        className="cursor-pointer text-primary-hover"
                       />
                     )}
                     <FaTrashAlt
                       title="Eliminar aviso"
-                      className="cursor-pointer hover:text-red-600"
+                      className="cursor-pointer text-primary-hover"
                       onClick={() => handleOpenDeleteModal(aviso)}
                     />
                   </div>

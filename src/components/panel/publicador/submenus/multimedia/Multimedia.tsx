@@ -60,7 +60,9 @@ const Multimedia = () => {
     setDireccionService, 
     isServiceEdit,
     setIdsDeleteMultimedia,
-    idsDeleteMultimedia
+    idsDeleteMultimedia,
+    setMultimediaAvisoPreview,
+    multimediaAvisosPreview 
   } = useAppState();
   const navigate = useNavigate();
   const {createAviso} = useAviso();
@@ -212,6 +214,13 @@ const Multimedia = () => {
         nombre:multimediaService?.cartaRecomendacion.nombre || ""
       }
     });
+    setMultimediaAvisoPreview({
+      ...multimediaAvisosPreview,
+      logo: previewLogo || null,
+      portada: previewPortada || null,
+      promos: previewPromos?.length > 0 ? previewPromos : [],
+      video: previewVideo || null,
+    })
     setProgressService({ ...progressService, step: 3, currentPath: "/panel/publicador/ubicacion" });
     // permitir que React aplique el setState antes de navegar
     setTimeout(() => {
@@ -374,6 +383,14 @@ const Multimedia = () => {
                 },
                 async (success, message, avisoData) => {
                   if (success && avisoData) {
+
+                    setMultimediaAvisoPreview({
+                      AVIS_Id: avisoData.AVIS_Id,
+                      logo: previewLogo || null,
+                      portada: previewPortada || null,
+                      promos: previewPromos?.length > 0 ? previewPromos : [],
+                      video: previewVideo || null,
+                    })
                     setService(null);
                     setModifiedService(null);
                     navigate("/panel/avisos")
@@ -1070,7 +1087,7 @@ const Multimedia = () => {
         {/* Botón Guardar */}
         <div className="pt-2 w-full md:max-w-[500px] flex items-center justify-center space-x-4">
           <div className="w-full">
-              <CustomButton text={isServiceEdit? 'Salir' : 'Guardar y Salir'} type="button" onClick={isServiceEdit ? ()=>setSalir(true) : handleClickGuardarYSalir} fullWidth fontSize="14px" variant="secondary-outline" loading={isLoadingGuardarSalir} />
+              <CustomButton text={isServiceEdit? 'Salir' : 'Guardar y Salir'} type="button" onClick={isServiceEdit ? ()=>setSalir(true) : ()=>setShowModalBorrador(true)} fullWidth fontSize="14px" variant="secondary-outline" loading={isLoadingGuardarSalir} />
           </div>
           <div className="w-full">
               <CustomButton text="Continuar" type="submit" fullWidth fontSize="14px" variant="primary"/>

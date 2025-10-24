@@ -102,7 +102,9 @@ const HuariqueForm = () => {
     multimediaService,
     isServiceEdit,
     setMultimediaService,
-    setDireccionService
+    setDireccionService,
+    setMultimediaAvisoPreview,
+    multimediaAvisosPreview
   } = useAppState();
 
   const navigate= useNavigate();
@@ -419,6 +421,10 @@ const handleClickGuardarYSalir = async () => {
           },
           async(success, message, avisoData) => {
             if (success && avisoData) {
+              setMultimediaAvisoPreview({
+                ...multimediaAvisosPreview,
+                AVIS_Id: avisoData.AVIS_Id,
+              })
               setService(null);
               setModifiedService(null);
               navigate("/panel/avisos");
@@ -642,7 +648,7 @@ const handleClickSalir=()=>{
           {/* Botón Guardar */}
           <div className="flex items-center justify-center space-x-4">
             <div className="w-full">
-                <CustomButton text={isServiceEdit? 'Salir' : 'Guardar y Salir'} type="button" onClick={isServiceEdit ? ()=>setSalir(true) : handleClickGuardarYSalir} fullWidth fontSize="14px" variant="secondary-outline" loading={isLoadingGuardarSalir} />
+                <CustomButton text={isServiceEdit? 'Salir' : 'Guardar y Salir'} type="button" onClick={isServiceEdit ? ()=>setSalir(true) : ()=>setShowModalBorrador(true)} fullWidth fontSize="14px" variant="secondary-outline" loading={isLoadingGuardarSalir} />
             </div>
             <div className="w-full">
                 <CustomButton text="Continuar" type="submit" fullWidth fontSize="14px" variant="primary" loading={isLoading}/>

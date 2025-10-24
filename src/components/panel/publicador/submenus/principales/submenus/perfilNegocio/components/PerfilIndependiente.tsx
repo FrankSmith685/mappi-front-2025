@@ -76,6 +76,8 @@ const PerfilIndependiente = () => {
     setDireccionService,
     direccionService,
     isServiceEdit,
+    setMultimediaAvisoPreview,
+    multimediaAvisosPreview
     } = useAppState();
   const perfilIndSchema = z.object({
     ...baseSchema,
@@ -481,6 +483,10 @@ const PerfilIndependiente = () => {
                         },
                         (success, message, avisoData) => {
                           if (success && avisoData) {
+                            setMultimediaAvisoPreview({
+                              ...multimediaAvisosPreview,
+                              AVIS_Id: avisoData.AVIS_Id,
+                            })
                             setService(null);
                             setModifiedService(null);
                             navigate("/panel/avisos")

@@ -120,7 +120,8 @@ const initialState: AppState = {
   isShowFilterService: false,
   servicioSeleccionado: null,
   isExpanded:false,
-  categoriaSeleccionada:null
+  categoriaSeleccionada:null,
+  multimediaAvisosPreview: null
 }
 
 

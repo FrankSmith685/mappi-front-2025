@@ -20,14 +20,14 @@ const ModalGuardarBorrador: React.FC<Props> = ({
   //  definimos el contenido según el modo
   const config = {
     borrador: {
-      icon: <FaRegSave className="text-blue-500 text-4xl" />,
+      icon: <FaRegSave className="text-primary text-4xl" />,
       title: "¿Guardar como borrador?",
       description:
         "Puedes continuar editando más tarde desde la sección de Avisos.",
       confirmText: "Sí, guardar y salir",
     },
     salir: {
-      icon: <FaSignOutAlt className="text-blue-500 text-4xl" />,
+      icon: <FaSignOutAlt className="text-primary text-4xl" />,
       title: "¿Salir sin guardar?",
       description:
         "Si sales ahora, se perderán los cambios no guardados. ¿Deseas continuar?",

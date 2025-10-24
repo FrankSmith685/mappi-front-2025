@@ -24,7 +24,7 @@ import type { CreateEmpresaRequest, EmpresaData, UpdateEmpresaRequest } from "..
 import { useEmpresa } from "../../../../../hooks/useEmpresa";
 import { useArchivo } from "../../../../../hooks/useArchivo";
 import ModalGuardarBorrador from "../../components/modalGuardarBorrador";
-import CustomMapa from "../../../../ui/CustomMapa";
+import CustomSimpleMapa from "../../../../ui/CustomSimpleMap";
 
 
 type FormValues = {
@@ -99,7 +99,9 @@ const Ubicacion: React.FC = () => {
     setCompany,
     multimediaService,
     setMultimediaService,
-    isServiceEdit
+    isServiceEdit,
+    setMultimediaAvisoPreview,
+    multimediaAvisosPreview
   } = useAppState();
 
   const selectedDepartamento = watch("departamento");
@@ -407,6 +409,10 @@ const Ubicacion: React.FC = () => {
             },
             async(success, message, avisoData) => {
               if (success && avisoData) {
+                setMultimediaAvisoPreview({
+                  ...multimediaAvisosPreview,
+                  AVIS_Id: avisoData.AVIS_Id,
+                })
                 setService(null);
                 setModifiedService(null);
                 navigate("/panel/avisos");
@@ -639,7 +645,7 @@ const Ubicacion: React.FC = () => {
         {/* Mapa */}
         {latAux != null && lngAux != null && (
           <div className="mt-0 h-[400px] w-full z-40">
-            <CustomMapa
+            <CustomSimpleMapa
               lat={latAux}
               lng={lngAux}
               onMove={(newLat: number, newLng: number) => {
@@ -682,7 +688,7 @@ const Ubicacion: React.FC = () => {
 
         <div className="pt-2 w-full md:max-w-[500px] flex items-center justify-center space-x-4">
           <div className="w-full">
-              <CustomButton text={isServiceEdit? 'Salir' : 'Guardar y Salir'} type="button" onClick={isServiceEdit ? ()=>setSalir(true) : handleClickGurdarYSalir} fullWidth fontSize="14px" variant="secondary-outline" loading={isLoadingGuardarSalir} />
+              <CustomButton text={isServiceEdit? 'Salir' : 'Guardar y Salir'} type="button" onClick={isServiceEdit ? ()=>setSalir(true) : ()=>setShowModalBorrador(true)} fullWidth fontSize="14px" variant="secondary-outline" loading={isLoadingGuardarSalir} />
           </div>
           <div className="w-full">
               <CustomButton text="Continuar" type="submit" fullWidth fontSize="14px" variant="primary"/>
