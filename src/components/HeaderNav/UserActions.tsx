@@ -73,9 +73,9 @@ const UserActions = ({ menuOpen }: UserActionsProps) => {
           <Tooltip title='Explorar en el mapa' arrow>
             <div
               className='group rounded-full transition-all cursor-pointer hover:shadow-sm hover:scale-105'
-              onClick={() => navigate("/servicios")}
+              onClick={() => navigate("/servicios?m=map")}
             >
-              <FaMapMarkedAlt className='text-xl lg:text-3xl transition-colors text-white' />
+              <FaMapMarkedAlt className='text-2xl transition-colors text-white' />
             </div>
           </Tooltip>
         </>

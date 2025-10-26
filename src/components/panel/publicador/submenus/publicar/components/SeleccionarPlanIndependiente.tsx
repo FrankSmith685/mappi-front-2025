@@ -134,41 +134,32 @@ useEffect(() => {
       }, apiURL, sk);
   };
 
-  // window.handleUpdate = async () => {
-  //   try {
-  //     await getPlanUser((data: any) => {
-  //       if (Array.isArray(data) && data.length > 0) {
-  //         setPlanActivo(data[0]);
-  //       }
-  //     });
-  //     await fetchPlanes();
-  //     setUser({
-  //       ...user,
-  //       tienePlan:profileType
-  //     })
-  //     showMessage("¡Pago exitoso! Tu plan ha sido activado.", "success");
-  //   } catch (err: any) {
-  //     console.error(err);
-  //     showMessage("Error al actualizar el plan.", "error");
-  //   }
-  // };
   useEffect(() => {
-  window.handleUpdate = async () => {
-    try {
-      await getPlanUser((data: any) => {
-        if (Array.isArray(data) && data.length > 0) {
-          setPlanActivo(data[0]);
-        }
-      });
-      await fetchPlanes();
-      await getUserInfo();
-      showMessage("¡Pago exitoso! Tu plan ha sido activado.", "success");
-    } catch (err: any) {
-      console.error(err);
-      showMessage("Error al actualizar el plan.", "error");
-    }
-  };
-}, []); //  Se registra solo una vez
+    window.handleUpdate = async () => {
+      try {
+        await getPlanUser((data: any) => {
+          if (Array.isArray(data) && data.length > 0) {
+            setPlanActivo(data[0]);
+          }
+        });
+        await fetchPlanes();
+        await getUserInfo();
+        showMessage("¡Pago exitoso! Tu plan ha sido activado.", "success");
+
+        // 🔽 Esperar un momento y luego hacer scroll al botón de publicar
+        setTimeout(() => {
+          const publicarBtn = document.querySelector("#btn-publicar-huarique");
+          if (publicarBtn) {
+            publicarBtn.scrollIntoView({ behavior: "smooth", block: "center" });
+          }
+        }, 600);
+      } catch (err: any) {
+        console.error(err);
+        showMessage("Error al actualizar el plan.", "error");
+      }
+    };
+  }, []);
+
 
 
   const handleClickPlanSelected = (plan: any) => {
@@ -210,6 +201,12 @@ useEffect(() => {
           setPlanActivo({ PLAN_Id: plan.PLAN_Id });
           await getUserInfo();
           await fetchPlanes();
+          setTimeout(() => {
+            const publicarBtn = document.querySelector("#btn-publicar-huarique");
+            if (publicarBtn) {
+              publicarBtn.scrollIntoView({ behavior: "smooth", block: "center" });
+            }
+          }, 600);
         }
       });
     } else {
@@ -244,133 +241,125 @@ useEffect(() => {
   };
 
   return (
-    <div className="w-full flex flex-col items-center justify-center gap-4">
-      <h2 className="text-2xl sm:text-3xl font-extrabold text-secondary text-center">
-        Elige tu{" "}
-        <span className="text-primary drop-shadow-md">
-          plan {profileType === "independiente" ? "independiente" : "empresa"}
-        </span>
-      </h2>
-      <p className="text-gray-600 text-center max-w-2xl mb-4">
-        Potencia tu presencia en línea y llega a más clientes. <br />
-        Escoge el plan que se adapte a ti y haz crecer tus oportunidades.
-      </p>
+  <div className="w-full flex flex-col items-center justify-center gap-6 pt-8">
+    <h2 className="text-3xl sm:text-4xl font-extrabold text-gray-800 text-center">
+      Elige tu{" "}
+      <span className="text-primary drop-shadow-lg">
+        plan {profileType === "independiente" ? "independiente" : "empresa"}
+      </span>
+    </h2>
+    <p className="text-gray-600 text-center max-w-2xl mb-4">
+      Impulsa tu crecimiento con herramientas diseñadas para ti. <br />
+      Escoge el plan ideal y lleva tu presencia digital al siguiente nivel.
+    </p>
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 max-w-7xl w-full">
-        {planes.map((plan, index) => {
-          const planId = plan.PLAN_Id ?? index;
-          // const isSelected = selectedPlan === planId;
-          const esPlanActivo =
-            planActivo && planActivo.PLAN_Id === plan.PLAN_Id;
+    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 max-w-7xl w-full">
+      {planes.map((plan, index) => {
+        const planId = plan.PLAN_Id ?? index;
+        const esPlanActivo = planActivo && planActivo.PLAN_Id === plan.PLAN_Id;
+        const gradient = getPlanColor(index);
 
-          return (
-            <div
-              key={planId}
-              className={`relative backdrop-blur-md cursor-default rounded-2xl border transition-all duration-500 flex flex-col w-full sm:justify-between items-center hover:-translate-y-2 hover:shadow-2xl`}
-            >
-              <div className="flex flex-col">
-                {/* === Encabezado === */}
-                <div
-                  className={`relative rounded-t-2xl overflow-hidden p-4 text-center bg-gradient-to-br ${getPlanColor(
-                    index
-                  )} shadow-inner`}
-                >
-                  <div className="absolute inset-0 bg-white/10 mix-blend-overlay animate-pulse"></div>
-                  <div className="absolute -top-10 left-1/2 -translate-x-1/2 w-48 h-48 bg-white/20 rounded-full blur-3xl"></div>
-
-                  <div className="relative flex justify-center mb-4 z-10">
-                    <CustomImage
-                      name="logo_02"
-                      alt={`Logo`}
-                      className="object-contain !w-[150px] !h-[80px] drop-shadow-md hover:scale-105 transition-transform duration-300"
-                    />
-                  </div>
-
-                  <h3 className="text-2xl font-extrabold text-white drop-shadow-md tracking-wide">
-                    {plan.TipoPlan.TIPL_Nombre}
-                  </h3>
-                  {plan.TipoPlan.TIPL_Descripcion && (
-                    <p className="text-sm text-white/90 mt-2">
-                      {plan.TipoPlan.TIPL_Descripcion}
-                    </p>
-                  )}
-                </div>
-
-                {/* === Cuerpo === */}
-                <div className="p-6 flex flex-col items-center text-center text-gray-700">
-                  <div className="flex flex-col items-center mb-1">
-                    {planActivo &&
-                      parseFloat(plan.PLAN_Precio) > parseFloat(planActivo.PLUS_MontoPagado) &&
-                      plan.precioConProrrateo &&
-                      plan.precioConProrrateo < parseFloat(plan.PLAN_Precio) ? (
-                        <>
-                          <p className="text-gray-400 line-through text-lg">
-                            S/ {parseFloat(plan.PLAN_Precio).toFixed(2)}
-                          </p>
-                          <p className="text-3xl font-bold text-primary">
-                            S/ {parseFloat(plan.precioConProrrateo).toFixed(2)}
-                          </p>
-                          <p className="text-xs text-green-600 font-semibold mt-1">
-                            Precio con prorrateo aplicado
-                          </p>
-                        </>
-                      ) : (
-                        <p className="text-3xl font-bold text-primary">
-                          {plan.PLAN_Precio !== "0.00"
-                            ? `S/ ${parseFloat(plan.PLAN_Precio).toFixed(2)}`
-                            : "Gratis"}
-                        </p>
-                      )}
-
-                  </div>
-
-                  {plan.Duracion && (
-                    <p className="text-sm text-gray-500 mb-3">
-                      {plan.Duracion}
-                    </p>
-                  )}
-                  <p className="text-gray-600 mb-5 text-sm">
-                    {plan.Descripcion}
-                  </p>
-
-                  <div className="w-full border-t border-gray-200 mb-4"></div>
-
-                  <ul className="space-y-2 text-left w-full">
-                    {Array.isArray(plan.Beneficios) &&
-                      plan.Beneficios.map((b: any) => (
-                        <li key={b.PLBE_Id} className="flex items-start gap-2">
-                          <FaCheckCircle className="text-green-500 mt-1 flex-shrink-0" />
-                          <span className="text-sm">{b.PLBE_Descripcion}</span>
-                        </li>
-                      ))}
-                  </ul>
-                </div>
-              </div>
-
-              {/* === Botón === */}
-              <div className="p-6 pt-0 w-full">
-                <CustomButton
-                  text={esPlanActivo ? "Plan activo" : "Elegir este plan"}
-                  type="button"
-                  fullWidth
-                  variant={esPlanActivo ? "secondary" : "primary"}
-                  fontSize="16px"
-                  disabled={esPlanActivo}
-                  loading={!!loadingPlan[plan.PLAN_Id]}
-                  onClick={() =>
-                    !esPlanActivo && handleClickPlanSelected(plan)
-                  }
+        return (
+          <div
+            key={planId}
+            className={`
+              relative flex flex-col justify-between border rounded-3xl p-6 shadow-lg
+              bg-white/40 backdrop-blur-xl transition-all duration-500
+              hover:shadow-2xl hover:-translate-y-2 border-gray-200
+            `}
+          >
+            {/* Encabezado del plan */}
+            <div className={`rounded-2xl p-5 bg-gradient-to-br ${gradient} text-center shadow-inner`}>
+              <div className="relative">
+                <CustomImage
+                  name="logo_02"
+                  alt="logo"
+                  className="object-contain !w-[120px] !h-[60px] mx-auto mb-4 drop-shadow-xl"
                 />
               </div>
+              <h3 className="text-2xl font-extrabold text-white drop-shadow-md">
+                {plan.TipoPlan.TIPL_Nombre}
+              </h3>
+              {plan.TipoPlan.TIPL_Descripcion && (
+                <p className="text-white/90 mt-2 text-sm">
+                  {plan.TipoPlan.TIPL_Descripcion}
+                </p>
+              )}
             </div>
-          );
-        })}
-      </div>
 
-      <p className="text-gray-500 text-sm mt-4">
-        *Los precios están expresados en soles peruanos (PEN). Los beneficios
-        pueden variar según disponibilidad.
-      </p>
+            {/* Precio */}
+            <div className="flex flex-col items-center mt-6 mb-4">
+              {planActivo &&
+              parseFloat(plan.PLAN_Precio) > parseFloat(planActivo.PLUS_MontoPagado) &&
+              plan.precioConProrrateo &&
+              plan.precioConProrrateo < parseFloat(plan.PLAN_Precio) ? (
+                <>
+                  <p className="text-gray-400 line-through text-lg">
+                    S/ {parseFloat(plan.PLAN_Precio).toFixed(2)}
+                  </p>
+                  <p className="text-4xl font-extrabold text-primary drop-shadow-md">
+                    S/ {parseFloat(plan.precioConProrrateo).toFixed(2)}
+                  </p>
+                  <p className="text-xs text-green-600 font-semibold mt-1">
+                    Precio con prorrateo aplicado
+                  </p>
+                </>
+              ) : (
+                <p className="text-4xl font-extrabold text-primary drop-shadow-md">
+                  {plan.PLAN_Precio !== "0.00"
+                    ? `S/ ${parseFloat(plan.PLAN_Precio).toFixed(2)}`
+                    : "Gratis"}
+                </p>
+              )}
+              {plan.Duracion && (
+                <p className="text-gray-500 text-sm mt-1">{plan.Duracion}</p>
+              )}
+            </div>
+
+            {/* Descripción */}
+            <p className="text-gray-700 text-center text-sm mb-5 px-3">
+              {plan.Descripcion}
+            </p>
+
+            {/* Beneficios */}
+            <div className="flex-1 border-t border-gray-200 pt-4">
+              <ul className="space-y-3 text-left">
+                {Array.isArray(plan.Beneficios) &&
+                  plan.Beneficios.map((b: any) => (
+                    <li
+                      key={b.PLBE_Id}
+                      className="flex items-start gap-2 text-gray-700"
+                    >
+                      <FaCheckCircle className="text-green-500 mt-1 flex-shrink-0" />
+                      <span className="text-sm">{b.PLBE_Descripcion}</span>
+                    </li>
+                  ))}
+              </ul>
+            </div>
+
+            {/* Botón */}
+            <div className="mt-6">
+              <CustomButton
+                text={esPlanActivo ? "Plan activo" : "Elegir este plan"}
+                type="button"
+                fullWidth
+                variant={esPlanActivo ? "secondary" : "primary"}
+                fontSize="16px"
+                disabled={esPlanActivo}
+                loading={!!loadingPlan[plan.PLAN_Id]}
+                onClick={() => !esPlanActivo && handleClickPlanSelected(plan)}
+              />
+            </div>
+          </div>
+        );
+      })}
     </div>
-  );
+
+    <p className="text-gray-500 text-sm text-center">
+      *Precios expresados en soles peruanos (PEN). Los beneficios pueden variar
+      según disponibilidad.
+    </p>
+  </div>
+);
+
 };

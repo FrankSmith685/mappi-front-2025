@@ -29,7 +29,7 @@ export const usePlanUser = () => {
   };
 
   /**
-   * 🟢 Crear un nuevo plan de usuario (gratuito o de pago)
+   *  Crear un nuevo plan de usuario (gratuito o de pago)
    */
   const createPlanUser = async (
     data: CreatePlanUserRequest,

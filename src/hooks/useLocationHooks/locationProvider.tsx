@@ -111,7 +111,6 @@ export const LocationProvider = ({ children }: Props) => {
     if (data.distrito !== undefined) setDistrito(data.distrito);
     if (data.direccion !== undefined) setDireccion(data.direccion);
   };
-
   return (
     <LocationContext.Provider
       value={{

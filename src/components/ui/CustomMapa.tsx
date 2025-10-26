@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { MapContainer, TileLayer, Marker, useMap, Circle, Popup } from "react-leaflet";
+import { MapContainer, TileLayer, Marker, useMap, Circle } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
 import L from "leaflet";
 import {
@@ -13,13 +13,13 @@ import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
 import "dayjs/locale/es";
 import type { ServicioActivoData } from "../../interfaces/IServicio";
-import { useLocation } from "../../hooks/useLocationHooks/useLocation";
+// import { useLocation } from "../../hooks/useLocationHooks/useLocation";
 import {
   getSelectedSubcategoriaImage,
   getSubcategoriaImage,
 } from "../../helpers/getCategoria";
 import { useAppState } from "../../hooks/useAppState";
-import { useNavigate, useSearchParams } from "react-router-dom";
+import { useSearchParams } from "react-router-dom";
 
 dayjs.extend(relativeTime);
 dayjs.locale("es");
@@ -80,24 +80,26 @@ const AddZoomControl = ({ position }: { position: L.ControlPosition }) => {
   return null;
 };
 
+
+
 // 🧮 Calcular distancia (Haversine)
-const calcularDistanciaKm = (
-  lat1: number,
-  lon1: number,
-  lat2: number,
-  lon2: number
-): number => {
-  const R = 6371;
-  const dLat = ((lat2 - lat1) * Math.PI) / 180;
-  const dLon = ((lon2 - lon1) * Math.PI) / 180;
-  const a =
-    Math.sin(dLat / 2) ** 2 +
-    Math.cos((lat1 * Math.PI) / 180) *
-      Math.cos((lat2 * Math.PI) / 180) *
-      Math.sin(dLon / 2) ** 2;
-  const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-  return R * c;
-};
+// const calcularDistanciaKm = (
+//   lat1: number,
+//   lon1: number,
+//   lat2: number,
+//   lon2: number
+// ): number => {
+//   const R = 6371;
+//   const dLat = ((lat2 - lat1) * Math.PI) / 180;
+//   const dLon = ((lon2 - lon1) * Math.PI) / 180;
+//   const a =
+//     Math.sin(dLat / 2) ** 2 +
+//     Math.cos((lat1 * Math.PI) / 180) *
+//       Math.cos((lat2 * Math.PI) / 180) *
+//       Math.sin(dLon / 2) ** 2;
+//   const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+//   return R * c;
+// };
 
 const CustomMapa = forwardRef(
   (
@@ -114,8 +116,8 @@ const CustomMapa = forwardRef(
     }: MapaUbicacionProps,
     ref
   ) => {
-    const { lat: currentLat, lng: currentLng } = useLocation();
-    const navigate = useNavigate();
+    // const { lat: currentLat, lng: currentLng } = useLocation();
+    // const navigate = useNavigate();
 
     const [searchParams, setSearchParams] = useSearchParams();
 
@@ -125,6 +127,7 @@ const CustomMapa = forwardRef(
     const markerIcon = useMemo(() => {
       if (!customIcon) return defaultIcon;
       const isDefaultPin = customIcon.includes("flaticon.com");
+      
       let iconSize: [number, number] = [40, 41];
       let iconAnchor: [number, number] = [20, 41];
       if (!isDefaultPin) {
@@ -135,6 +138,8 @@ const CustomMapa = forwardRef(
     }, [customIcon, type]);
 
     const zoomControlPosition = type === "service" ? "bottomright" : "topleft";
+
+    
 
     const MapContent = () => {
       const map = useMap();
@@ -166,6 +171,8 @@ const CustomMapa = forwardRef(
 
       return null;
     };
+
+    
 
     return (
       <MapContainer
@@ -209,7 +216,11 @@ const CustomMapa = forwardRef(
             <Circle
             center={[lat, lng]}
             radius={5000}
-            pathOptions={{ color: "blue", fillColor: "blue", fillOpacity: 0.1 }}
+            pathOptions={{ 
+              color: "#FF6C4F",       // color del borde del círculo
+              fillColor: "#FF6C4F",   // color de relleno
+              fillOpacity: 0.1        // opacidad del relleno
+            }}
           />
           </>
         }
@@ -227,23 +238,33 @@ const CustomMapa = forwardRef(
             ? getSelectedSubcategoriaImage(servicio.subcategoria)
             : getSubcategoriaImage(servicio.subcategoria);
 
+          // const serviceIcon = new L.Icon({
+          //   iconUrl,
+          //   iconSize: isSelected ? [80, 81] : [60, 61],
+          //   iconAnchor: [30, 61],
+          // });
+          const iconSize: [number, number] = isSelected ? [80, 81] : [60, 61];
+            // ancla centrada horizontalmente y al fondo verticalmente
+          const iconAnchor: [number, number] = [Math.floor(iconSize[0] / 2), iconSize[1]];
+
+          // const portada =
+          //   servicio.archivos?.find((a) => a.tipo === "portada")?.ruta ||
+          //   servicio.archivos?.find((a) => a.tipo === "logo")?.ruta ||
+          //   "https://cdn-icons-png.flaticon.com/512/684/684908.png";
+
+          // const distanciaKm =
+          //   currentLat && currentLng
+          //     ? calcularDistanciaKm(currentLat, currentLng, sLat, sLng).toFixed(
+          //         1
+          //       )
+          //     : null;
           const serviceIcon = new L.Icon({
             iconUrl,
-            iconSize: isSelected ? [80, 81] : [60, 61],
-            iconAnchor: [30, 61],
+            iconSize,
+            iconAnchor,
+            // opcional: agrega clase para estilos CSS si quieres (por ejemplo, sombra)
+            className: isSelected ? "marker-selected" : undefined,
           });
-
-          const portada =
-            servicio.archivos?.find((a) => a.tipo === "portada")?.ruta ||
-            servicio.archivos?.find((a) => a.tipo === "logo")?.ruta ||
-            "https://cdn-icons-png.flaticon.com/512/684/684908.png";
-
-          const distanciaKm =
-            currentLat && currentLng
-              ? calcularDistanciaKm(currentLat, currentLng, sLat, sLng).toFixed(
-                  1
-                )
-              : null;
 
           return (
             <Marker
@@ -253,6 +274,8 @@ const CustomMapa = forwardRef(
               }}
               position={[sLat, sLng]}
               icon={serviceIcon}
+              // asegurar que el marcador seleccionado quede por encima
+              zIndexOffset={isSelected ? 1000 : 0}
               eventHandlers={{
                 click: (e) => {
                   const map = e.target._map;
@@ -265,98 +288,97 @@ const CustomMapa = forwardRef(
                 },
                 popupclose: () => {
                   setServicioSeleccionado(null);
-                      if (location.pathname === "/servicios") { 
-                        const currentParams = Object.fromEntries(searchParams.entries());
-                        if ("s" in currentParams) {
-                          delete currentParams.s;
-                          setSearchParams(currentParams);
-                        }
-                      }
-
+                  if (location.pathname === "/servicios") {
+                    const currentParams = Object.fromEntries(searchParams.entries());
+                    if ("s" in currentParams) {
+                      delete currentParams.s;
+                      setSearchParams(currentParams);
+                    }
+                  }
                 },
               }}
             >
-              {type === "service" && (
-                <Popup className="custom-popup">
-                  <div className="w-[220px] sm:w-[260px] text-gray-800">
-                    {portada && (
-                      <img
-                        src={portada}
-                        alt={servicio.nombre}
-                        className="w-full h-28 object-cover rounded-lg mb-2"
-                      />
-                    )}
+              {/* {type === "service" && (
+                // <Popup className="custom-popup">
+                //   <div className="w-[220px] sm:w-[260px] text-gray-800">
+                //     {portada && (
+                //       <img
+                //         src={portada}
+                //         alt={servicio.nombre}
+                //         className="w-full h-28 object-cover rounded-lg mb-2"
+                //       />
+                //     )}
 
-                    <div className="flex items-center gap-2 mb-1">
-                      {servicio.archivos?.find((a) => a.tipo === "logo")
-                        ?.ruta && (
-                        <img
-                          src={
-                            servicio.archivos.find((a) => a.tipo === "logo")
-                              ?.ruta
-                          }
-                          alt="Logo"
-                          className="w-8 h-8 rounded-full border object-cover"
-                        />
-                      )}
-                      <div>
-                        <h3 className="font-semibold text-sm sm:text-base truncate">
-                          {servicio.nombre}
-                        </h3>
-                        <p className="text-[11px] text-gray-500">
-                          {servicio.subcategoria?.nombre || "Sin subcategoría"}
-                        </p>
-                      </div>
-                    </div>
+                //     <div className="flex items-center gap-2 mb-1">
+                //       {servicio.archivos?.find((a) => a.tipo === "logo")
+                //         ?.ruta && (
+                //         <img
+                //           src={
+                //             servicio.archivos.find((a) => a.tipo === "logo")
+                //               ?.ruta
+                //           }
+                //           alt="Logo"
+                //           className="w-8 h-8 rounded-full border object-cover"
+                //         />
+                //       )}
+                //       <div>
+                //         <h3 className="font-semibold text-sm sm:text-base truncate">
+                //           {servicio.nombre}
+                //         </h3>
+                //         <p className="text-[11px] text-gray-500">
+                //           {servicio.subcategoria?.nombre || "Sin subcategoría"}
+                //         </p>
+                //       </div>
+                //     </div>
 
-                    <p className="text-xs text-gray-600 flex items-center gap-1">
-                       {servicio.direccion?.direccion || "Sin dirección"}
-                    </p>
+                //     <p className="text-xs text-gray-600 flex items-center gap-1">
+                //        {servicio.direccion?.direccion || "Sin dirección"}
+                //     </p>
 
-                    <div className="flex justify-between text-[11px] text-gray-500 mt-1">
-                      <span>⏱️ {dayjs(servicio.fechaRegistro).fromNow()}</span>
-                      {distanciaKm && <span>📏 {distanciaKm} km</span>}
-                    </div>
+                //     <div className="flex justify-between text-[11px] text-gray-500 mt-1">
+                //       <span>⏱️ {dayjs(servicio.fechaRegistro).fromNow()}</span>
+                //       {distanciaKm && <span>📏 {distanciaKm} km</span>}
+                //     </div>
 
-                    {servicio.archivos?.filter((a) => a.tipo === "imagen")
-                      .length > 0 && (
-                      <div className="mt-2 grid grid-cols-3 gap-1">
-                        {servicio.archivos
-                          .filter((a) => a.tipo === "imagen")
-                          .slice(0, 3)
-                          .map((img, i) => (
-                            <img
-                              key={i}
-                              src={img.ruta}
-                              alt={`Imagen ${i + 1}`}
-                              className="w-full h-16 object-cover rounded-md"
-                            />
-                          ))}
-                        {servicio.archivos.filter(
-                          (a) => a.tipo === "imagen"
-                        ).length > 3 && (
-                          <div className="flex items-center justify-center bg-gray-200 text-gray-600 text-xs font-semibold rounded-md">
-                            +
-                            {servicio.archivos.filter(
-                              (a) => a.tipo === "imagen"
-                            ).length - 3}
-                          </div>
-                        )}
-                      </div>
-                    )}
+                //     {servicio.archivos?.filter((a) => a.tipo === "imagen")
+                //       .length > 0 && (
+                //       <div className="mt-2 grid grid-cols-3 gap-1">
+                //         {servicio.archivos
+                //           .filter((a) => a.tipo === "imagen")
+                //           .slice(0, 3)
+                //           .map((img, i) => (
+                //             <img
+                //               key={i}
+                //               src={img.ruta}
+                //               alt={`Imagen ${i + 1}`}
+                //               className="w-full h-16 object-cover rounded-md"
+                //             />
+                //           ))}
+                //         {servicio.archivos.filter(
+                //           (a) => a.tipo === "imagen"
+                //         ).length > 3 && (
+                //           <div className="flex items-center justify-center bg-gray-200 text-gray-600 text-xs font-semibold rounded-md">
+                //             +
+                //             {servicio.archivos.filter(
+                //               (a) => a.tipo === "imagen"
+                //             ).length - 3}
+                //           </div>
+                //         )}
+                //       </div>
+                //     )}
 
-                    <button
-                      onClick={() => {
-                        const encoded = btoa(servicio.cod_servicio);
-                        navigate(`/servicios/${encoded}`);
-                      }}
-                      className="mt-3 w-full bg-blue-600 hover:bg-blue-700 text-white text-xs sm:text-sm py-1.5 rounded-md transition"
-                    >
-                      Ver servicio
-                    </button>
-                  </div>
-                </Popup>
-              )}
+                //     <button
+                //       onClick={() => {
+                //         const encoded = btoa(servicio.cod_servicio);
+                //         navigate(`/servicios/${encoded}`);
+                //       }}
+                //       className="mt-3 w-full bg-blue-600 hover:bg-blue-700 text-white text-xs sm:text-sm py-1.5 rounded-md transition"
+                //     >
+                //       Ver servicio
+                //     </button>
+                //   </div>
+                // </Popup>
+              )} */}
             </Marker>
           );
         })}

@@ -209,6 +209,11 @@ const ListaAvisos = () => {
       handleClickEditarAviso(aviso.SERV_Interno, aviso.AVIS_Id);
     };
 
+    const handleViewService = (serviceId: string) => {
+      const encodedId = btoa(serviceId);
+      navigate(`/servicios/${encodedId}`);
+    };
+
     const handleConfirmDelete = () => {
       if (!avisoToDelete) return;
 
@@ -443,6 +448,7 @@ const ListaAvisos = () => {
                       <FaExternalLinkAlt
                         title="Ver aviso publicado"
                         className="cursor-pointer text-primary-hover"
+                        onClick={() => handleViewService(aviso?.Servicio?.SERV_Interno ?? '')}
                       />
                     )}
                     <FaTrashAlt
@@ -463,6 +469,7 @@ const ListaAvisos = () => {
         onClose={() => setIsModalOpen(false)}
         limite={user?.limiteServicios || 0}
         motivo={motivoModal}
+        esEdicion= {true}
       />
       <ModalEliminarAviso
         isOpen={isModalDeleteOpen}

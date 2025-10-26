@@ -18,6 +18,8 @@ import { useUser } from "../../../hooks/useUser";
 
 const Avisos = () => {
   const { getAvisos } = useAviso();
+  const [isLoading, setIsLoading] = useState(true);
+
   const { 
     setListaAvisos,
     setFiltroAvisos, 
@@ -65,6 +67,7 @@ const Avisos = () => {
   };
 
   useEffect(() => {
+    setIsLoading(true); 
     getAvisos((success, _message, data) => {
       if (!success) return;
 
@@ -94,6 +97,7 @@ const Avisos = () => {
         setMensajeBienvenida("¡Te damos la bienvenida al panel de avisos!");
         setAlertVariant("primary");
       }
+      setIsLoading(false);
     });
   }, [listaAvisos.avisos.length]);
 
@@ -138,22 +142,33 @@ const Avisos = () => {
   };
 
   return (
-    <div className="flex flex-col gap-4 responsive-padding">
-      <CustomAlert message={mensajeBienvenida} variant={alertVariant} />
-      <PendingTask />
-      <div className="w-full h-[1px] bg-gray-200" />
-
-      <div className="w-full flex md:flex-row flex-col items-start justify-center gap-4">
-        <FilterPanel />
-        <div className="w-full flex flex-col gap-4 overflow-auto">
-          <ProductoState />
-          <div className="w-full h-auto flex flex-col gap-4 flex-1">
-            <NoResultsHeader />
-            {renderContent()}
+    <>
+      {
+        isLoading ? (
+          <div className="w-full flex flex-col items-center justify-center gap-3 py-20">
+            <div className="animate-spin rounded-full h-10 w-10 border-t-2 border-b-2 border-primary"></div>
+            <p className="text-gray-600 font-medium">Cargando avisos...</p>
           </div>
-        </div>
-      </div>
-    </div>
+        ):(
+          <div className="flex flex-col gap-4 responsive-padding">
+            <CustomAlert message={mensajeBienvenida} variant={alertVariant} />
+            <PendingTask />
+            <div className="w-full h-[1px] bg-gray-200" />
+
+            <div className="w-full flex md:flex-row flex-col items-start justify-center gap-4">
+              <FilterPanel />
+              <div className="w-full flex flex-col gap-4 overflow-auto">
+                <ProductoState />
+                <div className="w-full h-auto flex flex-col gap-4 flex-1">
+                  <NoResultsHeader />
+                  {renderContent()}
+                </div>
+              </div>
+            </div>
+          </div>
+        )
+      }
+    </>
   );
 };
 

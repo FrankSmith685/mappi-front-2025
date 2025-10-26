@@ -12,11 +12,8 @@ type SimpleMapaProps = {
   zoom?: number;
 };
 
-const defaultIcon = new L.Icon({
-  iconUrl: "https://cdn-icons-png.flaticon.com/512/684/684908.png",
-  iconSize: [60, 61],
-  iconAnchor: [30, 61],
-});
+
+
 
 const ChangeView = ({
   center,
@@ -49,6 +46,13 @@ const CustomSimpleMapa = forwardRef<HTMLDivElement, SimpleMapaProps>(
     const [markerPos, setMarkerPos] = useState<[number, number]>([lat, lng]);
     const [mapMovedByUser, setMapMovedByUser] = useState(false);
 
+    const defaultIcon = useMemo(() => {
+      return new L.Icon({
+        iconUrl: "https://cdn-icons-png.flaticon.com/512/684/684908.png",
+        iconSize: [60, 61],
+        iconAnchor: [30, 61],
+      });
+    }, []);
     useEffect(() => {
       setMarkerPos([lat, lng]);
       setMapMovedByUser(false); // solo centrar al cargar o cambiar props externas
@@ -69,7 +73,7 @@ const CustomSimpleMapa = forwardRef<HTMLDivElement, SimpleMapaProps>(
         zoom={zoom}
         style={{ height: "100%", width: "100%" }}
         zoomControl={false}
-        className="border rounded-lg w-full"
+        className="border border-gray-300 rounded-lg w-full"
       >
         <TileLayer
           url="https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png"
@@ -97,7 +101,7 @@ const CustomSimpleMapa = forwardRef<HTMLDivElement, SimpleMapaProps>(
           }
         />
 
-        <ZoomControl position="topright" />
+        <ZoomControl position="bottomright" />
       </MapContainer>
     );
   }

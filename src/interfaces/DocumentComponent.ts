@@ -48,6 +48,7 @@ export interface VariantStyle {
 
 // CustomButton
 export interface CustomButtonProps {
+  id?: string;
   text: string;
   onClick?: () => void;
   size?: "md" | "lg";

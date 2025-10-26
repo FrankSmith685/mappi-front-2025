@@ -490,7 +490,7 @@ const PerfilIndependiente = () => {
                             setService(null);
                             setModifiedService(null);
                             navigate("/panel/avisos")
-                            showMessage("Se ha creado el servicio correctamente", "success");
+                            showMessage("Se ha creado el aviso como borrador correctamente", "success");
                             setProgressPrincipalService({
                                 ...progressPrincipalService,
                                 step: 1,

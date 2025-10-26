@@ -106,7 +106,7 @@ const MainMenu = () => {
         {!isPanelRoute ? (
           <></>
         ) : (
-          <div className="flex gap-4 h-full items-center px-6">
+          <div className="flex gap-4 h-full items-center pr-4">
             {Object.entries(groupedByBase).map(([base, items]) => {
               return (
                 <div
@@ -115,7 +115,7 @@ const MainMenu = () => {
                   onClick={() => navigate(items[0].path!)}
                 >
                   <span
-                    className={`text-sm border-b-[1px] pb-1 ${
+                    className={`text-sm text-center border-b-[1px] pb-1 ${
                       location.pathname.startsWith(base)
                         ? "border-white text-white"
                         : "border-transparent text-white"

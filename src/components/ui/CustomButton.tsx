@@ -3,6 +3,7 @@ import type { FC } from "react";
 import type { CustomButtonProps, VariantButton, VariantStyle } from "../../interfaces/DocumentComponent";
 
 export const CustomButton: FC<CustomButtonProps> = ({
+  id,
   text,
   onClick,
   size,
@@ -89,6 +90,7 @@ export const CustomButton: FC<CustomButtonProps> = ({
 
   return (
     <Button
+      id={id}
       variant={isOutline ? "outlined" : "contained"}
       onClick={onClick}
       fullWidth={fullWidth}

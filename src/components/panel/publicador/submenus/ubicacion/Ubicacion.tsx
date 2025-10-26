@@ -69,7 +69,6 @@ const Ubicacion: React.FC = () => {
     provincia: provCtx,
     distrito: distCtx,
     direccion: dirCtx,
-    setLocation,
   } = useLocation();
 
   const {
@@ -416,7 +415,7 @@ const Ubicacion: React.FC = () => {
                 setService(null);
                 setModifiedService(null);
                 navigate("/panel/avisos");
-                showMessage("Se ha creado el servicio correctamente", "success");
+                showMessage("Se ha creado el aviso como borrador correctamente", "success");
                 setProgressPrincipalService({
                   ...progressPrincipalService,
                   step: 1,
@@ -649,7 +648,6 @@ const Ubicacion: React.FC = () => {
               lat={latAux}
               lng={lngAux}
               onMove={(newLat: number, newLng: number) => {
-                setLocation({ lat: newLat, lng: newLng });
                 if (typeof getUbigeoByCoords === "function") {
                   getUbigeoByCoords(newLat, newLng, (dep, prov, dist, direccion) => {
                     setValue("departamento", dep);

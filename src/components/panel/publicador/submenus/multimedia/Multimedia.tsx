@@ -205,14 +205,16 @@ const Multimedia = () => {
   // Guardar multimedia y avanzar
   const onSubmit = (data: MultimediaFormData) => {
     setMultimediaService({
-      logo:data.logoNegocio,
-      portada:data.portadaNegocio,
-      imagenes:data.imagenesPromocionales,
-      videoPromocional:data.videoPromocional,
-      cartaRecomendacion:{
-        url:data.cartaRecomendacion,
-        nombre:multimediaService?.cartaRecomendacion.nombre || ""
-      }
+      logo: multimediaService?.logo ? multimediaService?.logo : data.logoNegocio,
+      portada:multimediaService?.portada ? multimediaService?.portada : data.portadaNegocio,
+      imagenes:multimediaService?.imagenes ? multimediaService?.imagenes : data.imagenesPromocionales,
+      videoPromocional:multimediaService?.videoPromocional ? multimediaService?.videoPromocional : data.videoPromocional,
+      cartaRecomendacion: {
+        url: multimediaService?.cartaRecomendacion?.url
+          ? multimediaService.cartaRecomendacion.url
+          : data.cartaRecomendacion,
+        nombre: multimediaService?.cartaRecomendacion?.nombre || "",
+      },
     });
     setMultimediaAvisoPreview({
       ...multimediaAvisosPreview,
@@ -394,7 +396,7 @@ const Multimedia = () => {
                     setService(null);
                     setModifiedService(null);
                     navigate("/panel/avisos")
-                    showMessage("Se ha creado el servicio correctamente", "success");
+                    showMessage("Se ha creado el aviso como borrador correctamente", "success");
                     setProgressPrincipalService({
                         ...progressPrincipalService,
                         step: 1,
@@ -708,7 +710,9 @@ const Multimedia = () => {
             setImagenFiles(updatedFiles);
 
             // Generar previews
-            const previews = updatedFiles.map((f) => URL.createObjectURL(f));
+            const previews = updatedFiles.map((f) => 
+              typeof f === "string" ? f : (f instanceof File ? URL.createObjectURL(f) : "")
+            );
             setPreviewPromos(previews);
           };
 
@@ -733,7 +737,10 @@ const Multimedia = () => {
             updatedFiles.splice(index, 1);
             field.onChange(updatedFiles);
 
-            const previews = updatedFiles.map((f) => URL.createObjectURL(f));
+           const previews = updatedFiles.map((f) => 
+              typeof f === "string" ? f : (f instanceof File ? URL.createObjectURL(f) : "")
+            );
+
             setPreviewPromos(previews);
           };
 

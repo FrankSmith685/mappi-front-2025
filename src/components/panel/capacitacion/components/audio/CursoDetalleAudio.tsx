@@ -103,7 +103,7 @@ export const CursoDetalleAudio: React.FC<CursoDetalleProps> = ({ curso, onProgre
   //  Actualizamos el estado local del curso
   setCursoLocal((prev) => ({ ...prev, modulos: nuevosModulos }));
 
-  // 🟢 Actualizamos el módulo activo
+  //  Actualizamos el módulo activo
   if (siguiente) {
     setModuloActivo({ ...siguiente, desbloqueado: true });
     setAutoPlayTrigger(true);

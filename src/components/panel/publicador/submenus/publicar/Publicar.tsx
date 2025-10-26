@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { CustomButton } from "../../../../ui/CustomButton";
 import { SeleccionarPlanIndependiente } from "./components/SeleccionarPlanIndependiente";
 import type { UpdateUsuarioCompleto } from "../../../../../interfaces/IUser";
@@ -20,6 +20,7 @@ import { useNotification } from "../../../../../hooks/useNotificacionHooks/useNo
 
 const Publicar = () => {
   const [isLoadingGuardar,setIsLoadingGuardar] = useState(false);
+  const isProcessingRef = useRef(false);
   const {
     modifiedUser,
     ubigeo_usuario,
@@ -59,12 +60,15 @@ const Publicar = () => {
   const {createAviso, updateAviso} = useAviso();
   const {showMessage} = useNotification();
 
+
   const navigate = useNavigate();
 
  
 
   const handleClickGuardar = async () => {
     try {
+      if (isProcessingRef.current) return;
+      isProcessingRef.current = true;
       setIsLoadingGuardar(true);
       
       const payloadUsuario: UpdateUsuarioCompleto = {
@@ -235,8 +239,11 @@ const Publicar = () => {
                     setDireccionService(null);
                     setIdAviso(0);
                     await getUserInfo();
+                    setIsLoadingGuardar(false);
                   } else {
                     showMessage(message, "error");
+                    setIsLoadingGuardar(false);
+                    isProcessingRef.current = false;
                   }
                 }
               );
@@ -320,8 +327,11 @@ const Publicar = () => {
                     setMultimediaService(null);
                     setDireccionService(null);
                     await getUserInfo();
+                    setIsLoadingGuardar(false);
                   } else {
                     showMessage(message, "error");
+                    setIsLoadingGuardar(false);
+                    isProcessingRef.current = false;
                   }
                 }
               );
@@ -334,8 +344,6 @@ const Publicar = () => {
 
     } catch (error) {
      console.error("Error al guardar ubicación:", error);
-    } finally {
-      setIsLoadingGuardar(false);
     }
     
   }
@@ -344,8 +352,11 @@ const Publicar = () => {
     <div className="w-full flex flex-col gap-4 items-center">
       <SeleccionarPlanIndependiente/>
       <div className="max-w-full sm:max-w-[250px] w-full">
-          <CustomButton text="Publicar mi huarique" type="button" onClick={handleClickGuardar} disabled={!user?.tienePlan} fullWidth fontSize="14px" variant="secondary-outline" loading={isLoadingGuardar}/>
+          <CustomButton id="btn-publicar-huarique" text="Publicar mi huarique" type="button" onClick={handleClickGuardar} disabled={!user?.tienePlan || isLoadingGuardar} fullWidth fontSize="14px" variant="secondary-outline" loading={isLoadingGuardar}/>
       </div>
+      <p className="text-gray-500 text-sm mt-2 text-center max-w-md">
+        ¿Listo para mostrar tu pasión? Publica tu huarique en segundos y deja que todos te descubran.
+      </p>
     </div>
   );
 }

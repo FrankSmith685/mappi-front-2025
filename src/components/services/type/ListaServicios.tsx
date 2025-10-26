@@ -6,7 +6,6 @@
     import relativeTime from "dayjs/plugin/relativeTime";
     import "dayjs/locale/es";
     import BotonOpinion from "../components/BotonOption";
-import OpinionesModalWrapper from "../components/modal/modalComentario";
 
     dayjs.extend(relativeTime);
     dayjs.locale("es");
@@ -33,7 +32,7 @@ import OpinionesModalWrapper from "../components/modal/modalComentario";
         {/* Contenedor superior */}
         <div className="flex flex-col sm:flex-row sm:justify-between items-start sm:items-center gap-2 mb-4">
             {/* Contador de servicios */}
-            <div className="flex items-center gap-2 bg-gradient-to-r from-blue-500 to-indigo-600 text-white px-4 sm:px-6 py-2 sm:py-3 rounded-full shadow-xl text-sm sm:text-base font-semibold animate-pulse w-full sm:w-auto justify-center">
+             <div className="flex items-center justify-center gap-2 bg-primary text-white px-6 py-3 rounded-xl shadow-md hover:shadow-lg transition-transform duration-300 hover:scale-105 text-base font-semibold">
                 <span>{serviciosFilterActivos.length}</span>
                 <span>servicios disponibles</span>
             </div>
