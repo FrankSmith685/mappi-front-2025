@@ -91,10 +91,22 @@
   }
 
   .height-cutom-mapa-service-not-filter{
-    height: calc(100vh - 142px);
+    height: calc(100vh - 133px);
   }
 
- 
+  .height-cutom-mapa-service-selected {
+      height: calc(100vh - 133px);
+    }
+
+    .width-cutom-list-service-selected {
+      width: calc(100% - 400px);
+    }
+    .height-cutom-list-service-selected {
+      height: calc(100vh - 236px);
+    }
+    .height-cutom-list-service-selected-details{
+      height:calc(100vh - 236px);
+    }
 
     .leaflet-popup-content-wrapper {
     border-radius: 12px;
@@ -107,6 +119,16 @@
     background: white;
   }
 
-
+  @media (max-width: 1023px) {
+      .height-cutom-mapa-service-selected {
+        height: calc(100vh - 162px);
+      }
+      .width-cutom-list-service-selected{
+        width: 100%;
+      }
+      .height-cutom-list-service-selected-details{
+        height:calc(100vh - 266px);
+      }
+    }
 
 }

@@ -83,7 +83,7 @@ export function getSelectedSubcategoriaImage(
   // fallback por categoría general
   const categoriaMap: Record<string, string> = {
     "Subcategoría de Restaurantes": "mapp_634",
-    "Subcategoría de Postres y café": "mapp_634",
+    "Subcategoría de Postres y café": "mapp_633",
     "Subcategoría de Comida al paso": "mapp_632",
   };
 

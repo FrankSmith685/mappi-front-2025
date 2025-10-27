@@ -1,7 +1,14 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import { FiMapPin, FiClock, FiPhone, FiChevronLeft } from "react-icons/fi";
+import {
+  FiMapPin,
+  FiClock,
+  FiPhone,
+  FiChevronLeft,
+  FiFileText,
+  FiPlayCircle,
+} from "react-icons/fi";
 import { MdOutlineDeliveryDining } from "react-icons/md";
 import dayjs from "dayjs";
 import "dayjs/locale/es";
@@ -78,18 +85,27 @@ const ServicioDetallePage = () => {
     archivos,
   } = servicio;
 
-  // 🖼️ Obtener portada y logo
-  const portada = archivos?.find((a) => a.tipo === "portada")?.ruta;
-  const logo = archivos?.find((a) => a.tipo === "logo")?.ruta;
+  //  Obtener tipos de archivos
+ //  Obtener tipos de archivos con imágenes por defecto
+  const portada =
+    archivos?.find((a) => a.tipo === "portada")?.ruta ||
+    "https://mappidevbucket.s3.amazonaws.com/0";
+
+  const logo =
+    archivos?.find((a) => a.tipo === "logo")?.ruta ||
+    "https://mappidevbucket.s3.amazonaws.com/-1";
+
   const imagenes = archivos?.filter((a) => a.tipo === "imagen") || [];
+  const videos = archivos?.filter((a) => a.tipo === "video") || [];
+  const documentos = archivos?.filter((a) => a.tipo === "documento") || [];
 
   return (
     <div className="flex flex-col min-h-screen bg-gray-50">
-      {/* Header con botón volver */}
+      {/* Botón volver */}
       <div className="absolute top-5 left-5 z-20">
         <button
           onClick={() => navigate(-1)}
-          className="flex items-center gap-1 bg-white/80 backdrop-blur-md px-3 py-1 rounded-full shadow-sm hover:bg-white"
+          className="flex items-center gap-1 bg-white/80 backdrop-blur-md px-3 py-1 rounded-full shadow-sm hover:bg-white transition"
         >
           <FiChevronLeft /> <span className="text-sm font-medium">Volver</span>
         </button>
@@ -103,7 +119,7 @@ const ServicioDetallePage = () => {
           className="w-full h-full object-cover"
         />
         {logo && (
-          <div className="absolute bottom-4 left-4 bg-white p-2 rounded-xl shadow-lg">
+          <div className="absolute bottom-4 left-4 bg-white rounded-xl shadow-lg">
             <img
               src={logo}
               alt="Logo"
@@ -113,7 +129,7 @@ const ServicioDetallePage = () => {
         )}
       </div>
 
-      {/* Contenido principal */}
+      {/* Contenido */}
       <div className="max-w-6xl mx-auto px-4 md:px-8 py-8 grid md:grid-cols-3 gap-8">
         {/* Columna izquierda */}
         <div className="md:col-span-2">
@@ -122,22 +138,26 @@ const ServicioDetallePage = () => {
             {subcategoria?.categoria?.nombre} • {subcategoria?.nombre}
           </p>
 
-          <p className="text-gray-700 leading-relaxed mb-6">{descripcion || "Sin descripción"}</p>
+          <p className="text-gray-700 leading-relaxed mb-6 whitespace-pre-line break-words">
+            {descripcion || "Sin descripción"}
+          </p>
 
           {/* Información general */}
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             {direccion && (
               <div className="flex items-start gap-3 bg-white p-4 rounded-xl shadow-sm">
-                <FiMapPin className="text-blue-500 text-xl mt-1" />
+                <FiMapPin className="text-primary text-[20px] mt-[2px] flex-shrink-0" />
                 <div>
                   <p className="font-semibold">Dirección</p>
-                  <p className="text-gray-600 text-sm">{direccion.direccion}</p>
+                  <p className="text-gray-600 text-sm whitespace-pre-line break-words">
+                    {direccion.direccion}
+                  </p>
                 </div>
               </div>
             )}
 
             <div className="flex items-start gap-3 bg-white p-4 rounded-xl shadow-sm">
-              <FiClock className="text-green-500 text-xl mt-1" />
+              <FiClock className="text-primary text-[20px] mt-[2px] flex-shrink-0" />
               <div>
                 <p className="font-semibold">Horario</p>
                 <p className="text-gray-600 text-sm">
@@ -151,7 +171,7 @@ const ServicioDetallePage = () => {
             </div>
 
             <div className="flex items-start gap-3 bg-white p-4 rounded-xl shadow-sm">
-              <MdOutlineDeliveryDining className="text-orange-500 text-xl mt-1" />
+              <MdOutlineDeliveryDining className="text-primary text-[22px] mt-[2px] flex-shrink-0" />
               <div>
                 <p className="font-semibold">Delivery</p>
                 <p className="text-gray-600 text-sm">{delivery ? "Sí ofrece" : "No ofrece"}</p>
@@ -160,7 +180,7 @@ const ServicioDetallePage = () => {
 
             {usuario && (
               <div className="flex items-start gap-3 bg-white p-4 rounded-xl shadow-sm">
-                <FiPhone className="text-purple-500 text-xl mt-1" />
+                <FiPhone className="text-primary text-[20px] mt-[2px] flex-shrink-0" />
                 <div>
                   <p className="font-semibold">Teléfono</p>
                   <p className="text-gray-600 text-sm">{usuario.telefono}</p>
@@ -169,7 +189,8 @@ const ServicioDetallePage = () => {
             )}
           </div>
 
-          {/* Galería */}
+
+          {/* Galería de imágenes */}
           {imagenes.length > 0 && (
             <div className="mt-10">
               <h2 className="text-xl font-semibold text-gray-800 mb-4">Galería de imágenes</h2>
@@ -189,9 +210,51 @@ const ServicioDetallePage = () => {
               </div>
             </div>
           )}
+
+          {/* Videos */}
+          {videos.length > 0 && (
+            <div className="mt-10">
+              <h2 className="text-xl font-semibold text-gray-800 mb-4 flex items-center gap-2">
+                <FiPlayCircle /> Videos
+              </h2>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                {videos.map((vid) => (
+                  <video
+                    key={vid.id}
+                    src={vid.ruta}
+                    controls
+                    className="w-full rounded-xl shadow-sm border border-gray-200"
+                  />
+                ))}
+              </div>
+            </div>
+          )}
+
+          {/* Documentos */}
+          {documentos.length > 0 && (
+            <div className="mt-10">
+              <h2 className="text-xl font-semibold text-gray-800 mb-4 flex items-center gap-2">
+                <FiFileText /> Documentos
+              </h2>
+              <ul className="space-y-2">
+                {documentos.map((doc) => (
+                  <li key={doc.id}>
+                    <a
+                      href={doc.ruta}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="flex items-center gap-2 text-primary hover:underline"
+                    >
+                      <FiFileText /> {doc.nombreOriginal || "Ver documento"}
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          )}
         </div>
 
-        {/* Columna derecha (info flotante) */}
+        {/* Columna derecha */}
         <div className="md:sticky md:top-24 h-fit">
           <div className="bg-white rounded-2xl shadow-lg p-6 border border-gray-100">
             <p className="text-gray-500 text-sm mb-2">
@@ -214,7 +277,9 @@ const ServicioDetallePage = () => {
                 </>
               ) : usuario ? (
                 <>
-                  <p className="text-sm font-medium text-gray-700">Usuario: {usuario.cod_usuario}</p>
+                  <p className="text-sm font-medium text-gray-700">
+                    Usuario: {usuario.cod_usuario}
+                  </p>
                   <p className="text-gray-500 text-sm">{usuario.telefono}</p>
                 </>
               ) : (

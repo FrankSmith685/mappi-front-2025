@@ -178,6 +178,13 @@ const ServiciosHeader = () => {
 
   useEffect(() => {
     setServicioSeleccionado(null);
+    if (location.pathname === "/servicios") {
+      const currentParams = Object.fromEntries(searchParams.entries());
+      if ("s" in currentParams) {
+        delete currentParams.s;
+        setSearchParams(currentParams);
+      }
+    }
   }, [ciudad, categoria, subcategoria, search]);
 
 useEffect(() => {
@@ -299,6 +306,13 @@ if (filtered.length === 0) {
     setFallbackData([]);
     setModalType("nearby");
     setServicioSeleccionado(null);
+    if (location.pathname === "/servicios") {
+      const currentParams = Object.fromEntries(searchParams.entries());
+      if ("s" in currentParams) {
+        delete currentParams.s;
+        setSearchParams(currentParams);
+      }
+    }
   };
   
 
@@ -315,6 +329,13 @@ if (filtered.length === 0) {
           setiIsShowFilterService(!isShowFilterService);
           if(!isExpanded){
             setServicioSeleccionado(null);
+            if (location.pathname === "/servicios") {
+              const currentParams = Object.fromEntries(searchParams.entries());
+              if ("s" in currentParams) {
+                delete currentParams.s;
+                setSearchParams(currentParams);
+              }
+            }
           }
         }}
       >
@@ -326,7 +347,6 @@ if (filtered.length === 0) {
             </>
           ) : (
             <>
-              <span>Mostrar filtros</span>
               <FaChevronDown className="text-sm animate-bounce" />
             </>
           )}
@@ -426,11 +446,18 @@ if (filtered.length === 0) {
           onClick={() => {
             window.scrollTo({ top: 0, behavior: "smooth" });
             setServicioSeleccionado(null)
+            if (location.pathname === "/servicios") {
+              const currentParams = Object.fromEntries(searchParams.entries());
+              if ("s" in currentParams) {
+                delete currentParams.s;
+                setSearchParams(currentParams);
+              }
+            }
           }}
-          className="fixed bottom-6 right-16 z-[1000] flex items-center gap-2 bg-primary text-white px-4 py-3 rounded-full shadow-lg hover:bg-primary/90 transition-all"
+          className="fixed bottom-6 hover:cursor-pointer right-16 z-[1000] flex items-center gap-2 bg-white text-gray-800 border-2 border-gray-800 px-3 py-3 rounded-full shadow-lg hover:bg-primary/90 transition-all"
         >
           <FaFilter className="text-lg" />
-          <span className="hidden sm:block font-medium">Mostrar filtros</span>
+          <span className="font-medium hidden lg:block">Mostrar filtros</span>
         </button>
       )}
 

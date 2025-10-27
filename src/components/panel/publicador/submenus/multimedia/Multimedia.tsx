@@ -160,7 +160,7 @@ const Multimedia = () => {
     }
   }
 
-  // 🖼️ Imágenes promocionales
+  //  Imágenes promocionales
   if (multimediaService.imagenes && multimediaService.imagenes.length > 0) {
     let imgs = [...multimediaService.imagenes];
 

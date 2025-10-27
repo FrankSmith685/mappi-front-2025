@@ -11,6 +11,7 @@ import { useAppState } from "../../../../hooks/useAppState";
 import type { ServicioActivoData } from "../../../../interfaces/IServicio";
 import { useRef, useEffect, useState } from "react";
 import { useLocation } from "../../../../hooks/useLocationHooks/useLocation";
+import { useSearchParams } from "react-router-dom";
 
 const imageUrl: string = import.meta.env.VITE_IMAGE_URL;
 
@@ -33,6 +34,8 @@ const ServicioSeleccionadoCard = ({ servicio }: Props) => {
 
   const logoUrl = logo || `${imageUrl}/0`;
   const portadaUrl = portada || `${imageUrl}/-1`;
+
+  const [searchParams, setSearchParams] = useSearchParams();
 
   // 🧮 Calcular distancia (Haversine)
   const calcularDistanciaKm = (
@@ -129,7 +132,16 @@ const ServicioSeleccionadoCard = ({ servicio }: Props) => {
 
         {/* Botón cerrar */}
         <button
-          onClick={() => setServicioSeleccionado(null)}
+          onClick={() => {
+            setServicioSeleccionado(null)
+            if (location.pathname === "/servicios") {
+              const currentParams = Object.fromEntries(searchParams.entries());
+              if ("s" in currentParams) {
+                delete currentParams.s;
+                setSearchParams(currentParams);
+              }
+            }
+          }}
           className="absolute top-3 right-3 bg-white/80 hover:bg-white text-gray-700 p-2 rounded-full shadow-md active:scale-95 transition"
         >
           <FiX className="w-5 h-5" />

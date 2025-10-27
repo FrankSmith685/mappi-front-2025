@@ -169,6 +169,12 @@ const CustomMapa = forwardRef(
         },
       }));
 
+      useEffect(() => {
+        setTimeout(() => {
+          map.invalidateSize();
+        }, 400); // pequeño retraso para esperar la animación del sidebar
+      }, [map]);
+
       return null;
     };
 
@@ -210,7 +216,7 @@ const CustomMapa = forwardRef(
           }
         />
 
-        {/* 🔵 Radio de 5 km */}
+        {/*  Radio de 5 km */}
         {
           type=="service" && <>
             <Circle
