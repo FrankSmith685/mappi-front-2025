@@ -29,7 +29,13 @@ const UserActions = ({ menuOpen }: UserActionsProps) => {
   const navigate = useNavigate();
   const isPanelRoute = location.pathname.startsWith("/panel");
   const isPanelPublicadorRoute = location.pathname.startsWith("/panel/publicador");
+
   const isHomeRoute = location.pathname === "/";
+  const searchParams = new URLSearchParams(location.search);
+  const mode = searchParams.get("m"); // puede ser 'map', 'list', etc.
+  const isServiciosMapOrList = location.pathname === "/servicios" && (mode === "map" || mode === "list");
+
+
   const {getUserInfo} = useUser();
 
   const handleClickIngresar = (): void => {
@@ -67,19 +73,17 @@ const UserActions = ({ menuOpen }: UserActionsProps) => {
   return (
     <div className='items-center gap-4 lg:gap-4 text-sm flex flex-row'>
       {/* Ir al Mapa */}
-      {!isHomeRoute && (
-        <>
-          {/* Ir al Mapa */}
-          <Tooltip title='Explorar en el mapa' arrow>
-            <div
-              className='group rounded-full transition-all cursor-pointer hover:shadow-sm hover:scale-105'
-              onClick={() => navigate("/servicios?m=map")}
-            >
-              <FaMapMarkedAlt className='text-2xl transition-colors text-white' />
-            </div>
-          </Tooltip>
-        </>
+      {!isHomeRoute && !isServiciosMapOrList && (
+        <Tooltip title='Explorar en el mapa' arrow>
+          <div
+            className='group rounded-full transition-all cursor-pointer hover:shadow-sm hover:scale-105'
+            onClick={() => navigate("/servicios?m=map")}
+          >
+            <FaMapMarkedAlt className='text-2xl transition-colors text-white' />
+          </div>
+        </Tooltip>
       )}
+
       {/* Notificaciones */}
       <Tooltip
         title='Notificaciones'

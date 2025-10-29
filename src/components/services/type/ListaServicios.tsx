@@ -113,10 +113,17 @@ const ListaServicios = () => {
 
               return (
                 <li
-                  key={servicio.cod_servicio}
-                  onClick={() => handleGoToService(servicio)}
-                  className="bg-white rounded-xl shadow-sm hover:shadow-lg transition flex flex-col sm:flex-row items-start sm:items-center gap-4 p-4 border border-gray-100 cursor-pointer hover:-translate-y-0.5 duration-200 w-full"
-                >
+  key={servicio.cod_servicio}
+  onClick={() => handleGoToService(servicio)}
+  className={`rounded-xl flex flex-col sm:flex-row items-start sm:items-center gap-4 p-4 cursor-pointer w-full 
+    transition-all duration-300 ease-in-out hover:-translate-y-0.5
+    ${
+      String(servicioSeleccionado?.cod_servicio) === String(servicio.cod_servicio)
+        ? "bg-primary/10 border-2 border-primary shadow-lg scale-[1.01]"
+        : "bg-white border border-gray-100 shadow-sm hover:shadow-md"
+    }`}
+>
+
                   {/* Logo */}
                   <div className="w-16 h-16 flex-shrink-0 bg-gray-100 rounded-full overflow-hidden flex items-center justify-center border border-gray-200">
                     <img
@@ -230,7 +237,7 @@ const ListaServicios = () => {
         </div>
       )}
 
-      {/* 📱 Panel móvil */}
+      {/*  Panel móvil */}
       {servicioSeleccionado && (
         <>
           {!isMobileExpanded && (

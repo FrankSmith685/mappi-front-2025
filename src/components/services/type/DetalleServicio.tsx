@@ -14,6 +14,7 @@ import {
   FaBullhorn,
   FaCommentDots,
   FaUserCircle,
+  FaShareAlt,
 } from "react-icons/fa";
 import { useLocation } from "../../../hooks/useLocationHooks/useLocation";
 import { CustomButton } from "../../ui/CustomButton";
@@ -45,6 +46,7 @@ const DetalleServicio = ({ servicio }: DetalleServicioProps) => {
   const { lat: userLat, lng: userLng } = useLocation();
   const {setServicioSeleccionado} = useAppState();
   const [searchParams, setSearchParams] = useSearchParams();
+  const [mensajeCopiado, setMensajeCopiado] = useState(false);
   const [comentarios, setComentarios] = useState([
     {
       id: 1,
@@ -105,6 +107,25 @@ const DetalleServicio = ({ servicio }: DetalleServicioProps) => {
     setNuevoComentario("");
   };
 
+  const handleCompartir = async () => {
+    const encoded = btoa(servicio.cod_servicio);
+    const currentParams = new URLSearchParams(searchParams);
+
+    // Aseguramos que exista el parámetro 's'
+    currentParams.set("s", encoded);
+
+    const url = `${window.location.origin}${window.location.pathname}?${currentParams.toString()}`;
+
+    try {
+      await navigator.clipboard.writeText(url);
+      setMensajeCopiado(true);
+      setTimeout(() => setMensajeCopiado(false), 2000);
+    } catch (err) {
+      console.error("Error al copiar enlace:", err);
+    }
+  };
+
+
   return (
     <div className="bg-white overflow-hidden shadow-lg hover:shadow-xl transition-all duration-300">
       {/* Imagen principal */}
@@ -115,6 +136,21 @@ const DetalleServicio = ({ servicio }: DetalleServicioProps) => {
           className="w-full h-full object-cover"
         />
         <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent z-10"></div>
+
+        <button
+          onClick={handleCompartir}
+          className="absolute top-3 right-3 z-20 bg-white/90 hover:bg-white text-gray-800 p-2 rounded-full shadow-md hover:shadow-lg transition-all duration-200"
+          title="Compartir servicio"
+        >
+          <FaShareAlt className="w-5 h-5 text-primary" />
+        </button>
+
+        {/* Mensaje de copiado */}
+        {mensajeCopiado && (
+          <div className="absolute top-3 right-14 bg-primary text-white text-xs px-3 py-1 rounded-full shadow-md animate-fade-in">
+            Enlace copiado
+          </div>
+        )}
 
         {/* Logo */}
         <div className="absolute bottom-0 left-1/2 transform -translate-x-1/2 translate-y-1/2 z-20">
