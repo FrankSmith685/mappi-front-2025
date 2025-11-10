@@ -60,4 +60,6 @@ export interface AppState {
   isExpanded: boolean;
   categoriaSeleccionada: string | null;
   multimediaAvisosPreview: MultimediaAvisoPreview | null;
+  activeIniciarSesionResena: boolean;
+  modalResena: boolean;
 }

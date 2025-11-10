@@ -1,19 +1,20 @@
 import { useState } from "react";
 import { FiMessageSquare } from "react-icons/fi";
-import ModalOpinion from "./modal/modalComentario";
 import { useAppState } from "../../../hooks/useAppState";
+import ModalComentarioLogin from "./modal/modalComentarioLogin";
 
 interface BotonOpinionProps {
   className?: string;
 }
 
 const BotonOpinion = ({ className = "" }: BotonOpinionProps) => {
+  const {setModalResena} = useAppState();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const { user } = useAppState();
 
   const handleClickModalOpen = () => {
     if (user) {
-      console.log("HOLA");
+      setModalResena(true)
     } else {
       setIsModalOpen(true);
     }
@@ -32,7 +33,7 @@ const BotonOpinion = ({ className = "" }: BotonOpinionProps) => {
         </span>
       </button>
 
-      <ModalOpinion
+      <ModalComentarioLogin
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}
       />

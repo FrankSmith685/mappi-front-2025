@@ -8,6 +8,7 @@ import { CustomButton } from "../../ui/CustomButton";
 import { useAuth } from "../../../hooks/useAuth";
 import { useNavigate } from "react-router-dom";
 import { useNotification } from "../../../hooks/useNotificacionHooks/useNotification";
+import { useAppState } from "../../../hooks/useAppState";
 
 const loginSchema = z.object({
   email: z
@@ -43,6 +44,7 @@ export const LoginForm: React.FC = () => {
   const {loginUser} = useAuth();
   const navigate = useNavigate();
   const {showMessage} = useNotification();
+  const {activeIniciarSesionResena, setModalResena} = useAppState();
 
   const onSubmit = async (data: LoginFormData) => {
     await loginUser(
@@ -53,7 +55,12 @@ export const LoginForm: React.FC = () => {
       },
       (res) => {
         if (res.success) {
-          navigate("/");
+          if(activeIniciarSesionResena){
+            navigate("/servicios?m=map");
+            setModalResena(true);
+          }else{
+            navigate("/");
+          }
         } else {
           showMessage(res.message || "Error al iniciar sesión", "error");
         }

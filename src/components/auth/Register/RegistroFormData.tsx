@@ -12,6 +12,7 @@ import { useNavigate } from "react-router-dom";
 import { useNotification } from "../../../hooks/useNotificacionHooks/useNotification";
 import { signInWithPopup } from "firebase/auth";
 import { auth, googleProvider } from "../../../config/firebase";
+import { useAppState } from "../../../hooks/useAppState";
 
 // Esquema de validación
 // Esquema de validación completo
@@ -79,6 +80,7 @@ export const RegistroForm: React.FC = () => {
   const {registerUser} = useAuth();
   const navigate= useNavigate();
   const {showMessage} = useNotification();
+  const {activeIniciarSesionResena, setModalResena} = useAppState();
 
   const onSubmit = async (data: RegistroFormData) => {
     const newData = {
@@ -88,11 +90,17 @@ export const RegistroForm: React.FC = () => {
         telefono: Number(data.celular),
         contrasena: data.password,
         dni: Number(data.documento),
+        proveedor: "correo"
     };
 
     await registerUser(newData, (res) => {
       if (res.success) {
-        navigate("/");
+        if(activeIniciarSesionResena){
+            navigate("/servicios?m=map");
+            setModalResena(true);
+          }else{
+            navigate("/");
+          }
       }else {
         showMessage(res.message || "error inesperado","error");
       }
@@ -112,7 +120,12 @@ export const RegistroForm: React.FC = () => {
         
         await registerUser(newData, async (res) => {
         if (res.success) {
-            navigate("/");
+            if(activeIniciarSesionResena){
+              navigate("/servicios?m=map");
+              setModalResena(true);
+            }else{
+              navigate("/");
+            }
         } else {
            if (res.message?.includes("El usuario ya existe con este correo")) {
                 showMessage(

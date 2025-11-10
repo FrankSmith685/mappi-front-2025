@@ -47,7 +47,9 @@ import {
   setServicioSeleccionado, 
   setIsExpanded,
   setCategoriaSeleccionada,
-  setMultimediaAvisoPreview
+  setMultimediaAvisoPreview,
+  setActiveInciarSesionResena,
+  setModalResena
 } from "../context/actions/actions";
 import type { ModeLoginType } from "../interfaces/appStateInterface";
 import type { AuthLoginForm, AuthRegisterForm } from "../interfaces/auth";
@@ -120,7 +122,9 @@ export const useAppState = () => {
     setIsExpanded: (isExpanded: boolean) => dispatch(setIsExpanded(isExpanded)),
     setCategoriaSeleccionada: (categoriaSeleccionada: string | null) => dispatch(setCategoriaSeleccionada(categoriaSeleccionada)),
     setMultimediaAvisoPreview: (multimediaAvisosPreview: MultimediaAvisoPreview | null) => dispatch(setMultimediaAvisoPreview(multimediaAvisosPreview)),
-  };
-
+    setActiveInciarSesionResena: (activeIniciarSesionResena: boolean) => dispatch(setActiveInciarSesionResena(activeIniciarSesionResena)),
+    setModalResena: (modalResena: boolean) => dispatch(setModalResena(modalResena)),
   
+    
+  };
 };

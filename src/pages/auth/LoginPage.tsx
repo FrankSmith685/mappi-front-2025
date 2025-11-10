@@ -11,12 +11,14 @@ import { auth, googleProvider } from "../../config/firebase";
 import { useAuth } from "../../hooks/useAuth";
 import { useNavigate } from "react-router-dom";
 import { useNotification } from "../../hooks/useNotificacionHooks/useNotification";
+import { useAppState } from "../../hooks/useAppState";
 
 const LoginPage: React.FC = () => {
 
   const {loginUser} = useAuth();
   const navigate = useNavigate();
   const {showMessage} = useNotification();
+  const {activeIniciarSesionResena, setModalResena} = useAppState();
 
   const handleGoogleLogin = async () => {
     try {
@@ -31,7 +33,12 @@ const LoginPage: React.FC = () => {
 
       await loginUser(data, async (loginRes) => {
         if (loginRes.success) {
-          navigate("/");
+          if(activeIniciarSesionResena){
+              navigate("/servicios?m=map");
+              setModalResena(true);
+            }else{
+              navigate("/");
+            }
         } else {
           if (loginRes.message?.includes("Este usuario no tiene inicio de sesión con google")) {
             showMessage(

@@ -28,38 +28,52 @@ export const LocationProvider = ({ children }: Props) => {
 
   //  Obtener coordenadas del usuario
   useEffect(() => {
-    if (!navigator.geolocation) {
-      console.warn("El navegador no soporta geolocalización. Usando ubicación por defecto.");
+  if (!navigator.geolocation) {
+    console.warn("El navegador no soporta geolocalización. Usando ubicación por defecto.");
+    setLat(DEFAULT_LOCATION.lat);
+    setLng(DEFAULT_LOCATION.lng);
+    setDepartamento(DEFAULT_LOCATION.departamento);
+    setProvincia(DEFAULT_LOCATION.provincia);
+    setDistrito(DEFAULT_LOCATION.distrito);
+    setDireccion(DEFAULT_LOCATION.direccion);
+    return;
+  }
+
+  // 🔹 Obtener posición inicial inmediatamente
+  navigator.geolocation.getCurrentPosition(
+    (pos) => {
+      const { latitude, longitude } = pos.coords;
+      setLat(latitude);
+      setLng(longitude);
+    },
+    (err) => {
+      console.warn("Error al obtener ubicación inicial:", err);
       setLat(DEFAULT_LOCATION.lat);
       setLng(DEFAULT_LOCATION.lng);
       setDepartamento(DEFAULT_LOCATION.departamento);
       setProvincia(DEFAULT_LOCATION.provincia);
       setDistrito(DEFAULT_LOCATION.distrito);
       setDireccion(DEFAULT_LOCATION.direccion);
-      return;
-    }
+    },
+    { enableHighAccuracy: true }
+  );
 
-    const watchId = navigator.geolocation.watchPosition(
-      (pos) => {
-        const { latitude, longitude } = pos.coords;
-        setLat(latitude);
-        setLng(longitude);
-      },
-      (err) => {
-        console.warn("Error al obtener ubicación:", err);
-        //  Fallback a Lima si falla la geolocalización
-        setLat(DEFAULT_LOCATION.lat);
-        setLng(DEFAULT_LOCATION.lng);
-        setDepartamento(DEFAULT_LOCATION.departamento);
-        setProvincia(DEFAULT_LOCATION.provincia);
-        setDistrito(DEFAULT_LOCATION.distrito);
-        setDireccion(DEFAULT_LOCATION.direccion);
-      },
-      { enableHighAccuracy: true }
-    );
+  // 🔹 Luego iniciar el "watch" para detectar cambios
+  const watchId = navigator.geolocation.watchPosition(
+    (pos) => {
+      const { latitude, longitude } = pos.coords;
+      setLat(latitude);
+      setLng(longitude);
+    },
+    (err) => {
+      console.warn("Error al observar cambios de ubicación:", err);
+    },
+    { enableHighAccuracy: true }
+  );
 
-    return () => navigator.geolocation.clearWatch(watchId);
-  }, []);
+  return () => navigator.geolocation.clearWatch(watchId);
+}, []);
+
 
   // 🌎 Traducir coordenadas a datos de ubicación
   useEffect(() => {

@@ -41,7 +41,7 @@ export function getSubcategoriaImage(
     "Subcategoría de Postres y café": "mapp_295",
     "Subcategoría de Bar": "mapp_300", 
     "Subcategoría de Otros": "pin_default", //  marcador especial
-    "Subcategoría de Reseñas": "mapp_293",
+    "Subcategoría de Reseñas": "mapp_642",
   };
 
   //  Verificar si el ID tiene icono propio
@@ -85,6 +85,7 @@ export function getSelectedSubcategoriaImage(
     "Subcategoría de Restaurantes": "mapp_634",
     "Subcategoría de Postres y café": "mapp_633",
     "Subcategoría de Comida al paso": "mapp_632",
+    "Subcategoría de Reseñas": "mapp_643"
   };
 
   if (selectedMap[subcategoria.cod_subcategoria]) {

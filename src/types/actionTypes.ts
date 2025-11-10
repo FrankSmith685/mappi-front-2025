@@ -60,6 +60,9 @@ export const SET_SERVICIO_SELECCIONADO = "SET_SERVICIO_SELECCIONADO" as const;
 export const SET_IS_EXPANDED = "SET_IS_EXPANDED" as const;
 export const SET_CATEGORIA_SELECCIONADA = "SET_CATEGORIA_SELECCIONADA" as const;
 export const SET_MULTIMEDIA_AVISOS_PREVIEW = "SET_MULTIMEDIA_AVISOS_PREVIEW" as const;
+export const SET_ACTIVE_INICIAR_SESION_RESENA = "SET_ACTIVE_INICIAR_SESION_RESENA" as const;
+export const SET_MODAL_RESENA = "SET_MODAL_RESENA" as const;
+
 
 
 export type ActionTypes =
@@ -112,3 +115,5 @@ export type ActionTypes =
   | { type: typeof SET_IS_EXPANDED; payload:  boolean}
   | { type: typeof SET_CATEGORIA_SELECCIONADA; payload:  string | null}
   | { type: typeof SET_MULTIMEDIA_AVISOS_PREVIEW; payload:  MultimediaAvisoPreview | null }
+  | { type: typeof SET_ACTIVE_INICIAR_SESION_RESENA; payload:  boolean }
+  | { type: typeof SET_MODAL_RESENA; payload:  boolean }

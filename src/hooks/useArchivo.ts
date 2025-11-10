@@ -216,7 +216,7 @@ export const useArchivo = () => {
   ): Promise<void> => {
     try {
       const response = await apiWithAuth.delete<ArchivoResponse<null>>(
-        `/archivos/${archivoId}`
+        `/archivos/delete/${archivoId}`
       );
       const { success, message } = response.data;
       callback?.(success, message);

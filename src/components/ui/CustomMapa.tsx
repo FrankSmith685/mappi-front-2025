@@ -139,7 +139,7 @@ const CustomMapa = forwardRef(
 
     const zoomControlPosition = type === "service" ? "bottomright" : "topleft";
 
-    
+      
 
     const MapContent = () => {
       const map = useMap();
@@ -169,14 +169,28 @@ const CustomMapa = forwardRef(
         },
       }));
 
+      // useEffect(() => {
+      //   setTimeout(() => {
+      //     map.invalidateSize();
+      //   }, 400); // pequeño retraso para esperar la animación del sidebar
+      // }, [map]);
       useEffect(() => {
-        setTimeout(() => {
-          map.invalidateSize();
-        }, 400); // pequeño retraso para esperar la animación del sidebar
+        const resizeTimer = setTimeout(() => {
+          try {
+            map.invalidateSize(false);
+          } catch (e) {
+            console.warn("Mapa no listo aún:", e);
+          }
+        }, 500); // espera medio segundo para asegurarte de que el modal está visible
+
+        return () => clearTimeout(resizeTimer);
       }, [map]);
+
 
       return null;
     };
+
+    
 
     
 

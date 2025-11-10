@@ -121,7 +121,9 @@ const initialState: AppState = {
   servicioSeleccionado: null,
   isExpanded:false,
   categoriaSeleccionada:null,
-  multimediaAvisosPreview: null
+  multimediaAvisosPreview: null,
+  activeIniciarSesionResena: false,
+  modalResena: false
 }
 
 

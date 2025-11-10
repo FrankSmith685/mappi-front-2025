@@ -13,7 +13,7 @@ import {
   FaRoute,
   FaBullhorn,
   FaCommentDots,
-  FaUserCircle,
+  // FaUserCircle,
   FaShareAlt,
 } from "react-icons/fa";
 import { useLocation } from "../../../hooks/useLocationHooks/useLocation";
@@ -47,23 +47,23 @@ const DetalleServicio = ({ servicio }: DetalleServicioProps) => {
   const {setServicioSeleccionado} = useAppState();
   const [searchParams, setSearchParams] = useSearchParams();
   const [mensajeCopiado, setMensajeCopiado] = useState(false);
-  const [comentarios, setComentarios] = useState([
-    {
-      id: 1,
-      usuario: "Carlos Pérez",
-      avatar: "https://randomuser.me/api/portraits/men/32.jpg",
-      texto: "Excelente servicio y muy rápido.",
-      fecha: new Date(),
-    },
-    {
-      id: 2,
-      usuario: "María López",
-      avatar: "https://randomuser.me/api/portraits/women/44.jpg",
-      texto: "Muy buena atención, recomendado 👍",
-      fecha: new Date(),
-    },
-  ]);
-  const [nuevoComentario, setNuevoComentario] = useState("");
+  // const [comentarios, setComentarios] = useState([
+  //   {
+  //     id: 1,
+  //     usuario: "Carlos Pérez",
+  //     avatar: "https://randomuser.me/api/portraits/men/32.jpg",
+  //     texto: "Excelente servicio y muy rápido.",
+  //     fecha: new Date(),
+  //   },
+  //   {
+  //     id: 2,
+  //     usuario: "María López",
+  //     avatar: "https://randomuser.me/api/portraits/women/44.jpg",
+  //     texto: "Muy buena atención, recomendado 👍",
+  //     fecha: new Date(),
+  //   },
+  // ]);
+  // const [nuevoComentario, setNuevoComentario] = useState("");
 
   const portada =
     servicio.archivos?.find((a: any) => a.tipo === "portada")?.ruta ||
@@ -92,20 +92,20 @@ const DetalleServicio = ({ servicio }: DetalleServicioProps) => {
     distanciaTexto = `${distancia.toFixed(1)} km de tu ubicación`;
   }
 
-  const agregarComentario = () => {
-    if (nuevoComentario.trim() === "") return;
+  // const agregarComentario = () => {
+  //   if (nuevoComentario.trim() === "") return;
 
-    const nuevo = {
-      id: comentarios.length + 1,
-      usuario: "Usuario invitado",
-      avatar: "https://randomuser.me/api/portraits/lego/5.jpg",
-      texto: nuevoComentario,
-      fecha: new Date(),
-    };
+  //   const nuevo = {
+  //     id: comentarios.length + 1,
+  //     usuario: "Usuario invitado",
+  //     avatar: "https://randomuser.me/api/portraits/lego/5.jpg",
+  //     texto: nuevoComentario,
+  //     fecha: new Date(),
+  //   };
 
-    setComentarios([nuevo, ...comentarios]);
-    setNuevoComentario("");
-  };
+  //   setComentarios([nuevo, ...comentarios]);
+  //   setNuevoComentario("");
+  // };
 
   const handleCompartir = async () => {
     const encoded = btoa(servicio.cod_servicio);
@@ -300,49 +300,104 @@ const DetalleServicio = ({ servicio }: DetalleServicioProps) => {
 
 
         {/* Comentarios */}
-        <div className="py-3 border-y border-gray-200">
-          <h3 className="text-sm sm:text-base font-semibold text-gray-700 flex items-center gap-2">
-            <FaCommentDots className="text-primary text-base" /> Comentarios
-          </h3>
+        {/* Comentarios */}
+        {servicio.resenas && servicio.resenas.length > 0 && (
+          <div className="py-3 border-y border-gray-200">
+            <h3 className="text-sm sm:text-base font-semibold text-gray-700 flex items-center gap-2">
+              <FaCommentDots className="text-primary text-base" /> Comentarios
+            </h3>
 
-          {/* Lista */}
-          <div className="mt-2 space-y-3 max-h-48 overflow-y-auto pr-1">
-            {comentarios.map((c) => (
-              <div key={c.id} className="flex items-start gap-3">
-                <img
-                  src={c.avatar}
-                  alt={c.usuario}
-                  className="w-8 h-8 sm:w-10 sm:h-10 rounded-full object-cover border"
-                />
-                <div>
-                  <p className="text-sm font-semibold text-gray-700">{c.usuario}</p>
-                  <p className="text-[13px] sm:text-sm text-gray-600">{c.texto}</p>
-                  <p className="text-[11px] text-gray-400">{dayjs(c.fecha).fromNow()}</p>
+            {/* Lista */}
+            <div className="mt-2 space-y-3 max-h-60 overflow-y-auto pr-1">
+              {servicio.resenas.map((r: any) => (
+                <div
+                  key={r.id}
+                  className="flex items-start gap-3 p-2 rounded-lg hover:bg-gray-50 transition-colors"
+                >
+                  <img
+                    src={
+                      r.autor?.avatar ||
+                      "https://cdn-icons-png.flaticon.com/512/1077/1077114.png"
+                    }
+                    alt={r.autor?.nombre || "Usuario"}
+                    className="w-9 h-9 sm:w-10 sm:h-10 rounded-full object-cover border"
+                  />
+                  <div className="flex-1">
+                    <div className="flex items-center justify-between">
+                      <p className="text-sm font-semibold text-gray-700">
+                        {r.autor
+                          ? `${r.autor.nombre} ${r.autor.apellido}`
+                          : "Usuario anónimo"}
+                      </p>
+                      <span className="text-[11px] text-gray-400">
+                        {dayjs(r.fecha).fromNow()}
+                      </span>
+                    </div>
+                    <div className="flex items-center gap-1 text-yellow-500 text-xs">
+                      {"★".repeat(r.rating)}{" "}
+                      <span className="text-gray-500 ml-1">{r.rating}/5</span>
+                    </div>
+                    <p className="text-[13px] sm:text-sm text-gray-600 mt-1">
+                      {r.texto}
+                    </p>
+
+                    {/* Archivos adjuntos */}
+                    {r.archivos && r.archivos.length > 0 && (
+                      <div className="mt-3 grid grid-cols-2 sm:grid-cols-3 gap-3">
+                        {r.archivos.map((a: any, i: number) => (
+                          <div
+                            key={i}
+                            className="relative group overflow-hidden rounded-lg border border-gray-200 bg-gray-50 shadow-sm hover:shadow-md transition-all duration-300"
+                          >
+                            {a.tipo === "imagen" ? (
+                              <>
+                                <img
+                                  src={a.ruta}
+                                  alt={a.nombreOriginal || `Imagen ${i + 1}`}
+                                  className="w-full h-32 object-cover group-hover:scale-105 transition-transform duration-300 cursor-pointer"
+                                  onClick={() => window.open(a.ruta, "_blank")}
+                                />
+                                <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-all"></div>
+                                <div className="absolute bottom-1 left-1 bg-white/90 text-gray-700 text-[10px] px-2 py-[2px] rounded">
+                                  Imagen
+                                </div>
+                              </>
+                            ) : a.tipo === "video" ? (
+                              <div className="relative w-full h-32 bg-black">
+                                <video
+  controls
+  className="w-full h-full object-cover rounded-md"
+>
+  <source src={a.ruta} type="video/mp4" />
+  Tu navegador no soporta la reproducción de video.
+</video>
+
+                                <div className="absolute bottom-1 left-1 bg-white/90 text-gray-700 text-[10px] px-2 py-[2px] rounded">
+                                  Video
+                                </div>
+                              </div>
+                            ) : (
+                              <a
+                                href={a.ruta}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="flex items-center justify-center text-xs text-primary underline hover:text-primary-dark p-2"
+                              >
+                                {a.nombreOriginal || `Archivo ${i + 1}`}
+                              </a>
+                            )}
+                          </div>
+                        ))}
+                      </div>
+                    )}
+
+                  </div>
                 </div>
-              </div>
-            ))}
+              ))}
+            </div>
           </div>
+        )}
 
-          {/* Input comentario */}
-          <div className="mt-3 flex flex-col sm:flex-row items-stretch sm:items-center gap-2">
-            <input
-              type="text"
-              value={nuevoComentario}
-              onChange={(e) => setNuevoComentario(e.target.value)}
-              placeholder="Escribe un comentario..."
-              className="flex-1 border rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary"
-            />
-            <CustomButton
-              text="Agregar"
-              type="button"
-              size="md"
-              variant="primary"
-              onClick={agregarComentario}
-              icon={<FaUserCircle />}
-              fullWidth={false}
-            />
-          </div>
-        </div>
 
         {/* Botón Ver más */}
         {/* <div className="max-w-[500px] w-full lg:w-full "> */}

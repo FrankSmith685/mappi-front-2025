@@ -53,6 +53,39 @@ export const useAuth = () => {
         }
     };
 
+    const loginOrRegisterUser = async (
+        data: {
+        correo: string;
+        contrasena?: string;
+        proveedor?: "correo" | "google" | "facebook";
+        nombre?: string;
+        apellido?: string;
+        telefono?: string;
+        dni?: string;
+        fotoPerfil?: string;
+        },
+        callback?: (response: { success: boolean; message?: string }) => void
+    ): Promise<void> => {
+        try {
+        const response = await api.post<RegisterAuthResponse>("/auth/auth", data);
+        const { success, message, accessToken, refreshToken } = response.data;
+
+        if (success && accessToken && refreshToken) {
+            setAccessToken(accessToken);
+            setRefreshtoken(refreshToken);
+            callback?.({ success, message });
+        } else {
+            callback?.({ success: false, message: message || "Error desconocido en autenticación" });
+        }
+        } catch (error: any) {
+        handleApiError(error);
+        callback?.({
+            success: false,
+            message: error.response?.data?.message || "Error en autenticación automática",
+        });
+        }
+    };
+
     const logout = (): void => {
         setAccessToken(null);
         setRefreshtoken(null);
@@ -123,6 +156,7 @@ export const useAuth = () => {
         loginUser,
         sendResetEmail,
         validateResetToken,
-        resetPassword
+        resetPassword,
+        loginOrRegisterUser
     };
 };

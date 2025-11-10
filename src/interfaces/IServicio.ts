@@ -107,6 +107,37 @@ export interface Archivo_Servicio {
   fechaSubida: string;
 }
 
+// 👤 Autor de la reseña
+export interface AutorResena {
+  interno: string;
+  nombre: string;
+  apellido: string;
+  correo: string;
+}
+
+// 📦 Archivo dentro de una reseña
+export interface Archivo_Resena {
+  id: number;
+  tipo: string;
+  nombreOriginal: string;
+  ruta: string;
+  fechaSubida: string;
+}
+
+// ⭐ Reseña asociada al servicio
+export interface Resena_Servicio {
+  id: number;
+  titulo: string;
+  texto: string;
+  rating: number;
+  fecha: string;
+  usuario_interno: string;
+  autor: AutorResena | null;
+  archivos: Archivo_Resena[];
+}
+
+
+
 // 💼 Datos del servicio activo
 export interface ServicioActivoData {
   cod_servicio: string;
@@ -118,6 +149,7 @@ export interface ServicioActivoData {
   subcategoria: Subcategoria_Servicio | null;
   direccion: Direccion_Servicio | null;
   archivos: Archivo_Servicio[];
+  resenas: Resena_Servicio[];
   abierto24h: boolean;
   horaInicio: string | null;
   horaFin: string | null;

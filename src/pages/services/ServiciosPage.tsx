@@ -6,6 +6,7 @@ import MapaServicios from "../../components/services/type/MapaServicios";
 import { useAppState } from "../../hooks/useAppState";
 import { useServicio } from "../../hooks/useServicio";
 import ListaServicios from "../../components/services/type/ListaServicios";
+import ModalComentario from "../../components/services/components/modal/modalComentario";
 
 const Servicios = () => {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -38,13 +39,16 @@ const Servicios = () => {
   }, [mode]);
 
   return (
-    <div className="flex flex-col">
-      {/* Header con filtros */}
-      <ServiciosHeader />
+    <>
+       <div className="flex flex-col">
+        {/* Header con filtros */}
+        <ServiciosHeader />
 
-      {/* Modo Mapa o Lista */}
-      {mode === "map" ? <MapaServicios /> : <ListaServicios />}
-    </div>
+        {/* Modo Mapa o Lista */}
+        {mode === "map" ? <MapaServicios /> : <ListaServicios />}
+      </div>
+      <ModalComentario />
+    </>
   );
 };
 

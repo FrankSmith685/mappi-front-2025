@@ -87,6 +87,7 @@ const MapaServicios = () => {
       );
 
       if (foundService) {
+        console.log("foundService", foundService);
         setServicioSeleccionado(foundService);
 
         setTimeout(() => {
