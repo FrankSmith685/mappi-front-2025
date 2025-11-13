@@ -25,7 +25,7 @@ const Contactos = () => {
 
   return (
     <div>
-      <h3 className="text-xl font-bold mb-4">Mis Contactos</h3>
+      {/* <h3 className="text-xl font-bold mb-4">Mis Contactos</h3> */}
       <div className="grid gap-4">
         {contactos.map((c) => (
           <div

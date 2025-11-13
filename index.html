@@ -2,9 +2,9 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+   <link rel="icon" type="image/x-icon" href="/vite.ico" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Vite + React + TS</title>
+    <title>mappi</title>
   </head>
   <body>
     <div id="root"></div>
@@ -57,7 +57,9 @@
               "Authorization",
               `Bearer ${skLive}`
           );
-          xhr.setRequestHeader("content-type", "application/json");
+
+        // xhr.open("POST", `${apiURL}/culqi/crear-orden`);
+        xhr.setRequestHeader("Content-Type", "application/json");
 
           xhr.send(data);
       }

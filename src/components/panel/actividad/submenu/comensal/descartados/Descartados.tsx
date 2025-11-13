@@ -21,7 +21,7 @@ const Descartados = () => {
 
   return (
     <div>
-      <h3 className="text-xl font-bold mb-4">Mis Descartes</h3>
+      {/* <h3 className="text-xl font-bold mb-4">Mis Descartes</h3> */}
 
       {descartados.length === 0 ? (
         <p className="text-gray-500">No tienes huariques descartados.</p>

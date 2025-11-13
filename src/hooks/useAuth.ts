@@ -6,7 +6,7 @@ import { useAppState } from "./useAppState";
 
 export const useAuth = () => {
 
-    const {setRefreshtoken,setAccessToken, setUser, setMenuOpen,setCompany } = useAppState();
+    const {setRefreshtoken,setAccessToken, setUser, setMenuOpen,setCompany, setTypeUserAuth } = useAppState();
 
     const loginUser = async (
         credentials: { correo: string; proveedor: "correo" | "google" | "facebook" ; contraseña: string },
@@ -36,6 +36,7 @@ export const useAuth = () => {
             contrasena: string;
             dni?: number;
             proveedor?:string;
+            type_user?: number;
         },
         callback?: (response: { success: boolean; message?: string }) => void
         ): Promise<void> => {
@@ -63,6 +64,7 @@ export const useAuth = () => {
         telefono?: string;
         dni?: string;
         fotoPerfil?: string;
+        type_user?: number;
         },
         callback?: (response: { success: boolean; message?: string }) => void
     ): Promise<void> => {
@@ -94,6 +96,7 @@ export const useAuth = () => {
         localStorage.removeItem("accessToken");
         localStorage.removeItem("refreshToken");
         setMenuOpen(false);
+        setTypeUserAuth(null);
     };
 
    const sendResetEmail = async (

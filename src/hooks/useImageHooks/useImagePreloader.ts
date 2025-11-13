@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-//  useImagePreloader.ts
+// useImagePreloader.ts
 import { useEffect, useState } from "react";
 import { imageList } from "../../utils/imageUtils";
 import { imageBaseUrl } from "../../api/apiConfig";
@@ -9,7 +9,7 @@ interface ImagePreloaderState {
   isLoaded: boolean;
 }
 
-//  Variables globales: mantienen cache durante la sesión
+const CACHE_VERSION = "v2";
 let globalCache: Record<string, string> = {};
 let globalLoaded = false;
 
@@ -18,67 +18,72 @@ export const useImagePreloader = (): ImagePreloaderState => {
   const [isLoaded, setIsLoaded] = useState(globalLoaded);
 
   useEffect(() => {
-    // Si ya está cargado globalmente, evitamos recargar
-    if (globalLoaded) return;
-
     let isMounted = true;
 
-    //  Intentar recuperar cache guardado en localStorage
+    const savedVersion = localStorage.getItem("imageCacheVersion");
     const savedCache = localStorage.getItem("imageCache");
-    if (savedCache) {
+
+    // ✅ Cargar desde cache aunque globalLoaded sea true (React StrictMode safe)
+    if (savedCache && savedVersion === CACHE_VERSION) {
       try {
         const parsed = JSON.parse(savedCache);
-        globalCache = parsed;
-        globalLoaded = true;
-        if (isMounted) {
-          setImages(parsed);
-          setIsLoaded(true);
+        const hasImages = Object.keys(parsed).length > 0;
+        if (hasImages) {
+          console.log("🟢 Cargando imágenes desde localStorage");
+          globalCache = parsed;
+          if (isMounted) {
+            setImages(parsed);
+            setIsLoaded(true);
+          }
+          globalLoaded = true;
+          return;
         }
-        return; // Ya tenemos todo cargado desde localStorage
       } catch (err) {
-        console.error("Error leyendo cache local:", err);
+        console.error("❌ Error leyendo cache local:", err);
       }
+    } else {
+      console.log("⚠️ Cache inválido o versión distinta. Limpieza...");
+      localStorage.removeItem("imageCache");
+      localStorage.removeItem("imageCacheVersion");
     }
 
     const loadImages = async () => {
-      for (const { name, key } of imageList) {
-        // Si ya está en cache global, saltar
-        if (globalCache[name]) continue;
+      console.log("🔄 Precargando imágenes...");
+      try {
+        const loadPromises = imageList.map(({ name, key }) => {
+          const src = `${imageBaseUrl}${key}`;
+          const img = new Image();
+          img.src = src;
 
-        const src = `${imageBaseUrl}${key}`;
-        const img: HTMLImageElement = new Image();
-        img.src = src;
+          return new Promise<void>((resolve) => {
+            img.onload = () => {
+              globalCache[name] = src;
+              resolve();
+            };
+            img.onerror = () => {
+              console.warn(`⚠️ Error cargando imagen: ${src}`);
+              resolve();
+            };
+          });
+        });
 
-        // Esperar a que la imagen cargue o falle
-        const loadPromise: Promise<void> =
-          "decode" in img
-            ? img.decode().catch(() => {})
-            : new Promise((resolve) => {
-                const image = img as HTMLImageElement;
-                image.onload = () => resolve();
-                image.onerror = () => resolve();
-              });
+        await Promise.all(loadPromises);
 
-
-
-        await loadPromise;
-
-        // Actualizar el estado progresivamente
         if (isMounted) {
-          globalCache[name] = src;
+          console.log("✅ Imágenes cargadas completamente");
           setImages({ ...globalCache });
-          // Guardar cache actualizado
-          localStorage.setItem("imageCache", JSON.stringify(globalCache));
+          setIsLoaded(true);
         }
-      }
 
-      if (isMounted) {
+        localStorage.setItem("imageCache", JSON.stringify(globalCache));
+        localStorage.setItem("imageCacheVersion", CACHE_VERSION);
         globalLoaded = true;
-        setIsLoaded(true);
+      } catch (err) {
+        console.error("❌ Error cargando imágenes:", err);
       }
     };
 
-    //  Ejecutar carga en segundo plano (sin bloquear render)
+    // Carga en segundo plano
     if ("requestIdleCallback" in window) {
       (window as any).requestIdleCallback(loadImages);
     } else {
@@ -88,7 +93,7 @@ export const useImagePreloader = (): ImagePreloaderState => {
     return () => {
       isMounted = false;
     };
-  }, []);
+  }, []); // 👈 sin dependencia globalLoaded (debe ejecutarse siempre una vez por montaje real)
 
   return { images, isLoaded };
 };

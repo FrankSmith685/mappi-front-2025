@@ -1,10 +1,17 @@
 import { useParams, Navigate } from "react-router-dom";
-import { menuActividadData } from "./data/menuActividadData";
-import Contactos from "./submenu/contactos/Contactos";
-import Favoritos from "./submenu/favoritos/Favoritos";
-import Historial from "./submenu/historial/Historial";
-import Descartados from "./submenu/descartados/Descartados";
-import BusquedasAlertas from "./submenu/busquedasAlertas/BusquedasAlertas";
+import { getMenuActividadData } from "./data/menuActividadData";
+import Contactos from "./submenu/comensal/contactos/Contactos";
+import Favoritos from "./submenu/comensal/favoritos/Favoritos";
+import Historial from "./submenu/comensal/historial/Historial";
+import Descartados from "./submenu/comensal/descartados/Descartados";
+import BusquedasAlertas from "./submenu/comensal/busquedasAlertas/BusquedasAlertas";
+
+import Clientes from "./submenu/emprendedor/clientes/Clientes";
+import Resenas from "./submenu/emprendedor/resenas/Resenas";
+import Estadisticas from "./submenu/emprendedor/estadisticas/Estadisticas";
+import Ventas from "./submenu/emprendedor/ventas/Ventas";
+import Reservas from "./submenu/emprendedor/reservas/Reservas";
+
 import { CustomSidebarSubMenu } from "../../ui/CustomSidebarSubMenuUser";
 import CuentaSectionLayout from "../../ui/CustomCuentaSectionLayaout";
 import { useAppState } from "../../../hooks/useAppState";
@@ -12,70 +19,118 @@ import { FaClipboardList } from "react-icons/fa";
 
 const Actividad = () => {
   const { suboption } = useParams<{ suboption?: string }>();
-  const { setMenuOpenUser, menuOpenUser } = useAppState();
+  const { setMenuOpenUser, menuOpenUser, user } = useAppState();
 
-  const validOptions = ["contactos", "favoritos", "historial", "descartados","busquedas-alertas"];
+  const codTipo = user?.tipo_usuario?.[0]?.cod_tipo_usuario;
+  const esComensal = codTipo === 4;
+
+  // Rutas válidas según el tipo de usuario
+  const validOptionsComensal = [
+    "contactos",
+    "favoritos",
+    "historial",
+    "descartados",
+    "busquedas-alertas",
+  ];
+
+  const validOptionsEmprendedor = [
+    "clientes",
+    "resenas",
+    "estadisticas",
+    "ventas",
+    "reservas",
+  ];
+
+  const validOptions = esComensal
+    ? validOptionsComensal
+    : validOptionsEmprendedor;
 
   if (!suboption || !validOptions.includes(suboption)) {
-    return <Navigate to="/panel/actividad/contactos" replace />;
+    // Redirige al primero válido según tipo
+    const defaultPath = esComensal
+      ? "/panel/actividad/contactos"
+      : "/panel/actividad/clientes";
+    return <Navigate to={defaultPath} replace />;
   }
 
-  // const filteredMenuData = menuActividadData.filter((item) => {
-  //     if ((item.path?.includes("password") || item.path?.includes("email")) && !user?.metodosLogin?.includes("correo")) {
-  //       return false;
-  //     }
-  
-  //     // Ocultar "vincular" si por alguna razón no tiene metodosLogin definido
-  //     if (item.path?.includes("vincular") && (!user?.metodosLogin || user?.metodosLogin.length === 0)) {
-  //       return false;
-  //     }
-  
-  //     return true;
-  //   });
+  const props = {
+    menuOpenUser,
+    onToggleSidebar: () => setMenuOpenUser(!menuOpenUser),
+  };
 
-  
   const renderSubComponent = () => {
-  const props = { menuOpenUser, onToggleSidebar: () => setMenuOpenUser(!menuOpenUser) };
-
-  switch (suboption) {
-    case "contactos":
-      return (
-        <CuentaSectionLayout title="Mis Contactos" {...props}>
-          <Contactos />
-        </CuentaSectionLayout>
-      );
-    case "favoritos":
-      return (
-        <CuentaSectionLayout title="Mis Favoritos" {...props}>
-          <Favoritos />
-        </CuentaSectionLayout>
-      );
-    case "historial":
-      return (
-        <CuentaSectionLayout title="Mi Historial" {...props}>
-          <Historial />
-        </CuentaSectionLayout>
-      );
-    case "descartados":
-      return (
-        <CuentaSectionLayout title="Mis Descartados" {...props}>
-          <Descartados />
-        </CuentaSectionLayout>
-      );
-    case "busquedas-alertas":
-      return (
-        <CuentaSectionLayout title="Mis Búsquedas y Alertas" {...props}>
-          <BusquedasAlertas />
-        </CuentaSectionLayout>
-      );
-  }
-};
-
+    if (esComensal) {
+      switch (suboption) {
+        case "contactos":
+          return (
+            <CuentaSectionLayout title="Mis Contactos" {...props}>
+              <Contactos />
+            </CuentaSectionLayout>
+          );
+        case "favoritos":
+          return (
+            <CuentaSectionLayout title="Mis Favoritos" {...props}>
+              <Favoritos />
+            </CuentaSectionLayout>
+          );
+        case "historial":
+          return (
+            <CuentaSectionLayout title="Mi Historial" {...props}>
+              <Historial />
+            </CuentaSectionLayout>
+          );
+        case "descartados":
+          return (
+            <CuentaSectionLayout title="Mis Descartados" {...props}>
+              <Descartados />
+            </CuentaSectionLayout>
+          );
+        case "busquedas-alertas":
+          return (
+            <CuentaSectionLayout title="Mis Búsquedas y Alertas" {...props}>
+              <BusquedasAlertas />
+            </CuentaSectionLayout>
+          );
+      }
+    } else {
+      switch (suboption) {
+        case "clientes":
+          return (
+            <CuentaSectionLayout title="Mis Clientes o Contactos" {...props}>
+              <Clientes />
+            </CuentaSectionLayout>
+          );
+        case "resenas":
+          return (
+            <CuentaSectionLayout title="Mis Reseñas" {...props}>
+              <Resenas />
+            </CuentaSectionLayout>
+          );
+        case "estadisticas":
+          return (
+            <CuentaSectionLayout title="Mis Estadísticas o Analíticas" {...props}>
+              <Estadisticas />
+            </CuentaSectionLayout>
+          );
+        case "ventas":
+          return (
+            <CuentaSectionLayout title="Mis Ventas o Solicitudes" {...props}>
+              <Ventas />
+            </CuentaSectionLayout>
+          );
+        case "reservas":
+          return (
+            <CuentaSectionLayout title="Mi Historial de Reservas o Pedidos" {...props}>
+              <Reservas />
+            </CuentaSectionLayout>
+          );
+      }
+    }
+  };
 
   return (
     <div className="flex gap-6 flex-wrap md:flex-nowrap px-0">
-
-     {menuOpenUser && (
+      {menuOpenUser && (
         <div
           className="fixed inset-0 bg-black opacity-50 z-20 sm:hidden"
           onClick={() => setMenuOpenUser(false)}
@@ -93,11 +148,12 @@ const Actividad = () => {
       >
         <CustomSidebarSubMenu
           title="Mi Actividad"
-          titleIcon={FaClipboardList }
-          menuData={menuActividadData}
+          titleIcon={FaClipboardList}
+          menuData={getMenuActividadData(codTipo)}
           onItemClick={() => setMenuOpenUser(false)}
         />
       </div>
+
       <main
         className={`${
           menuOpenUser ? "ml-[0px] sm:ml-[120px]" : "md:ml-[120px]"

@@ -30,7 +30,7 @@ const BusquedasAlertas = () => {
 
   return (
     <div>
-      <h3 className="text-xl font-bold mb-4">Mis Búsquedas y Alertas</h3>
+      {/* <h3 className="text-xl font-bold mb-4">Mis Búsquedas y Alertas</h3> */}
 
       {/* Búsquedas guardadas */}
       <div className="mb-6">

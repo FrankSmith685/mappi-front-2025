@@ -80,7 +80,7 @@ export const RegistroForm: React.FC = () => {
   const {registerUser} = useAuth();
   const navigate= useNavigate();
   const {showMessage} = useNotification();
-  const {activeIniciarSesionResena, setModalResena} = useAppState();
+  const {activeIniciarSesionResena, setModalResena, typeUserAuth} = useAppState();
 
   const onSubmit = async (data: RegistroFormData) => {
     const newData = {
@@ -90,7 +90,8 @@ export const RegistroForm: React.FC = () => {
         telefono: Number(data.celular),
         contrasena: data.password,
         dni: Number(data.documento),
-        proveedor: "correo"
+        proveedor: "correo",
+        type_user: typeUserAuth ? (typeUserAuth == 'comensal' ? 4 : 5 ) : 2
     };
 
     await registerUser(newData, (res) => {
@@ -116,6 +117,7 @@ export const RegistroForm: React.FC = () => {
             correo: String(user.email),
             contrasena: result.user.uid,
             proveedor: "google" as const,
+            type_user: typeUserAuth ? (typeUserAuth == 'comensal' ? 4 : 5 ) : 2,
         };
         
         await registerUser(newData, async (res) => {

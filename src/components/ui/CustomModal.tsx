@@ -21,6 +21,7 @@ type CustomModalProps = {
   width?: string
   height?: string
   closable?: boolean
+  isclosable?: boolean
 }
 
 const CustomModal: React.FC<CustomModalProps> = ({
@@ -33,14 +34,14 @@ const CustomModal: React.FC<CustomModalProps> = ({
   width,
   height,
   closable = true,
+  isclosable = true,
 }) => {
   const theme = useTheme()
   const isSmallScreen = useMediaQuery(theme.breakpoints.down('sm'))
   const shouldUseFullScreen = (!width && !height) || isSmallScreen
 
-
   const handleClose = (_event: object, reason: string) => {
-    if (closable || reason !== 'backdropClick') {
+    if (closable && reason !== 'backdropClick') {
       onClose()
     }
   }
@@ -48,7 +49,7 @@ const CustomModal: React.FC<CustomModalProps> = ({
   return (
     <Dialog
       open={isOpen}
-      onClose={handleClose}
+      onClose={closable ? handleClose : undefined}
       fullScreen={shouldUseFullScreen}
       maxWidth={false}
       PaperProps={{
@@ -63,18 +64,20 @@ const CustomModal: React.FC<CustomModalProps> = ({
         transition: Transition,
       }}
     >
-      <IconButton
-        aria-label="close"
-        onClick={onClose}
-        sx={{
-          position: 'absolute',
-          right: 15,
-          top: 8,
-          zIndex: 50,
-        }}
-      >
-        <CloseIcon fontSize="small" />
-      </IconButton>
+      {isclosable && (
+        <IconButton
+          aria-label="close"
+          onClick={onClose}
+          sx={{
+            position: 'absolute',
+            right: 15,
+            top: 8,
+            zIndex: 50,
+          }}
+        >
+          <CloseIcon fontSize="small" />
+        </IconButton>
+      )}
 
       {variant === 'auth' ? (
         <main

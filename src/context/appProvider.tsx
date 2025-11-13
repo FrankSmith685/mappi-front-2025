@@ -123,7 +123,8 @@ const initialState: AppState = {
   categoriaSeleccionada:null,
   multimediaAvisosPreview: null,
   activeIniciarSesionResena: false,
-  modalResena: false
+  modalResena: false,
+  typeUserAuth: null
 }
 
 

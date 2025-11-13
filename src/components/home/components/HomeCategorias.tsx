@@ -22,10 +22,10 @@ const subcategoriaMap: Record<string, string> = {
 
 //  Íconos por categoría
 const iconMap: Record<string, JSX.Element> = {
+  bar: <FaGlassCheers className="text-4xl text-primary drop-shadow-md" />,
   restaurantes: <FaUtensils className="text-4xl text-primary drop-shadow-md" />,
   "comida al paso": <FaHamburger className="text-4xl text-primary drop-shadow-md" />,
   "postres y café": <FaIceCream className="text-4xl text-primary drop-shadow-md" />,
-  bar: <FaGlassCheers className="text-4xl text-primary drop-shadow-md" />,
 };
 
 export const HomeCategorias: React.FC = () => {
@@ -47,11 +47,18 @@ export const HomeCategorias: React.FC = () => {
     );
   }
 
-  const categoriasFiltradas = categoria.filter((cat: any) =>
-    ["restaurantes", "postres y café", "comida al paso", "bar"].includes(
-      cat.CATE_Nombre.toLowerCase()
-    )
+  const ordenDeseado = ["restaurantes", "comida al paso", "postres y café", "bar"];
+
+const categoriasFiltradas = categoria
+  .filter((cat: any) =>
+    ordenDeseado.includes(cat.CATE_Nombre.toLowerCase())
+  )
+  .sort(
+    (a: any, b: any) =>
+      ordenDeseado.indexOf(a.CATE_Nombre.toLowerCase()) -
+      ordenDeseado.indexOf(b.CATE_Nombre.toLowerCase())
   );
+
 
   const gradientColors = [
     "from-orange-100 to-amber-200",

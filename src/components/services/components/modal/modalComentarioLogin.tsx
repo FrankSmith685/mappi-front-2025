@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import React from "react";
 import CustomModal from "../../../ui/CustomModal";
@@ -18,7 +17,7 @@ type Props = {
 
 const ModalComentarioLogin: React.FC<Props> = ({ isOpen, onClose }) => {
   const { loginOrRegisterUser } = useAuth();
-  const {setActiveInciarSesionResena, setModalResena } = useAppState();
+  const {setActiveInciarSesionResena, setModalResena, typeUserAuth } = useAppState();
   const navigate = useNavigate();
   const { showMessage } = useNotification();
 
@@ -36,7 +35,8 @@ const ModalComentarioLogin: React.FC<Props> = ({ isOpen, onClose }) => {
         contrasena: result.user.uid, // UID de Firebase como clave
         proveedor: "google" as const,
         nombre: user.displayName?.split(" ")[0] || "",
-        apellido: user.displayName?.split(" ")[1] || ""
+        apellido: user.displayName?.split(" ")[1] || "",
+        type_user: typeUserAuth ? (typeUserAuth == 'comensal' ? 4 : 5 ) : 2
       };
 
       // Llamar al backend (unificado)

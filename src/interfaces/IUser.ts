@@ -25,7 +25,7 @@ export interface UsuarioData {
   tipo_usuario?: {
     cod_tipo_usuario: number;
     descripcion: string;
-  };
+  }[];
   metodosLogin?:MetodoLogin[];
   tieneEmpresa?: boolean;
   tieneServicio?:boolean;
@@ -90,3 +90,5 @@ export type SelectedPerfil = "independiente" | "empresa";
 //   currentPassword: string;
 //   newPassword: string;
 // };
+
+export type TypeUserAuth = "comensal" | "emprendedor" | null

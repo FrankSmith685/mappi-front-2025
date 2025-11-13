@@ -8,7 +8,7 @@ import type { NewInmueble, ProgressPrincipalProperty, ProgressProperty } from ".
 import type { ProgressPrincipalService, ProgressService, ServicioActivoData, ServicioData } from "./IServicio";
 import type { SubcategoriaAttributes } from "./ISubcategoria";
 import type { ubigeo_usuario } from "./IUbigeos";
-import type { ProfileType, SelectedPerfil, UsuarioData } from "./IUser";
+import type { ProfileType, SelectedPerfil, TypeUserAuth, UsuarioData } from "./IUser";
 
 export type ModeLoginType = "login_one" | "login_two" | "login_three" | "recover_one" | "recover_two" | "recover_three";
 
@@ -62,4 +62,5 @@ export interface AppState {
   multimediaAvisosPreview: MultimediaAvisoPreview | null;
   activeIniciarSesionResena: boolean;
   modalResena: boolean;
+  typeUserAuth: TypeUserAuth;
 }

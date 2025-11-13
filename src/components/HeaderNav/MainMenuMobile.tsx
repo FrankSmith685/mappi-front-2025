@@ -86,7 +86,7 @@ const MainMenuMobile = () => {
     <div className={`space-y-4 w-full px-4 py-4 h-full`}>
       {/* Botón publicar */}
       {
-        !isPanelPublicadorRoute && (
+        !isPanelPublicadorRoute && user?.tipo_usuario?.[0]?.cod_tipo_usuario !== 4 && (
           <div className={`pt-0 pb-4 space-y-2 border-b-[1px] border-b-gray-200`}>
             <p className="text-sm text-gray-700">
               ¿Tienes un huarique que quieras compartir? Publícalo y deja que más personas lo descubran.

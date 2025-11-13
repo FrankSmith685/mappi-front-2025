@@ -119,17 +119,24 @@ const UserActions = ({ menuOpen }: UserActionsProps) => {
       {/* Publicar */}
       {
         !isPanelPublicadorRoute && (
-          <div className='hidden lg:flex'>
-            <CustomButton
-              type='button'
-              variant='primary-outline-white'
-              size='md'
-              fontSize='14px'
-              fontWeight={400}
-              text='Publicar'
-              onClick={handleClickPublicar}
-            />
-          </div>
+          <>
+            {
+              user?.tipo_usuario?.[0]?.cod_tipo_usuario !== 4 && (
+                <div className='hidden lg:flex'>
+                  <CustomButton
+                    type='button'
+                    variant='primary-outline-white'
+                    size='md'
+                    fontSize='14px'
+                    fontWeight={400}
+                    text='Publicar'
+                    onClick={handleClickPublicar}
+                  />
+                </div>
+              )
+
+            }
+          </>
         )
       }
 

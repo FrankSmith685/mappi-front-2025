@@ -125,6 +125,7 @@ useEffect(() => {
   }, []);
 
   const highlightService = (plan:any) => {
+    console.log(plan);
       const selectPlan= planes.find(p=>p.TIPL_Id === plan.TIPL_Id && p.PLAN_TipoUsuario === plan.PLAN_TipoUsuario);
       const parsedPrice = parseFloat(parseFloat(plan.precioConProrrateo).toFixed(2));
 

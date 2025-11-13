@@ -10,7 +10,7 @@ const MainMenu = () => {
   const location = useLocation();
   const isPanelRoute = location.pathname.startsWith("/panel");
   const navigate = useNavigate();
-  const {user} = useAppState();
+  const { user } = useAppState();
 
   const filteredItems = useMemo(() => {
     const activeItems = quickAccess.filter(
@@ -34,38 +34,46 @@ const MainMenu = () => {
       groups[basePath].push(item);
     });
 
-    if (!groups["/panel/avisos"]) {
-      groups["/panel/avisos"] = [
-        {
-          label: "Mis Avisos",
-          path: "/panel/avisos",
-          isActive: true,
-        } as any,
-      ];
+    // 🔹 Obtener tipo de usuario principal
+    const codTipo = user?.tipo_usuario?.[0]?.cod_tipo_usuario;
+
+    // 🔹 Solo agregar menús si el tipo de usuario NO es 4
+    const puedeVerMenus = codTipo !== 4;
+
+    if (puedeVerMenus) {
+      if (!groups["/panel/avisos"]) {
+        groups["/panel/avisos"] = [
+          {
+            label: "Mis Avisos",
+            path: "/panel/avisos",
+            isActive: true,
+          } as any,
+        ];
+      }
+
+      if (user?.tienePlan && !groups["/panel/capacitaciones"]) {
+        groups["/panel/capacitaciones"] = [
+          {
+            label: "Mi Capacitación",
+            path: "/panel/capacitaciones",
+            isActive: true,
+          } as any,
+        ];
+      }
+
+      if (user?.tieneServicio && !groups["/panel/planes"]) {
+        groups["/panel/planes"] = [
+          {
+            label: "Mis Planes",
+            path: "/panel/planes",
+            isActive: true,
+          } as any,
+        ];
+      }
     }
 
-    if (user?.tienePlan !== null && !groups["/panel/capacitaciones"]) {
-      groups["/panel/capacitaciones"] = [
-        {
-          label: "Mi Capacitación",
-          path: "/panel/capacitaciones",
-          isActive: true,
-        } as any,
-      ];
-    }
-
-    if (user?.tieneServicio && !groups["/panel/planes"]) {
-      groups["/panel/planes"] = [
-        {
-          label: "Mis Planes",
-          path: "/panel/planes",
-          isActive: true,
-        } as any,
-      ];
-    }
-
-    //  Inyectar "Mi Publicación" si estamos en /panel/publicador/...
-      if (location.pathname.startsWith("/panel/publicador")) {
+    // Inyectar "Mi Publicación" si estamos en /panel/publicador/...
+    if (location.pathname.startsWith("/panel/publicador")) {
       if (!groups["/panel/publicador"]) groups["/panel/publicador"] = [];
       groups["/panel/publicador"].push({
         label: "Mi Publicación",
@@ -77,19 +85,14 @@ const MainMenu = () => {
     const orderedKeys = Object.keys(groups).sort((a, b) => {
       if (a.includes("cuenta")) return -1;
       if (b.includes("cuenta")) return 1;
-
       if (a.includes("actividad")) return -1;
       if (b.includes("actividad")) return 1;
-
       if (a.includes("avisos")) return -1;
       if (b.includes("avisos")) return 1;
-
       if (a.includes("capacitaciones")) return -1;
       if (b.includes("capacitaciones")) return 1;
-
       if (a.includes("publicador")) return 1;
       if (b.includes("publicador")) return -1;
-
       return 0;
     });
 
@@ -99,7 +102,7 @@ const MainMenu = () => {
     });
 
     return orderedGroups;
-  }, [filteredItems, location.pathname]);
+  }, [filteredItems, location.pathname, user]);
 
   return (
     <nav className="z-50 bg-transparent text-white h-[80px]">
@@ -108,38 +111,36 @@ const MainMenu = () => {
           <></>
         ) : (
           <div className="flex gap-4 h-full items-center pr-4">
-            {Object.entries(groupedByBase).map(([base, items]) => {
-              return (
-                <div
-                  key={base}
-                  className="cursor-pointer h-full flex items-center"
-                  onClick={() => navigate(items[0].path!)}
+            {Object.entries(groupedByBase).map(([base, items]) => (
+              <div
+                key={base}
+                className="cursor-pointer h-full flex items-center"
+                onClick={() => navigate(items[0].path!)}
+              >
+                <span
+                  className={`text-sm text-center border-b-[1px] pb-1 ${
+                    location.pathname.startsWith(base)
+                      ? "border-white text-white"
+                      : "border-transparent text-white"
+                  }`}
                 >
-                  <span
-                    className={`text-sm text-center border-b-[1px] pb-1 ${
-                      location.pathname.startsWith(base)
-                        ? "border-white text-white"
-                        : "border-transparent text-white"
-                    }`}
-                  >
-                    {base.includes("cuenta")
-                      ? "Mi Cuenta"
-                      : base.includes("actividad")
-                      ? "Mi Actividad"
-                      : base.includes("avisos")
-                      ? "Mis Avisos"
-                      : base.includes("capacitaciones")
-                      ? "Mi Capacitación"
-                      : base.includes("planes")
-                      ? "Mis Planes"
-                      : base.includes("publicador")
-                      ? "Mi Publicación"
-                      : base.replace("/panel/", "").charAt(0).toUpperCase() +
-                        base.replace("/panel/", "").slice(1)}
-                  </span>
-                </div>
-              );
-            })}
+                  {base.includes("cuenta")
+                    ? "Mi Cuenta"
+                    : base.includes("actividad")
+                    ? "Mi Actividad"
+                    : base.includes("avisos")
+                    ? "Mis Avisos"
+                    : base.includes("capacitaciones")
+                    ? "Mi Capacitación"
+                    : base.includes("planes")
+                    ? "Mis Planes"
+                    : base.includes("publicador")
+                    ? "Mi Publicación"
+                    : base.replace("/panel/", "").charAt(0).toUpperCase() +
+                      base.replace("/panel/", "").slice(1)}
+                </span>
+              </div>
+            ))}
           </div>
         )}
       </div>

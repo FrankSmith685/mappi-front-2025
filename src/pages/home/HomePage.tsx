@@ -11,12 +11,18 @@ import type { ServicioActivoDataPremium } from "../../interfaces/IServicioPremiu
 import { HomeHuariquesDestacados } from "../../components/home/components/HomeHuariquesDestacados";
 import { HomeHuariquesOpiniones } from "../../components/home/components/HomeHuariquesOpiniones";
 import { HomeInvitacionHuarique } from "../../components/home/components/HomeInvitacionHuarique";
+import { useAppState } from "../../hooks/useAppState";
+import UserTypeModal from "../../components/ui/UserTypeMode";
+import { useNavigate } from "react-router-dom";
 
 export default function HomePage() {
   const [chevere, setChevere] = useState<ServicioActivoDataChevere[]>([]);
   const [premium, setPremium] = useState<ServicioActivoDataPremium[]>([]);
 
-  const { getServiciosActivosChevere, getServiciosActivosPremium  } = useServicio();
+  const { getServiciosActivosChevere, getServiciosActivosPremium } = useServicio();
+  const [showUserTypeModal, setShowUserTypeModal] = useState(false);
+  const {setTypeUserAuth, accessToken} = useAppState();
+  const navigate = useNavigate();
 
   useEffect(() => {
     getServiciosActivosChevere((success, _message, data) => {
@@ -28,6 +34,18 @@ export default function HomePage() {
       if (success && data) setPremium(data);
     });
   }, []);
+
+
+  const handleSelectType = (type: "comensal" | "vendedor") => {
+    setShowUserTypeModal(false);
+    if (type === "vendedor") {
+      setTypeUserAuth("emprendedor");
+      navigate("/registrar");
+    } else if (type === "comensal") {
+       setTypeUserAuth("comensal");
+      navigate("/servicios?m=map");
+    }
+  };
 
   const opinionesDemo = [
     { id: 1, nombre: "Carlos", texto: "El ceviche de Don Paco es el mejor que he probado en años. 10/10" },
@@ -64,6 +82,14 @@ export default function HomePage() {
         <HomeInvitacionHuarique />
 
       </div>
+      {!accessToken && (
+        <UserTypeModal
+          open={!accessToken ? true :showUserTypeModal}
+          onClose={() => setShowUserTypeModal(false)}
+          onSelectType={handleSelectType}
+        />
+      )}
+
     </div>
   );
 }

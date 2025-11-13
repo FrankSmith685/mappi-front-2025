@@ -31,7 +31,7 @@ const Historial = () => {
 
   return (
     <div>
-      <h3 className="text-xl font-bold mb-4">Mi Historial</h3>
+      {/* <h3 className="text-xl font-bold mb-4">Mi Historial</h3> */}
       <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
         {historial.map((item) => (
           <div

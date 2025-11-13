@@ -49,11 +49,12 @@ import {
   setCategoriaSeleccionada,
   setMultimediaAvisoPreview,
   setActiveInciarSesionResena,
-  setModalResena
+  setModalResena,
+  setTypeUserAuth
 } from "../context/actions/actions";
 import type { ModeLoginType } from "../interfaces/appStateInterface";
 import type { AuthLoginForm, AuthRegisterForm } from "../interfaces/auth";
-import type { ProfileType, SelectedPerfil, UsuarioData } from "../interfaces/IUser";
+import type { ProfileType, SelectedPerfil, TypeUserAuth, UsuarioData } from "../interfaces/IUser";
 import type { NewInmueble, ProgressPrincipalProperty } from "../interfaces/inmueble";
 import type { ubigeo_usuario } from "../interfaces/IUbigeos";
 import type { ProgressPrincipalService, ProgressService, ServicioActivoData, ServicioData } from "../interfaces/IServicio";
@@ -124,7 +125,7 @@ export const useAppState = () => {
     setMultimediaAvisoPreview: (multimediaAvisosPreview: MultimediaAvisoPreview | null) => dispatch(setMultimediaAvisoPreview(multimediaAvisosPreview)),
     setActiveInciarSesionResena: (activeIniciarSesionResena: boolean) => dispatch(setActiveInciarSesionResena(activeIniciarSesionResena)),
     setModalResena: (modalResena: boolean) => dispatch(setModalResena(modalResena)),
-  
+    setTypeUserAuth: (typeUserAuth: TypeUserAuth) => dispatch(setTypeUserAuth(typeUserAuth)),
     
   };
 };

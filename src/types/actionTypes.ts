@@ -9,7 +9,7 @@ import type { NewInmueble, ProgressProperty, ProgressPrincipalProperty } from ".
 import type { ProgressPrincipalService, ProgressService, ServicioActivoData, ServicioData } from "../interfaces/IServicio";
 import type { SubcategoriaAttributes } from "../interfaces/ISubcategoria";
 import type { ubigeo_usuario } from "../interfaces/IUbigeos";
-import type { ProfileType, SelectedPerfil, UsuarioData } from "../interfaces/IUser";
+import type { ProfileType, SelectedPerfil, TypeUserAuth, UsuarioData } from "../interfaces/IUser";
 
 export const SET_REGISTERUSER = "SET_REGISTERUSER" as const;
 export const SET_MODE = "SET_MODE" as const;
@@ -62,6 +62,8 @@ export const SET_CATEGORIA_SELECCIONADA = "SET_CATEGORIA_SELECCIONADA" as const;
 export const SET_MULTIMEDIA_AVISOS_PREVIEW = "SET_MULTIMEDIA_AVISOS_PREVIEW" as const;
 export const SET_ACTIVE_INICIAR_SESION_RESENA = "SET_ACTIVE_INICIAR_SESION_RESENA" as const;
 export const SET_MODAL_RESENA = "SET_MODAL_RESENA" as const;
+export const SET_TYPE_USER_AUTH = "SET_TYPE_USER_AUTH" as const;
+
 
 
 
@@ -117,3 +119,4 @@ export type ActionTypes =
   | { type: typeof SET_MULTIMEDIA_AVISOS_PREVIEW; payload:  MultimediaAvisoPreview | null }
   | { type: typeof SET_ACTIVE_INICIAR_SESION_RESENA; payload:  boolean }
   | { type: typeof SET_MODAL_RESENA; payload:  boolean }
+  | { type: typeof SET_TYPE_USER_AUTH; payload:  TypeUserAuth}
