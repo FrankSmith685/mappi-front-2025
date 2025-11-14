@@ -1,5 +1,6 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import React, { useState, useRef, useEffect } from "react";
+import { useState, useRef, useEffect } from "react";
 import { useForm, Controller } from "react-hook-form";
 import CustomModal from "../../../ui/CustomModal";
 import { CustomButton } from "../../../ui/CustomButton";
@@ -397,7 +398,7 @@ const onClose = () => {
             (success, message) => {
               if (success) {
                 console.log("✅ Reseña actualizada correctamente:", message);
-                getServiciosActivos((success, message, data) => {
+                getServiciosActivos((success, _message, data) => {
                   if (success && data) {
                     setServiciosActivos(data.servicios);
                     setServiciosFilterActivos(data.servicios);
@@ -414,7 +415,7 @@ const onClose = () => {
           // Si no tiene reseña -> crear
           await createResena(body, (success, message) => {
             if (success) {
-              getServiciosActivos((success, message, data) => {
+              getServiciosActivos((success, _message, data) => {
                 if (success && data) {
                   setServiciosActivos(data.servicios);
                   setServiciosFilterActivos(data.servicios);
