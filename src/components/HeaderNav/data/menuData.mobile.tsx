@@ -1,4 +1,4 @@
-import { menuData as baseMenuData } from "./menuData";
+import { quickAccess as baseMenuData } from "./menuData";
 
 export const mobileMenuData = [
   ...baseMenuData,
