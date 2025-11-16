@@ -51,7 +51,7 @@ const ModalComentario = () => {
 
   const { createResena, updateResena } = useResena();
   const { getServiciosActivos } = useServicio();
-  const { getCodUbigeo } = useUbigeo();
+  const { getCodUbigeo, getUbigeoByCoords } = useUbigeo();
 
   // 📍 Función para calcular distancia en metros entre dos coordenadas
   function getDistanceInMeters(lat1: number, lng1: number, lat2: number, lng2: number) {
@@ -102,10 +102,10 @@ const ModalComentario = () => {
   const {
     lat: currentLat,
     lng: currentLng,
-    direccion,
-    departamento,
-    distrito,
-    provincia,
+    // direccion,
+    // departamento,
+    // distrito,
+    // provincia,
   } = useLocation();
 
   const currentIconUrl = getCurrentLocationIcon();
@@ -114,7 +114,35 @@ const ModalComentario = () => {
   const { eliminarArchivosMultiples } = useArchivo();
   const [archivosEliminados, setArchivosEliminados] = useState<string[]>([]);
 
+   const [departamento, setDepartamento] = useState<string>("");
+   const [direccion, setDireccion] = useState<string>("");
+   const [distrito, setDistrito] = useState<string>("");
+   const [provincia, setProvincia] = useState<string>("");
 
+
+    const hasFetchedUbigeo = useRef(false);
+      
+    useEffect(() => {
+      if (!currentLat || !currentLng) return;
+      if (hasFetchedUbigeo.current) return;
+  
+      hasFetchedUbigeo.current = true;
+  
+      getUbigeoByCoords(
+        currentLat,
+        currentLng,
+        (dep, prov, dist, direccion) => {
+          console.log("Ubigeo detectado:", dep);
+          setDepartamento(dep);
+          setProvincia(prov);
+          setDistrito(dist);
+          setDireccion(direccion ?? "");
+        },
+        (err) => {
+          console.warn("No se pudo obtener el ubigeo:", err);
+        }
+      );
+    }, [currentLat, currentLng]);
 
   // 🧩 Autocompletar datos del formulario al abrir el modal
   useEffect(() => {
