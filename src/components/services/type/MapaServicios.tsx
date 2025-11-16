@@ -1,6 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { useState, useRef, useEffect } from "react";
-import CustomMapa from "../../ui/CustomMapa";
 import { useLocation } from "../../../hooks/useLocationHooks/useLocation";
 import { useAppState } from "../../../hooks/useAppState";
 import { FiList, FiMap, FiNavigation } from "react-icons/fi";
@@ -8,6 +7,8 @@ import { useSearchParams } from "react-router-dom";
 import BotonOpinion from "../components/BotonOption";
 import { useLocation as useRouterLocation } from "react-router-dom";
 import DetalleServicio from "./DetalleServicio";
+// import CustomMapaGoogle from "../../map/CustomMapaGoogle";
+import CustomMapa from "../../ui/CustomMapa";
 
 function getCurrentLocationIcon(): string {
   const baseUrl = "https://mappidevbucket.s3.us-east-1.amazonaws.com/";

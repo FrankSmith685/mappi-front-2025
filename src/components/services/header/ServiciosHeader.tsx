@@ -27,10 +27,11 @@ const ServiciosHeader = () => {
   const [modalType, setModalType] = useState<"nearby" | "department" | "all">("nearby");
   const [rawDepartamentos, setRawDepartamentos] = useState<any[]>([]);
 
-  const { departamento, lat, lng } = useLocation();
+  const { lat, lng } = useLocation();
   const [searchParams, setSearchParams] = useSearchParams();
   const { serviciosActivos, setServiciosFilterActivos, setiIsShowFilterService, isShowFilterService, setServicioSeleccionado, setIsExpanded, isExpanded, categoriaSeleccionada   } = useAppState();
-  const { getDepartamentosActivos } = useUbigeo();
+  const { getDepartamentosActivos, getUbigeoByCoords } = useUbigeo();
+  const [departamento, setDepartamento] = useState<string>("");
   const {
     getCategoriasActivasPorDepartamento,
     getSubcategoriasActivasPorDepartamentoYCategoria,
@@ -38,6 +39,28 @@ const ServiciosHeader = () => {
 
   const headerRef = useRef<HTMLDivElement | null>(null);
   const [isVisible, setIsVisible] = useState(true);
+
+  const hasFetchedUbigeo = useRef(false);
+
+  useEffect(() => {
+    if (!lat || !lng) return;
+    if (hasFetchedUbigeo.current) return;
+
+    hasFetchedUbigeo.current = true;
+
+    getUbigeoByCoords(
+      lat,
+      lng,
+      (dep) => {
+        console.log("Ubigeo detectado:", dep);
+        setDepartamento(dep);
+      },
+      (err) => {
+        console.warn("No se pudo obtener el ubigeo:", err);
+      }
+    );
+  }, [lat, lng]);
+
 
   useEffect(() => {
   if (categoriaSeleccionada) {

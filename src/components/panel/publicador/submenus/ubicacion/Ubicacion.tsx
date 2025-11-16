@@ -65,10 +65,6 @@ const Ubicacion: React.FC = () => {
   const {
     lat,
     lng,
-    departamento: depCtx,
-    provincia: provCtx,
-    distrito: distCtx,
-    direccion: dirCtx,
   } = useLocation();
 
   const {
@@ -132,6 +128,36 @@ const Ubicacion: React.FC = () => {
 
    const [salir, setSalir] = useState(false);
 
+   const [depCtx, setDepCtx] = useState<string>("");
+  const [provCtx, setProvCtx] = useState<string>("");
+  const [distCtx, setDistCtx] = useState<string>("");
+  const [dirCtx, setDirCtx] = useState<string>("");
+
+
+   const hasFetchedUbigeo = useRef(false);
+   
+     useEffect(() => {
+       if (!lat || !lng) return;
+       if (hasFetchedUbigeo.current) return;
+   
+       hasFetchedUbigeo.current = true;
+   
+       getUbigeoByCoords(
+         lat,
+         lng,
+         (dep, prov, dist, direccion) => {
+           console.log("Ubigeo detectado:", dep);
+           setDepCtx(dep);
+           setProvCtx(prov);
+           setDistCtx(dist);
+           setDirCtx(direccion ?? "");
+         },
+         (err) => {
+           console.warn("No se pudo obtener el ubigeo:", err);
+         }
+       );
+     }, [lat, lng]);
+
 
   useEffect(() => {
     if (direccionService && direccionService.direccion) {
@@ -158,7 +184,7 @@ const Ubicacion: React.FC = () => {
       if (distCtx) setValue("distrito", distCtx);
       if (dirCtx) setValue("direccion", dirCtx);
     }
-  }, []);
+  }, [depCtx,provCtx,distCtx,dirCtx]);
 
   const isInitialRef = useRef(false);
   
