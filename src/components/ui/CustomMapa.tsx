@@ -66,44 +66,28 @@ type MapaUbicacionProps = {
 // };
 
 // Centrar mapa dinámicamente SOLO desde la segunda vez
-const ChangeView = ({
-  center,
-  zoom,
-  enableAfterFirstFix = true
-}: {
-  center: [number, number];
-  zoom: number;
-  enableAfterFirstFix?: boolean;
-}) => {
+const ChangeView = ({ center, zoom }: { center: [number, number]; zoom: number }) => {
   const map = useMap();
-  const hasCenteredOnce = useRef(false);
+  const ignoreAutoCenter = useRef(false);
+
+  // Si el usuario mueve el mapa → NO recenter más
+  useEffect(() => {
+    const stopAuto = () => {
+      ignoreAutoCenter.current = true;
+    };
+    map.on("dragstart", stopAuto);
+    map.on("zoomstart", stopAuto);
+
+    return () => {
+      map.off("dragstart", stopAuto);
+      map.off("zoomstart", stopAuto);
+    };
+  }, [map]);
 
   useEffect(() => {
-    const [lat, lng] = center;
-    if (!lat || !lng) return;
+    if (ignoreAutoCenter.current) return; // ❗YA NO RECENTRAR
 
-    // Primera vez → solo marcar como cargado, NO centrar
-    if (!hasCenteredOnce.current) {
-      hasCenteredOnce.current = true;
-      return;
-    }
-
-    // Si el usuario no quiere esta validación, se centra siempre
-    if (!enableAfterFirstFix) {
-      map.flyTo(center, zoom, { animate: true, duration: 1.2 });
-      return;
-    }
-
-    // Desde la segunda vez → sí centrar con validación de distancia
-    const current = map.getCenter();
-    const distance = map.distance(current, L.latLng(center));
-
-    if (distance > 50) {
-      map.flyTo(center, zoom, { animate: true, duration: 1.2 });
-    } else {
-      map.setView(center, zoom);
-    }
-
+    map.flyTo(center, zoom, { animate: true, duration: 1.1 });
   }, [center[0], center[1]]);
 
   return null;
