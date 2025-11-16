@@ -40,11 +40,15 @@ const MapaServicios = () => {
     }
   };
 
-  useEffect(() => {
-  if (currentLat && currentLng && mapRef.current) {
+  const hasCenteredRef = useRef(false);
+
+useEffect(() => {
+  if (!hasCenteredRef.current && currentLat && currentLng && mapRef.current) {
     handleRecenter();
+    hasCenteredRef.current = true; // Solo una vez
   }
 }, [currentLat, currentLng]);
+
 
   const handleToggleView = () => {
     const newParams = new URLSearchParams(searchParams);
