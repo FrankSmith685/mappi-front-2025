@@ -49,6 +49,8 @@ useEffect(() => {
   }
 }, [currentLat, currentLng]);
 
+console.log(currentLat, currentLng)
+
 
   const handleToggleView = () => {
     const newParams = new URLSearchParams(searchParams);
