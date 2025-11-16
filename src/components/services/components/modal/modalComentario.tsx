@@ -92,7 +92,7 @@ const ModalComentario = () => {
   uploaded: boolean;
   file?: File; 
 };
-
+ 
 
   const [rating, setRating] = useState(1);
   const [isAnonimo, setIsAnonimo] = useState(false);
