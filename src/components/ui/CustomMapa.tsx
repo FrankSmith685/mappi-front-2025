@@ -44,54 +44,54 @@ type MapaUbicacionProps = {
 
 
 //  Centrar mapa dinámicamente
-// const ChangeView = ({
-//   center,
-//   zoom,
-// }: {
-//   center: [number, number];
-//   zoom: number;
-// }) => {
-//   const map = useMap();
-//   useEffect(() => {
-//     if (!center || !center[0] || !center[1]) return;
-//     const current = map.getCenter();
-//     const distance = map.distance(current, L.latLng(center));
-//     if (distance > 50) {
-//       map.flyTo(center, zoom, { animate: true, duration: 1.2 });
-//     } else {
-//       map.setView(center, zoom);
-//     }
-//   }, [center[0], center[1], zoom]);
-//   return null;
-// };
-
-// Centrar mapa dinámicamente SOLO desde la segunda vez
-const ChangeView = ({ center, zoom }: { center: [number, number]; zoom: number }) => {
+const ChangeView = ({
+  center,
+  zoom,
+}: {
+  center: [number, number];
+  zoom: number;
+}) => {
   const map = useMap();
-  const ignoreAutoCenter = useRef(false);
-
-  // Si el usuario mueve el mapa → NO recenter más
   useEffect(() => {
-    const stopAuto = () => {
-      ignoreAutoCenter.current = true;
-    };
-    map.on("dragstart", stopAuto);
-    map.on("zoomstart", stopAuto);
-
-    return () => {
-      map.off("dragstart", stopAuto);
-      map.off("zoomstart", stopAuto);
-    };
-  }, [map]);
-
-  useEffect(() => {
-    if (ignoreAutoCenter.current) return; // ❗YA NO RECENTRAR
-
-    map.flyTo(center, zoom, { animate: true, duration: 1.1 });
-  }, [center[0], center[1]]);
-
+    if (!center || !center[0] || !center[1]) return;
+    const current = map.getCenter();
+    const distance = map.distance(current, L.latLng(center));
+    if (distance > 50) {
+      map.flyTo(center, zoom, { animate: true, duration: 1.2 });
+    } else {
+      map.setView(center, zoom);
+    }
+  }, [center[0], center[1], zoom]);
   return null;
 };
+
+// // Centrar mapa dinámicamente SOLO desde la segunda vez
+// const ChangeView = ({ center, zoom }: { center: [number, number]; zoom: number }) => {
+//   const map = useMap();
+//   const ignoreAutoCenter = useRef(false);
+
+//   // Si el usuario mueve el mapa → NO recenter más
+//   useEffect(() => {
+//     const stopAuto = () => {
+//       ignoreAutoCenter.current = true;
+//     };
+//     map.on("dragstart", stopAuto);
+//     map.on("zoomstart", stopAuto);
+
+//     return () => {
+//       map.off("dragstart", stopAuto);
+//       map.off("zoomstart", stopAuto);
+//     };
+//   }, [map]);
+
+//   useEffect(() => {
+//     if (ignoreAutoCenter.current) return; // ❗YA NO RECENTRAR
+
+//     map.flyTo(center, zoom, { animate: true, duration: 1.1 });
+//   }, [center[0], center[1]]);
+
+//   return null;
+// };
 
 
 
@@ -190,9 +190,18 @@ const CustomMapa = forwardRef(
       return null;
     };
 
+    const initialCenter = useRef<[number, number] | null>(null);
+
+    const isDefaultLocation = lat === -12.0464 && lng === -77.0428;
+
+    if (!initialCenter.current && lat && lng && !isDefaultLocation) {
+      initialCenter.current = [lat, lng];
+    }
+
+
     return (
       <MapContainer
-        center={[lat, lng]}
+        center={initialCenter.current || [0,0]}
         zoom={zoom}
         style={{ height: "100%", width: "100%" }}
         zoomControl={false}
