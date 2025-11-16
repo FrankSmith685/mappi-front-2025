@@ -44,26 +44,72 @@ type MapaUbicacionProps = {
 
 
 //  Centrar mapa dinámicamente
+// const ChangeView = ({
+//   center,
+//   zoom,
+// }: {
+//   center: [number, number];
+//   zoom: number;
+// }) => {
+//   const map = useMap();
+//   useEffect(() => {
+//     if (!center || !center[0] || !center[1]) return;
+//     const current = map.getCenter();
+//     const distance = map.distance(current, L.latLng(center));
+//     if (distance > 50) {
+//       map.flyTo(center, zoom, { animate: true, duration: 1.2 });
+//     } else {
+//       map.setView(center, zoom);
+//     }
+//   }, [center[0], center[1], zoom]);
+//   return null;
+// };
+
+// Centrar mapa dinámicamente SOLO desde la segunda vez
 const ChangeView = ({
   center,
   zoom,
+  enableAfterFirstFix = true
 }: {
   center: [number, number];
   zoom: number;
+  enableAfterFirstFix?: boolean;
 }) => {
   const map = useMap();
+  const hasCenteredOnce = useRef(false);
+
   useEffect(() => {
-    if (!center || !center[0] || !center[1]) return;
+    const [lat, lng] = center;
+    if (!lat || !lng) return;
+
+    // Primera vez → solo marcar como cargado, NO centrar
+    if (!hasCenteredOnce.current) {
+      hasCenteredOnce.current = true;
+      return;
+    }
+
+    // Si el usuario no quiere esta validación, se centra siempre
+    if (!enableAfterFirstFix) {
+      map.flyTo(center, zoom, { animate: true, duration: 1.2 });
+      return;
+    }
+
+    // Desde la segunda vez → sí centrar con validación de distancia
     const current = map.getCenter();
     const distance = map.distance(current, L.latLng(center));
+
     if (distance > 50) {
       map.flyTo(center, zoom, { animate: true, duration: 1.2 });
     } else {
       map.setView(center, zoom);
     }
-  }, [center[0], center[1], zoom]);
+
+  }, [center[0], center[1]]);
+
   return null;
 };
+
+
 
 //  Control de zoom personalizado
 const AddZoomControl = ({ position }: { position: L.ControlPosition }) => {
