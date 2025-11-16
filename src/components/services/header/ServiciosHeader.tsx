@@ -210,6 +210,9 @@ const ServiciosHeader = () => {
     }
   }, [ciudad, categoria, subcategoria, search]);
 
+  // const hasShownModalRef = useRef(false);
+  const lastCiudadWithoutServicesRef = useRef<string | null>(null);
+
 useEffect(() => {
   if (!serviciosActivos || serviciosActivos.length === 0) return;
 
@@ -267,48 +270,58 @@ useEffect(() => {
 
   //  4️⃣ Mostrar modal si no hay resultados
   //  4️⃣ Mostrar modal si no hay resultados
-if (filtered.length === 0) {
-  let fallback: any[] = [];
-  let newModalType: "nearby" | "department" | "all" = "all";
+  // 4️⃣ Mostrar modal si NO hay resultados en ESTA ciudad
+  if (filtered.length === 0) {
 
-  //  Si hay servicios cercanos (solo dentro del mismo departamento)
-  if (nearby.length > 0) {
-    const depCode = ciudad?.slice(0, 2) ?? "";
-    const nearbySameDep = nearby.filter(
-      (srv) => String(srv.direccion?.codigo_ubigeo ?? "").startsWith(depCode)
-    );
+    // Si es la primera vez que esta ciudad no tiene servicios → mostrar modal
+    if (lastCiudadWithoutServicesRef.current !== ciudad) {
 
-    if (nearbySameDep.length > 0) {
-      fallback = nearbySameDep;
-      newModalType = "nearby";
+      let fallback: any[] = [];
+      let newModalType: "nearby" | "department" | "all" = "all";
+
+      //  Buscar fallback similar a tu lógica actual
+      if (nearby.length > 0) {
+        const depCode = ciudad?.slice(0, 2) ?? "";
+        const nearbySameDep = nearby.filter((srv) =>
+          String(srv.direccion?.codigo_ubigeo ?? "").startsWith(depCode)
+        );
+        if (nearbySameDep.length > 0) {
+          fallback = nearbySameDep;
+          newModalType = "nearby";
+        }
+      }
+
+      if (fallback.length === 0 && ciudad) {
+        const depCode = ciudad.slice(0, 2);
+        const sameDep = serviciosActivos.filter((srv) =>
+          String(srv.direccion?.codigo_ubigeo ?? "").startsWith(depCode)
+        );
+        if (sameDep.length > 0) {
+          fallback = sameDep;
+          newModalType = "department";
+        }
+      }
+
+      if (fallback.length === 0) {
+        fallback = serviciosActivos;
+        newModalType = "all";
+      }
+
+      setFallbackData(fallback);
+      setModalType(newModalType);
+      setShowNoServicesModal(true);
+
+      // Marcar esta ciudad como "ya se mostró el modal"
+      lastCiudadWithoutServicesRef.current = ciudad;
+
     }
+
+  } else {
+    // Si SÍ hay servicios -> resetear bloqueo
+    lastCiudadWithoutServicesRef.current = null;
+    setShowNoServicesModal(false);
   }
 
-  //  Si no hay cercanos válidos, intentamos buscar en el departamento
-  if (fallback.length === 0 && ciudad) {
-    const depCode = ciudad.slice(0, 2);
-    const sameDep = serviciosActivos.filter((srv) =>
-      String(srv.direccion?.codigo_ubigeo ?? "").startsWith(depCode)
-    );
-
-    if (sameDep.length > 0) {
-      fallback = sameDep;
-      newModalType = "department";
-    }
-  }
-
-  //  Si no hay ni cercanos ni del departamento → mostrar todos (all)
-  if (fallback.length === 0) {
-    fallback = serviciosActivos;
-    newModalType = "all";
-  }
-
-  setFallbackData(fallback);
-  setModalType(newModalType);
-  setShowNoServicesModal(true);
-} else {
-  setShowNoServicesModal(false);
-}
 
 
 
