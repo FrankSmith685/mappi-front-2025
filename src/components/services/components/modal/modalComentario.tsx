@@ -101,11 +101,7 @@ const ModalComentario = () => {
 
   const {
     lat: currentLat,
-    lng: currentLng,
-    // direccion,
-    // departamento,
-    // distrito,
-    // provincia,
+    lng: currentLng
   } = useLocation();
 
   const currentIconUrl = getCurrentLocationIcon();
