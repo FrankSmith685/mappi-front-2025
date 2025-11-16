@@ -40,6 +40,12 @@ const MapaServicios = () => {
     }
   };
 
+  useEffect(() => {
+  if (currentLat && currentLng && mapRef.current) {
+    handleRecenter();
+  }
+}, [currentLat, currentLng]);
+
   const handleToggleView = () => {
     const newParams = new URLSearchParams(searchParams);
     newParams.set("m", mode === "map" ? "list" : "map");
